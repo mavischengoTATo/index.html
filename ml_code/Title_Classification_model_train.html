@@ -1,0 +1,1090 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.450">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Title Classification Model Training</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="Title_Classification_model_train_files/libs/clipboard/clipboard.min.js"></script>
+<script src="Title_Classification_model_train_files/libs/quarto-html/quarto.js"></script>
+<script src="Title_Classification_model_train_files/libs/quarto-html/popper.min.js"></script>
+<script src="Title_Classification_model_train_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="Title_Classification_model_train_files/libs/quarto-html/anchor.min.js"></script>
+<link href="Title_Classification_model_train_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="Title_Classification_model_train_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="Title_Classification_model_train_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="Title_Classification_model_train_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="Title_Classification_model_train_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+
+
+</head>
+
+<body class="fullcontent">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Title Classification Model Training</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+</header>
+
+<div class="cell" data-tags="[]" data-execution_count="25">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Setup - Run only once per Kernel App</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>conda install openjdk <span class="op">-</span>y</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co"># install PySpark</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>pip install pyspark<span class="op">==</span><span class="fl">3.4.0</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co"># install spark-nlp</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>pip install spark<span class="op">-</span>nlp<span class="op">==</span><span class="fl">5.1.3</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="co"># restart kernel</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> IPython.core.display <span class="im">import</span> HTML</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>HTML(<span class="st">"&lt;script&gt;Jupyter.notebook.kernel.restart()&lt;/script&gt;"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Collecting package metadata (current_repodata.json): done
+Solving environment: done
+
+
+==&gt; WARNING: A newer version of conda exists. &lt;==
+  current version: 23.3.1
+  latest version: 23.10.0
+
+Please update conda by running
+
+    $ conda update -n base -c defaults conda
+
+Or to minimize the number of packages updated during conda update use
+
+     conda install conda=23.10.0
+
+
+
+## Package Plan ##
+
+  environment location: /opt/conda
+
+  added / updated specs:
+    - openjdk
+
+
+The following packages will be downloaded:
+
+    package                    |            build
+    ---------------------------|-----------------
+    ca-certificates-2023.08.22 |       h06a4308_0         123 KB
+    certifi-2023.11.17         |  py310h06a4308_0         158 KB
+    openjdk-11.0.13            |       h87a67e3_0       341.0 MB
+    ------------------------------------------------------------
+                                           Total:       341.3 MB
+
+The following NEW packages will be INSTALLED:
+
+  openjdk            pkgs/main/linux-64::openjdk-11.0.13-h87a67e3_0 
+
+The following packages will be UPDATED:
+
+  ca-certificates    conda-forge::ca-certificates-2023.7.2~ --&gt; pkgs/main::ca-certificates-2023.08.22-h06a4308_0 
+  certifi            conda-forge/noarch::certifi-2023.7.22~ --&gt; pkgs/main/linux-64::certifi-2023.11.17-py310h06a4308_0 
+
+
+
+Downloading and Extracting Packages
+ca-certificates-2023 | 123 KB    |                                       |   0% 
+openjdk-11.0.13      | 341.0 MB  |                                       |   0% 
+
+ca-certificates-2023 | 123 KB    | ##################################### | 100% 
+openjdk-11.0.13      | 341.0 MB  | 1                                     |   0% 
+
+certifi-2023.11.17   | 158 KB    | ##################################### | 100% 
+openjdk-11.0.13      | 341.0 MB  | #1                                    |   3% 
+openjdk-11.0.13      | 341.0 MB  | #9                                    |   5% 
+openjdk-11.0.13      | 341.0 MB  | ###2                                  |   9% 
+openjdk-11.0.13      | 341.0 MB  | ####5                                 |  12% 
+openjdk-11.0.13      | 341.0 MB  | ######                                |  16% 
+openjdk-11.0.13      | 341.0 MB  | #######4                              |  20% 
+openjdk-11.0.13      | 341.0 MB  | ########6                             |  23% 
+openjdk-11.0.13      | 341.0 MB  | #########9                            |  27% 
+openjdk-11.0.13      | 341.0 MB  | ###########1                          |  30% 
+openjdk-11.0.13      | 341.0 MB  | ############2                         |  33% 
+openjdk-11.0.13      | 341.0 MB  | #############7                        |  37% 
+openjdk-11.0.13      | 341.0 MB  | ###############1                      |  41% 
+openjdk-11.0.13      | 341.0 MB  | #################                     |  46% 
+openjdk-11.0.13      | 341.0 MB  | ##################8                   |  51% 
+openjdk-11.0.13      | 341.0 MB  | ####################8                 |  56% 
+openjdk-11.0.13      | 341.0 MB  | ######################8               |  62% 
+openjdk-11.0.13      | 341.0 MB  | ########################8             |  67% 
+openjdk-11.0.13      | 341.0 MB  | ##########################8           |  72% 
+openjdk-11.0.13      | 341.0 MB  | ############################7         |  78% 
+openjdk-11.0.13      | 341.0 MB  | ##############################7       |  83% 
+openjdk-11.0.13      | 341.0 MB  | ################################7     |  89% 
+openjdk-11.0.13      | 341.0 MB  | ##################################7   |  94% 
+openjdk-11.0.13      | 341.0 MB  | ####################################7 |  99% 
+                                                                                
+                                                                                
+
+                                                                                
+Preparing transaction: done
+Verifying transaction: done
+Executing transaction: done
+
+Note: you may need to restart the kernel to use updated packages.
+Collecting pyspark==3.4.0
+  Using cached pyspark-3.4.0-py2.py3-none-any.whl
+Collecting py4j==0.10.9.7 (from pyspark==3.4.0)
+  Using cached py4j-0.10.9.7-py2.py3-none-any.whl (200 kB)
+Installing collected packages: py4j, pyspark
+Successfully installed py4j-0.10.9.7 pyspark-3.4.0
+WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv
+
+[notice] A new release of pip is available: 23.2.1 -&gt; 23.3.1
+[notice] To update, run: pip install --upgrade pip
+Note: you may need to restart the kernel to use updated packages.
+Collecting spark-nlp==5.1.3
+  Obtaining dependency information for spark-nlp==5.1.3 from https://files.pythonhosted.org/packages/cd/7d/bc0eca4c9ec4c9c1d9b28c42c2f07942af70980a7d912d0aceebf8db32dd/spark_nlp-5.1.3-py2.py3-none-any.whl.metadata
+  Using cached spark_nlp-5.1.3-py2.py3-none-any.whl.metadata (53 kB)
+Using cached spark_nlp-5.1.3-py2.py3-none-any.whl (537 kB)
+Installing collected packages: spark-nlp
+Successfully installed spark-nlp-5.1.3
+WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv
+
+[notice] A new release of pip is available: 23.2.1 -&gt; 23.3.1
+[notice] To update, run: pip install --upgrade pip
+Note: you may need to restart the kernel to use updated packages.</code></pre>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="25">
+<script>Jupyter.notebook.kernel.restart()</script>
+</div>
+</div>
+<div class="cell" data-tags="[]" data-execution_count="26">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> json</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> sparknlp</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sparknlp.base <span class="im">import</span> <span class="op">*</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pyspark.ml <span class="im">import</span> Pipeline</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sparknlp.annotator <span class="im">import</span> <span class="op">*</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pyspark.sql.functions <span class="im">as</span> F</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pyspark.sql <span class="im">import</span> SparkSession</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sparknlp.pretrained <span class="im">import</span> PretrainedPipeline</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-tags="[]" data-execution_count="27">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>spark <span class="op">=</span> SparkSession.builder <span class="op">\</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    .appName(<span class="st">"Spark NLP and PySparkApp"</span>) <span class="op">\</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    .master(<span class="st">"local[*]"</span>) <span class="op">\</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    .config(<span class="st">"spark.driver.memory"</span>, <span class="st">"16G"</span>) <span class="op">\</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    .config(<span class="st">"spark.driver.maxResultSize"</span>, <span class="st">"0"</span>) <span class="op">\</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    .config(<span class="st">"spark.kryoserializer.buffer.max"</span>, <span class="st">"2000M"</span>) <span class="op">\</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>    .config(<span class="st">"spark.jars.packages"</span>, </span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>            <span class="st">"com.johnsnowlabs.nlp:spark-nlp_2.12:5.1.3,org.apache.hadoop:hadoop-aws:3.2.2"</span>) <span class="op">\</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>    .config(<span class="st">"spark.hadoop.fs.s3a.impl"</span>, <span class="st">"org.apache.hadoop.fs.s3a.S3AFileSystem"</span>) <span class="op">\</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>    .config(<span class="st">"fs.s3a.aws.credentials.provider"</span>, <span class="st">"com.amazonaws.auth.ContainerCredentialsProvider"</span>) <span class="op">\</span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>    .getOrCreate()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Ignoring non-Spark config property: fs.s3a.aws.credentials.provider
+Ivy Default Cache set to: /root/.ivy2/cache
+The jars for the packages stored in: /root/.ivy2/jars
+com.johnsnowlabs.nlp#spark-nlp_2.12 added as a dependency
+org.apache.hadoop#hadoop-aws added as a dependency
+:: resolving dependencies :: org.apache.spark#spark-submit-parent-6f7d666f-4429-4dd1-ada5-2cfdd1a61599;1.0
+    confs: [default]
+    found com.johnsnowlabs.nlp#spark-nlp_2.12;5.1.3 in central
+    found com.typesafe#config;1.4.2 in central
+    found org.rocksdb#rocksdbjni;6.29.5 in central
+    found com.amazonaws#aws-java-sdk-bundle;1.11.828 in central
+    found com.github.universal-automata#liblevenshtein;3.0.0 in central
+    found com.google.protobuf#protobuf-java-util;3.0.0-beta-3 in central
+    found com.google.protobuf#protobuf-java;3.0.0-beta-3 in central
+    found com.google.code.gson#gson;2.3 in central
+    found it.unimi.dsi#fastutil;7.0.12 in central
+    found org.projectlombok#lombok;1.16.8 in central
+    found com.google.cloud#google-cloud-storage;2.20.1 in central
+    found com.google.guava#guava;31.1-jre in central
+    found com.google.guava#failureaccess;1.0.1 in central
+    found com.google.guava#listenablefuture;9999.0-empty-to-avoid-conflict-with-guava in central
+    found com.google.errorprone#error_prone_annotations;2.18.0 in central
+    found com.google.j2objc#j2objc-annotations;1.3 in central
+    found com.google.http-client#google-http-client;1.43.0 in central
+    found io.opencensus#opencensus-contrib-http-util;0.31.1 in central
+    found com.google.http-client#google-http-client-jackson2;1.43.0 in central
+    found com.google.http-client#google-http-client-gson;1.43.0 in central
+    found com.google.api-client#google-api-client;2.2.0 in central
+    found commons-codec#commons-codec;1.15 in central
+    found com.google.oauth-client#google-oauth-client;1.34.1 in central
+    found com.google.http-client#google-http-client-apache-v2;1.43.0 in central
+    found com.google.apis#google-api-services-storage;v1-rev20220705-2.0.0 in central
+    found com.google.code.gson#gson;2.10.1 in central
+    found com.google.cloud#google-cloud-core;2.12.0 in central
+    found io.grpc#grpc-context;1.53.0 in central
+    found com.google.auto.value#auto-value-annotations;1.10.1 in central
+    found com.google.auto.value#auto-value;1.10.1 in central
+    found javax.annotation#javax.annotation-api;1.3.2 in central
+    found commons-logging#commons-logging;1.2 in central
+    found com.google.cloud#google-cloud-core-http;2.12.0 in central
+    found com.google.http-client#google-http-client-appengine;1.43.0 in central
+    found com.google.api#gax-httpjson;0.108.2 in central
+    found com.google.cloud#google-cloud-core-grpc;2.12.0 in central
+    found io.grpc#grpc-alts;1.53.0 in central
+    found io.grpc#grpc-grpclb;1.53.0 in central
+    found org.conscrypt#conscrypt-openjdk-uber;2.5.2 in central
+    found io.grpc#grpc-auth;1.53.0 in central
+    found io.grpc#grpc-protobuf;1.53.0 in central
+    found io.grpc#grpc-protobuf-lite;1.53.0 in central
+    found io.grpc#grpc-core;1.53.0 in central
+    found com.google.api#gax;2.23.2 in central
+    found com.google.api#gax-grpc;2.23.2 in central
+    found com.google.auth#google-auth-library-credentials;1.16.0 in central
+    found com.google.auth#google-auth-library-oauth2-http;1.16.0 in central
+    found com.google.api#api-common;2.6.2 in central
+    found io.opencensus#opencensus-api;0.31.1 in central
+    found com.google.api.grpc#proto-google-iam-v1;1.9.2 in central
+    found com.google.protobuf#protobuf-java;3.21.12 in central
+    found com.google.protobuf#protobuf-java-util;3.21.12 in central
+    found com.google.api.grpc#proto-google-common-protos;2.14.2 in central
+    found org.threeten#threetenbp;1.6.5 in central
+    found com.google.api.grpc#proto-google-cloud-storage-v2;2.20.1-alpha in central
+    found com.google.api.grpc#grpc-google-cloud-storage-v2;2.20.1-alpha in central
+    found com.google.api.grpc#gapic-google-cloud-storage-v2;2.20.1-alpha in central
+    found com.fasterxml.jackson.core#jackson-core;2.14.2 in central
+    found com.google.code.findbugs#jsr305;3.0.2 in central
+    found io.grpc#grpc-api;1.53.0 in central
+    found io.grpc#grpc-stub;1.53.0 in central
+    found org.checkerframework#checker-qual;3.31.0 in central
+    found io.perfmark#perfmark-api;0.26.0 in central
+    found com.google.android#annotations;4.1.1.4 in central
+    found org.codehaus.mojo#animal-sniffer-annotations;1.22 in central
+    found io.opencensus#opencensus-proto;0.2.0 in central
+    found io.grpc#grpc-services;1.53.0 in central
+    found com.google.re2j#re2j;1.6 in central
+    found io.grpc#grpc-netty-shaded;1.53.0 in central
+    found io.grpc#grpc-googleapis;1.53.0 in central
+    found io.grpc#grpc-xds;1.53.0 in central
+    found com.navigamez#greex;1.0 in central
+    found dk.brics.automaton#automaton;1.11-8 in central
+    found com.johnsnowlabs.nlp#tensorflow-cpu_2.12;0.4.4 in central
+    found com.microsoft.onnxruntime#onnxruntime;1.15.0 in central
+    found org.apache.hadoop#hadoop-aws;3.2.2 in central
+:: resolution report :: resolve 4734ms :: artifacts dl 659ms
+    :: modules in use:
+    com.amazonaws#aws-java-sdk-bundle;1.11.828 from central in [default]
+    com.fasterxml.jackson.core#jackson-core;2.14.2 from central in [default]
+    com.github.universal-automata#liblevenshtein;3.0.0 from central in [default]
+    com.google.android#annotations;4.1.1.4 from central in [default]
+    com.google.api#api-common;2.6.2 from central in [default]
+    com.google.api#gax;2.23.2 from central in [default]
+    com.google.api#gax-grpc;2.23.2 from central in [default]
+    com.google.api#gax-httpjson;0.108.2 from central in [default]
+    com.google.api-client#google-api-client;2.2.0 from central in [default]
+    com.google.api.grpc#gapic-google-cloud-storage-v2;2.20.1-alpha from central in [default]
+    com.google.api.grpc#grpc-google-cloud-storage-v2;2.20.1-alpha from central in [default]
+    com.google.api.grpc#proto-google-cloud-storage-v2;2.20.1-alpha from central in [default]
+    com.google.api.grpc#proto-google-common-protos;2.14.2 from central in [default]
+    com.google.api.grpc#proto-google-iam-v1;1.9.2 from central in [default]
+    com.google.apis#google-api-services-storage;v1-rev20220705-2.0.0 from central in [default]
+    com.google.auth#google-auth-library-credentials;1.16.0 from central in [default]
+    com.google.auth#google-auth-library-oauth2-http;1.16.0 from central in [default]
+    com.google.auto.value#auto-value;1.10.1 from central in [default]
+    com.google.auto.value#auto-value-annotations;1.10.1 from central in [default]
+    com.google.cloud#google-cloud-core;2.12.0 from central in [default]
+    com.google.cloud#google-cloud-core-grpc;2.12.0 from central in [default]
+    com.google.cloud#google-cloud-core-http;2.12.0 from central in [default]
+    com.google.cloud#google-cloud-storage;2.20.1 from central in [default]
+    com.google.code.findbugs#jsr305;3.0.2 from central in [default]
+    com.google.code.gson#gson;2.10.1 from central in [default]
+    com.google.errorprone#error_prone_annotations;2.18.0 from central in [default]
+    com.google.guava#failureaccess;1.0.1 from central in [default]
+    com.google.guava#guava;31.1-jre from central in [default]
+    com.google.guava#listenablefuture;9999.0-empty-to-avoid-conflict-with-guava from central in [default]
+    com.google.http-client#google-http-client;1.43.0 from central in [default]
+    com.google.http-client#google-http-client-apache-v2;1.43.0 from central in [default]
+    com.google.http-client#google-http-client-appengine;1.43.0 from central in [default]
+    com.google.http-client#google-http-client-gson;1.43.0 from central in [default]
+    com.google.http-client#google-http-client-jackson2;1.43.0 from central in [default]
+    com.google.j2objc#j2objc-annotations;1.3 from central in [default]
+    com.google.oauth-client#google-oauth-client;1.34.1 from central in [default]
+    com.google.protobuf#protobuf-java;3.21.12 from central in [default]
+    com.google.protobuf#protobuf-java-util;3.21.12 from central in [default]
+    com.google.re2j#re2j;1.6 from central in [default]
+    com.johnsnowlabs.nlp#spark-nlp_2.12;5.1.3 from central in [default]
+    com.johnsnowlabs.nlp#tensorflow-cpu_2.12;0.4.4 from central in [default]
+    com.microsoft.onnxruntime#onnxruntime;1.15.0 from central in [default]
+    com.navigamez#greex;1.0 from central in [default]
+    com.typesafe#config;1.4.2 from central in [default]
+    commons-codec#commons-codec;1.15 from central in [default]
+    commons-logging#commons-logging;1.2 from central in [default]
+    dk.brics.automaton#automaton;1.11-8 from central in [default]
+    io.grpc#grpc-alts;1.53.0 from central in [default]
+    io.grpc#grpc-api;1.53.0 from central in [default]
+    io.grpc#grpc-auth;1.53.0 from central in [default]
+    io.grpc#grpc-context;1.53.0 from central in [default]
+    io.grpc#grpc-core;1.53.0 from central in [default]
+    io.grpc#grpc-googleapis;1.53.0 from central in [default]
+    io.grpc#grpc-grpclb;1.53.0 from central in [default]
+    io.grpc#grpc-netty-shaded;1.53.0 from central in [default]
+    io.grpc#grpc-protobuf;1.53.0 from central in [default]
+    io.grpc#grpc-protobuf-lite;1.53.0 from central in [default]
+    io.grpc#grpc-services;1.53.0 from central in [default]
+    io.grpc#grpc-stub;1.53.0 from central in [default]
+    io.grpc#grpc-xds;1.53.0 from central in [default]
+    io.opencensus#opencensus-api;0.31.1 from central in [default]
+    io.opencensus#opencensus-contrib-http-util;0.31.1 from central in [default]
+    io.opencensus#opencensus-proto;0.2.0 from central in [default]
+    io.perfmark#perfmark-api;0.26.0 from central in [default]
+    it.unimi.dsi#fastutil;7.0.12 from central in [default]
+    javax.annotation#javax.annotation-api;1.3.2 from central in [default]
+    org.apache.hadoop#hadoop-aws;3.2.2 from central in [default]
+    org.checkerframework#checker-qual;3.31.0 from central in [default]
+    org.codehaus.mojo#animal-sniffer-annotations;1.22 from central in [default]
+    org.conscrypt#conscrypt-openjdk-uber;2.5.2 from central in [default]
+    org.projectlombok#lombok;1.16.8 from central in [default]
+    org.rocksdb#rocksdbjni;6.29.5 from central in [default]
+    org.threeten#threetenbp;1.6.5 from central in [default]
+    :: evicted modules:
+    com.google.protobuf#protobuf-java-util;3.0.0-beta-3 by [com.google.protobuf#protobuf-java-util;3.21.12] in [default]
+    com.google.protobuf#protobuf-java;3.0.0-beta-3 by [com.google.protobuf#protobuf-java;3.21.12] in [default]
+    com.google.code.gson#gson;2.3 by [com.google.code.gson#gson;2.10.1] in [default]
+    com.amazonaws#aws-java-sdk-bundle;1.11.563 by [com.amazonaws#aws-java-sdk-bundle;1.11.828] in [default]
+    ---------------------------------------------------------------------
+    |                  |            modules            ||   artifacts   |
+    |       conf       | number| search|dwnlded|evicted|| number|dwnlded|
+    ---------------------------------------------------------------------
+    |      default     |   77  |   0   |   0   |   4   ||   73  |   0   |
+    ---------------------------------------------------------------------
+:: retrieving :: org.apache.spark#spark-submit-parent-6f7d666f-4429-4dd1-ada5-2cfdd1a61599
+    confs: [default]
+    0 artifacts copied, 73 already retrieved (0kB/172ms)
+23/11/27 20:47:05 WARN NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+Setting default log level to "WARN".
+To adjust logging level use sc.setLogLevel(newLevel). For SparkR, use setLogLevel(newLevel).</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>:: loading settings :: url = jar:file:/opt/conda/lib/python3.10/site-packages/pyspark/jars/ivy-2.5.1.jar!/org/apache/ivy/core/settings/ivysettings.xml</code></pre>
+</div>
+</div>
+<div class="cell" data-tags="[]" data-execution_count="28">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="op">%%</span>time</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> sagemaker</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>session <span class="op">=</span> sagemaker.Session()</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>bucket <span class="op">=</span> session.default_bucket()</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>output_prefix_data_submissions <span class="op">=</span> <span class="ss">f"project/submissions/yyyy=*"</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>s3_path <span class="op">=</span> <span class="ss">f"s3a://</span><span class="sc">{</span>bucket<span class="sc">}</span><span class="ss">/</span><span class="sc">{</span>output_prefix_data_submissions<span class="sc">}</span><span class="ss">"</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"reading submissions from </span><span class="sc">{</span>s3_path<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>submissions <span class="op">=</span> spark.read.parquet(s3_path, header<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"shape of the submissions dataframe is </span><span class="sc">{</span>submissions<span class="sc">.</span>count()<span class="sc">:,}</span><span class="ss">x</span><span class="sc">{</span><span class="bu">len</span>(submissions.columns)<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>sagemaker.config INFO - Not applying SDK defaults from location: /etc/xdg/sagemaker/config.yaml
+sagemaker.config INFO - Not applying SDK defaults from location: /root/.config/sagemaker/config.yaml
+sagemaker.config INFO - Not applying SDK defaults from location: /etc/xdg/sagemaker/config.yaml
+sagemaker.config INFO - Not applying SDK defaults from location: /root/.config/sagemaker/config.yaml
+reading submissions from s3a://sagemaker-us-east-1-729491017256/project/submissions/yyyy=*
+shape of the submissions dataframe is 95,932x68
+CPU times: user 2.97 s, sys: 213 ms, total: 3.19 s
+Wall time: 2min 59s</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>23/11/27 20:47:20 WARN MetricsConfig: Cannot locate configuration: tried hadoop-metrics2-s3a-file-system.properties,hadoop-metrics2.properties
+23/11/27 20:47:27 WARN package: Truncated the string representation of a plan since it was too large. This behavior can be adjusted by setting 'spark.sql.debug.maxToStringFields'.
+[Stage 1:========================================================&gt;(96 + 1) / 97]                                                                                </code></pre>
+</div>
+</div>
+<section id="assign-a-different-dataset-for-predict" class="level3">
+<h3 class="anchored" data-anchor-id="assign-a-different-dataset-for-predict">Assign a different dataset for predict</h3>
+<div class="cell" data-execution_count="29">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>sampled_submissions <span class="op">=</span> submissions.sample(withReplacement<span class="op">=</span><span class="va">False</span>, fraction<span class="op">=</span><span class="fl">0.3</span>, seed<span class="op">=</span><span class="dv">678900</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-tags="[]" data-execution_count="30">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> sparknlp</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pyspark.sql.functions <span class="im">import</span> col, lower, regexp_replace, trim, when, count, desc, <span class="bu">sum</span> <span class="im">as</span> sum_</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pyspark.sql.window <span class="im">import</span> Window</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pyspark.sql.functions <span class="im">import</span> rank</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> plotly.express <span class="im">as</span> px</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sparknlp.base <span class="im">import</span> DocumentAssembler</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sparknlp.annotator <span class="im">import</span> Tokenizer, Normalizer</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sparknlp.base <span class="im">import</span> Finisher</span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pyspark.ml <span class="im">import</span> Pipeline</span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pyspark.sql.functions <span class="im">import</span> col, explode, regexp_replace, expr, <span class="bu">sum</span> <span class="im">as</span> sum_</span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pyspark.ml.feature <span class="im">import</span> StringIndexer</span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Document Assembler</span></span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a>document_assembler <span class="op">=</span> DocumentAssembler() <span class="op">\</span></span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a>    .setInputCol(<span class="st">"link_flair_text"</span>) <span class="op">\</span></span>
+<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a>    .setOutputCol(<span class="st">"document"</span>)</span>
+<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Tokenizer</span></span>
+<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a>tokenizer <span class="op">=</span> Tokenizer() <span class="op">\</span></span>
+<span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a>    .setInputCols([<span class="st">"document"</span>]) <span class="op">\</span></span>
+<span id="cb11-22"><a href="#cb11-22" aria-hidden="true" tabindex="-1"></a>    .setOutputCol(<span class="st">"token"</span>)</span>
+<span id="cb11-23"><a href="#cb11-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-24"><a href="#cb11-24" aria-hidden="true" tabindex="-1"></a><span class="co"># Normalizer</span></span>
+<span id="cb11-25"><a href="#cb11-25" aria-hidden="true" tabindex="-1"></a>normalizer <span class="op">=</span> Normalizer() <span class="op">\</span></span>
+<span id="cb11-26"><a href="#cb11-26" aria-hidden="true" tabindex="-1"></a>    .setInputCols([<span class="st">"token"</span>]) <span class="op">\</span></span>
+<span id="cb11-27"><a href="#cb11-27" aria-hidden="true" tabindex="-1"></a>    .setOutputCol(<span class="st">"normalized"</span>) <span class="op">\</span></span>
+<span id="cb11-28"><a href="#cb11-28" aria-hidden="true" tabindex="-1"></a>    .setLowercase(<span class="va">True</span>)</span>
+<span id="cb11-29"><a href="#cb11-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-30"><a href="#cb11-30" aria-hidden="true" tabindex="-1"></a><span class="co"># Finisher</span></span>
+<span id="cb11-31"><a href="#cb11-31" aria-hidden="true" tabindex="-1"></a>finisher <span class="op">=</span> Finisher() <span class="op">\</span></span>
+<span id="cb11-32"><a href="#cb11-32" aria-hidden="true" tabindex="-1"></a>    .setInputCols([<span class="st">"normalized"</span>])</span>
+<span id="cb11-33"><a href="#cb11-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-34"><a href="#cb11-34" aria-hidden="true" tabindex="-1"></a><span class="co"># Pipeline</span></span>
+<span id="cb11-35"><a href="#cb11-35" aria-hidden="true" tabindex="-1"></a>nlp_pipeline <span class="op">=</span> Pipeline(stages<span class="op">=</span>[</span>
+<span id="cb11-36"><a href="#cb11-36" aria-hidden="true" tabindex="-1"></a>    document_assembler,</span>
+<span id="cb11-37"><a href="#cb11-37" aria-hidden="true" tabindex="-1"></a>    tokenizer,</span>
+<span id="cb11-38"><a href="#cb11-38" aria-hidden="true" tabindex="-1"></a>    normalizer,</span>
+<span id="cb11-39"><a href="#cb11-39" aria-hidden="true" tabindex="-1"></a>    finisher</span>
+<span id="cb11-40"><a href="#cb11-40" aria-hidden="true" tabindex="-1"></a>])</span>
+<span id="cb11-41"><a href="#cb11-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-42"><a href="#cb11-42" aria-hidden="true" tabindex="-1"></a><span class="co"># Apply the pipeline</span></span>
+<span id="cb11-43"><a href="#cb11-43" aria-hidden="true" tabindex="-1"></a>processed_tags_df <span class="op">=</span> nlp_pipeline.fit(sampled_submissions).transform(sampled_submissions)</span>
+<span id="cb11-44"><a href="#cb11-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-45"><a href="#cb11-45" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-46"><a href="#cb11-46" aria-hidden="true" tabindex="-1"></a><span class="co"># Text Processing for Title and Selftext (Body)</span></span>
+<span id="cb11-47"><a href="#cb11-47" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-48"><a href="#cb11-48" aria-hidden="true" tabindex="-1"></a><span class="co"># Document Assemblers for title and selftext</span></span>
+<span id="cb11-49"><a href="#cb11-49" aria-hidden="true" tabindex="-1"></a>title_assembler <span class="op">=</span> DocumentAssembler().setInputCol(<span class="st">"title"</span>).setOutputCol(<span class="st">"title_document"</span>)</span>
+<span id="cb11-50"><a href="#cb11-50" aria-hidden="true" tabindex="-1"></a>selftext_assembler <span class="op">=</span> DocumentAssembler().setInputCol(<span class="st">"selftext"</span>).setOutputCol(<span class="st">"selftext_document"</span>)</span>
+<span id="cb11-51"><a href="#cb11-51" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-52"><a href="#cb11-52" aria-hidden="true" tabindex="-1"></a><span class="co"># Tokenizers for title and selftext</span></span>
+<span id="cb11-53"><a href="#cb11-53" aria-hidden="true" tabindex="-1"></a>title_tokenizer <span class="op">=</span> Tokenizer().setInputCols([<span class="st">"title_document"</span>]).setOutputCol(<span class="st">"title_token"</span>)</span>
+<span id="cb11-54"><a href="#cb11-54" aria-hidden="true" tabindex="-1"></a>selftext_tokenizer <span class="op">=</span> Tokenizer().setInputCols([<span class="st">"selftext_document"</span>]).setOutputCol(<span class="st">"selftext_token"</span>)</span>
+<span id="cb11-55"><a href="#cb11-55" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-56"><a href="#cb11-56" aria-hidden="true" tabindex="-1"></a><span class="co"># Normalizers for title and selftext</span></span>
+<span id="cb11-57"><a href="#cb11-57" aria-hidden="true" tabindex="-1"></a>title_normalizer <span class="op">=</span> Normalizer().setInputCols([<span class="st">"title_token"</span>]).setOutputCol(<span class="st">"title_normalized"</span>).setLowercase(<span class="va">True</span>)</span>
+<span id="cb11-58"><a href="#cb11-58" aria-hidden="true" tabindex="-1"></a>selftext_normalizer <span class="op">=</span> Normalizer().setInputCols([<span class="st">"selftext_token"</span>]).setOutputCol(<span class="st">"selftext_normalized"</span>).setLowercase(<span class="va">True</span>)</span>
+<span id="cb11-59"><a href="#cb11-59" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-60"><a href="#cb11-60" aria-hidden="true" tabindex="-1"></a><span class="co"># Finishers for title and selftext</span></span>
+<span id="cb11-61"><a href="#cb11-61" aria-hidden="true" tabindex="-1"></a>title_finisher <span class="op">=</span> Finisher().setInputCols([<span class="st">"title_normalized"</span>]).setOutputCols([<span class="st">"finished_title_normalized"</span>]).setOutputAsArray(<span class="va">True</span>)</span>
+<span id="cb11-62"><a href="#cb11-62" aria-hidden="true" tabindex="-1"></a>selftext_finisher <span class="op">=</span> Finisher().setInputCols([<span class="st">"selftext_normalized"</span>]).setOutputCols([<span class="st">"finished_selftext_normalized"</span>]).setOutputAsArray(<span class="va">True</span>)</span>
+<span id="cb11-63"><a href="#cb11-63" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-64"><a href="#cb11-64" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-65"><a href="#cb11-65" aria-hidden="true" tabindex="-1"></a><span class="co"># Extended NLP Pipeline</span></span>
+<span id="cb11-66"><a href="#cb11-66" aria-hidden="true" tabindex="-1"></a>extended_nlp_pipeline <span class="op">=</span> Pipeline(stages<span class="op">=</span>[</span>
+<span id="cb11-67"><a href="#cb11-67" aria-hidden="true" tabindex="-1"></a>    document_assembler,</span>
+<span id="cb11-68"><a href="#cb11-68" aria-hidden="true" tabindex="-1"></a>    tokenizer,</span>
+<span id="cb11-69"><a href="#cb11-69" aria-hidden="true" tabindex="-1"></a>    normalizer,</span>
+<span id="cb11-70"><a href="#cb11-70" aria-hidden="true" tabindex="-1"></a>    finisher,</span>
+<span id="cb11-71"><a href="#cb11-71" aria-hidden="true" tabindex="-1"></a>    title_assembler,</span>
+<span id="cb11-72"><a href="#cb11-72" aria-hidden="true" tabindex="-1"></a>    title_tokenizer,</span>
+<span id="cb11-73"><a href="#cb11-73" aria-hidden="true" tabindex="-1"></a>    title_normalizer,</span>
+<span id="cb11-74"><a href="#cb11-74" aria-hidden="true" tabindex="-1"></a>    title_finisher,</span>
+<span id="cb11-75"><a href="#cb11-75" aria-hidden="true" tabindex="-1"></a>    selftext_assembler,</span>
+<span id="cb11-76"><a href="#cb11-76" aria-hidden="true" tabindex="-1"></a>    selftext_tokenizer,</span>
+<span id="cb11-77"><a href="#cb11-77" aria-hidden="true" tabindex="-1"></a>    selftext_normalizer,</span>
+<span id="cb11-78"><a href="#cb11-78" aria-hidden="true" tabindex="-1"></a>    selftext_finisher</span>
+<span id="cb11-79"><a href="#cb11-79" aria-hidden="true" tabindex="-1"></a>])</span>
+<span id="cb11-80"><a href="#cb11-80" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-81"><a href="#cb11-81" aria-hidden="true" tabindex="-1"></a><span class="co"># Apply the extended pipeline</span></span>
+<span id="cb11-82"><a href="#cb11-82" aria-hidden="true" tabindex="-1"></a>extended_processed_df <span class="op">=</span> extended_nlp_pipeline.fit(sampled_submissions).transform(sampled_submissions)</span>
+<span id="cb11-83"><a href="#cb11-83" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-84"><a href="#cb11-84" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pyspark.ml.feature <span class="im">import</span> CountVectorizer</span>
+<span id="cb11-85"><a href="#cb11-85" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-86"><a href="#cb11-86" aria-hidden="true" tabindex="-1"></a><span class="co"># CountVectorizer for each text feature</span></span>
+<span id="cb11-87"><a href="#cb11-87" aria-hidden="true" tabindex="-1"></a>cv_text <span class="op">=</span> CountVectorizer(inputCol<span class="op">=</span><span class="st">"finished_normalized"</span>, outputCol<span class="op">=</span><span class="st">"cv_text_features"</span>)</span>
+<span id="cb11-88"><a href="#cb11-88" aria-hidden="true" tabindex="-1"></a>cv_title <span class="op">=</span> CountVectorizer(inputCol<span class="op">=</span><span class="st">"finished_title_normalized"</span>, outputCol<span class="op">=</span><span class="st">"cv_title_features"</span>)</span>
+<span id="cb11-89"><a href="#cb11-89" aria-hidden="true" tabindex="-1"></a>cv_selftext <span class="op">=</span> CountVectorizer(inputCol<span class="op">=</span><span class="st">"finished_selftext_normalized"</span>, outputCol<span class="op">=</span><span class="st">"cv_selftext_features"</span>)</span>
+<span id="cb11-90"><a href="#cb11-90" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-91"><a href="#cb11-91" aria-hidden="true" tabindex="-1"></a><span class="co"># Fitting and transforming</span></span>
+<span id="cb11-92"><a href="#cb11-92" aria-hidden="true" tabindex="-1"></a>model_text <span class="op">=</span> cv_text.fit(extended_processed_df)</span>
+<span id="cb11-93"><a href="#cb11-93" aria-hidden="true" tabindex="-1"></a>model_title <span class="op">=</span> cv_title.fit(extended_processed_df)</span>
+<span id="cb11-94"><a href="#cb11-94" aria-hidden="true" tabindex="-1"></a>model_selftext <span class="op">=</span> cv_selftext.fit(extended_processed_df)</span>
+<span id="cb11-95"><a href="#cb11-95" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-96"><a href="#cb11-96" aria-hidden="true" tabindex="-1"></a>df_with_features <span class="op">=</span> model_text.transform(extended_processed_df)</span>
+<span id="cb11-97"><a href="#cb11-97" aria-hidden="true" tabindex="-1"></a>df_with_features <span class="op">=</span> model_title.transform(df_with_features)</span>
+<span id="cb11-98"><a href="#cb11-98" aria-hidden="true" tabindex="-1"></a>df_with_features <span class="op">=</span> model_selftext.transform(df_with_features)</span>
+<span id="cb11-99"><a href="#cb11-99" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-100"><a href="#cb11-100" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pyspark.ml.feature <span class="im">import</span> StringIndexer, VectorAssembler</span>
+<span id="cb11-101"><a href="#cb11-101" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pyspark.ml.classification <span class="im">import</span> RandomForestClassifier</span>
+<span id="cb11-102"><a href="#cb11-102" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pyspark.ml.evaluation <span class="im">import</span> MulticlassClassificationEvaluator</span>
+<span id="cb11-103"><a href="#cb11-103" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pyspark.ml.tuning <span class="im">import</span> ParamGridBuilder, CrossValidator</span>
+<span id="cb11-104"><a href="#cb11-104" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-105"><a href="#cb11-105" aria-hidden="true" tabindex="-1"></a><span class="co"># Prepare the Label Column with handling invalid values</span></span>
+<span id="cb11-106"><a href="#cb11-106" aria-hidden="true" tabindex="-1"></a>label_indexer <span class="op">=</span> StringIndexer(inputCol<span class="op">=</span><span class="st">"link_flair_text"</span>, outputCol<span class="op">=</span><span class="st">"label"</span>, handleInvalid<span class="op">=</span><span class="st">"keep"</span>)</span>
+<span id="cb11-107"><a href="#cb11-107" aria-hidden="true" tabindex="-1"></a>df_with_features <span class="op">=</span> label_indexer.fit(df_with_features).transform(df_with_features)</span>
+<span id="cb11-108"><a href="#cb11-108" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-109"><a href="#cb11-109" aria-hidden="true" tabindex="-1"></a><span class="co"># Assemble all features into a single vector</span></span>
+<span id="cb11-110"><a href="#cb11-110" aria-hidden="true" tabindex="-1"></a>assembler <span class="op">=</span> VectorAssembler(inputCols<span class="op">=</span>[<span class="st">"cv_text_features"</span>, <span class="st">"cv_title_features"</span>, <span class="st">"cv_selftext_features"</span>], outputCol<span class="op">=</span><span class="st">"features"</span>)</span>
+<span id="cb11-111"><a href="#cb11-111" aria-hidden="true" tabindex="-1"></a>final_prepared_df <span class="op">=</span> assembler.transform(df_with_features)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>WARNING: An illegal reflective access operation has occurred
+WARNING: Illegal reflective access by org.apache.spark.util.SizeEstimator$ (file:/opt/conda/lib/python3.10/site-packages/pyspark/jars/spark-core_2.12-3.4.0.jar) to field java.util.regex.Pattern.pattern
+WARNING: Please consider reporting this to the maintainers of org.apache.spark.util.SizeEstimator$
+WARNING: Use --illegal-access=warn to enable warnings of further illegal reflective access operations
+WARNING: All illegal access operations will be denied in a future release
+                                                                                </code></pre>
+</div>
+</div>
+</section>
+<section id="load-the-model-to-predict-and-print-the-predict-result" class="level3">
+<h3 class="anchored" data-anchor-id="load-the-model-to-predict-and-print-the-predict-result">Load the model to Predict and print the predict result</h3>
+<div class="cell" data-tags="[]" data-execution_count="36">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pyspark.ml.classification <span class="im">import</span> LogisticRegressionModel</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Evaluate best model</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Load a pre-trained model</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>lrModel <span class="op">=</span> LogisticRegressionModel.load(<span class="st">"../../data/models/best_logistic_regression_model"</span>)</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Make predictions on the new data</span></span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>predictions <span class="op">=</span> lrModel.transform(final_prepared_df)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-tags="[]" data-execution_count="37">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pyspark.ml.evaluation <span class="im">import</span> MulticlassClassificationEvaluator</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Initialize the evaluator</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>evaluator <span class="op">=</span> MulticlassClassificationEvaluator(labelCol<span class="op">=</span><span class="st">"label"</span>, predictionCol<span class="op">=</span><span class="st">"prediction"</span>)</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Evaluate accuracy, precision, recall, and F1 score</span></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>lrAccuracy <span class="op">=</span> evaluator.setMetricName(<span class="st">"accuracy"</span>).evaluate(predictions)</span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>lrPrecision <span class="op">=</span> evaluator.setMetricName(<span class="st">"precisionByLabel"</span>).evaluate(predictions)</span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>lrRecall <span class="op">=</span> evaluator.setMetricName(<span class="st">"recallByLabel"</span>).evaluate(predictions)</span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>lrF1 <span class="op">=</span> evaluator.setMetricName(<span class="st">"f1"</span>).evaluate(predictions)</span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Logistic Regression Model Accuracy: </span><span class="sc">{</span>lrAccuracy<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Logistic Regression Model Precision: </span><span class="sc">{</span>lrPrecision<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Logistic Regression Model Recall: </span><span class="sc">{</span>lrRecall<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Logistic Regression Model F1 Score: </span><span class="sc">{</span>lrF1<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>23/11/27 21:32:49 WARN DAGScheduler: Broadcasting large task binary with size 2.7 MiB
+23/11/27 21:35:54 WARN DAGScheduler: Broadcasting large task binary with size 2.7 MiB
+23/11/27 21:38:27 WARN DAGScheduler: Broadcasting large task binary with size 2.7 MiB
+23/11/27 21:40:46 WARN DAGScheduler: Broadcasting large task binary with size 2.7 MiB
+[Stage 262:=====================================================&gt; (95 + 2) / 97]                                                                                </code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Logistic Regression Model Accuracy: 0.9972601789553999
+Logistic Regression Model Precision: 0.9978299719172836
+Logistic Regression Model Recall: 1.0
+Logistic Regression Model F1 Score: 0.9958934024317803</code></pre>
+</div>
+</div>
+<div class="cell" data-tags="[]" data-execution_count="53">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>predictions.select(<span class="st">"label"</span>,<span class="st">"prediction"</span>, <span class="st">"probability"</span>).show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>+-----+----------+--------------------+
+|label|prediction|         probability|
++-----+----------+--------------------+
+| 96.0|      96.0|[0.01460026150191...|
+| 96.0|      96.0|[0.01460026150191...|
+|  0.0|       0.0|[0.97043911073153...|
+| 96.0|      96.0|[0.01386736080154...|
+|  2.0|       2.0|[0.00627685137961...|
+| 96.0|      96.0|[0.01386736080154...|
+| 96.0|      96.0|[0.01460026150191...|
+|  1.0|       1.0|[0.00413050194705...|
+| 96.0|      96.0|[0.01460026150191...|
+|  6.0|       6.0|[0.00898530627052...|
+|  2.0|       2.0|[0.00622549134185...|
+|  1.0|       1.0|[0.00413050194705...|
+| 96.0|      96.0|[0.01460026150191...|
+|  1.0|       1.0|[0.00482239380166...|
+|  0.0|       0.0|[0.97043911073153...|
+| 96.0|      96.0|[0.01460026150191...|
+|  0.0|       0.0|[0.96944252829824...|
+| 96.0|      96.0|[0.01460026150191...|
+|  1.0|       1.0|[0.00482239380166...|
+| 96.0|      96.0|[0.01460026150191...|
++-----+----------+--------------------+
+only showing top 20 rows
+</code></pre>
+</div>
+</div>
+</section>
+<section id="make-the-predict-result-more-readable" class="level3">
+<h3 class="anchored" data-anchor-id="make-the-predict-result-more-readable">Make the predict result more readable</h3>
+<div class="cell" data-tags="[]" data-execution_count="63">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>original_labels <span class="op">=</span> label_indexer_model.labels</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-tags="[]" data-execution_count="64">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>label_dict <span class="op">=</span> {i: label <span class="cf">for</span> i, label <span class="kw">in</span> <span class="bu">enumerate</span>(original_labels)}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-tags="[]" data-execution_count="65">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pyspark.sql.functions <span class="im">import</span> udf</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pyspark.sql.types <span class="im">import</span> StringType</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-tags="[]" data-execution_count="75">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> replace_label(num_label):</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> label_dict.get(num_label, <span class="st">"Unknown"</span>)</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>replace_label_udf <span class="op">=</span> udf(replace_label, StringType())</span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>predictions_with_tags <span class="op">=</span> predictions.withColumn(<span class="st">"predictedLabel"</span>, replace_label_udf(predictions[<span class="st">"prediction"</span>]))</span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a>predictions_with_tags <span class="op">=</span> predictions_with_tags.withColumn(<span class="st">"ActualLabel"</span>, replace_label_udf(predictions[<span class="st">"label"</span>]))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-tags="[]" data-execution_count="77">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>predictions_with_tags.select(<span class="st">"ActualLabel"</span>,<span class="st">"predictedLabel"</span>).show(truncate<span class="op">=</span><span class="va">False</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>23/11/27 08:58:23 WARN DAGScheduler: Broadcasting large task binary with size 2.7 MiB
+[Stage 539:&gt;                                                        (0 + 1) / 1]                                                                                </code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>+-----------+--------------+
+|ActualLabel|predictedLabel|
++-----------+--------------+
+|Unknown    |Unknown       |
+|Unknown    |Unknown       |
+|Question   |Question      |
+|Unknown    |Unknown       |
+|Discussion |Discussion    |
+|Unknown    |Unknown       |
+|Unknown    |Unknown       |
+|FOTD       |FOTD          |
+|Unknown    |Unknown       |
+|Halloween  |Halloween     |
+|Discussion |Discussion    |
+|FOTD       |FOTD          |
+|Unknown    |Unknown       |
+|FOTD       |FOTD          |
+|Question   |Question      |
+|Unknown    |Unknown       |
+|Question   |Question      |
+|Unknown    |Unknown       |
+|FOTD       |FOTD          |
+|Unknown    |Unknown       |
++-----------+--------------+
+only showing top 20 rows
+</code></pre>
+</div>
+</div>
+</section>
+<section id="prediction-visualization" class="level3">
+<h3 class="anchored" data-anchor-id="prediction-visualization">Prediction Visualization</h3>
+<p>A insightful way to visualize the predictions data is through a bar chart comparing the actual and predicted counts for each label.</p>
+<div class="cell" data-tags="[]" data-execution_count="82">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pyspark.sql.functions <span class="im">import</span> col, count</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Counting the number of actual occurrences for each label</span></span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>actual_counts <span class="op">=</span> predictions_with_tags.groupBy(<span class="st">"ActualLabel"</span>).agg(count(col(<span class="st">"ActualLabel"</span>)).alias(<span class="st">"ActualCount"</span>))</span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Counting the number of predicted occurrences for each label</span></span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a>predicted_counts <span class="op">=</span> predictions_with_tags.groupBy(<span class="st">"predictedLabel"</span>).agg(count(col(<span class="st">"predictedLabel"</span>)).alias(<span class="st">"PredictedCount"</span>))</span>
+<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Convert to Pandas DataFrame</span></span>
+<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a>actual_counts_pd <span class="op">=</span> actual_counts.toPandas()</span>
+<span id="cb26-11"><a href="#cb26-11" aria-hidden="true" tabindex="-1"></a>predicted_counts_pd <span class="op">=</span> predicted_counts.toPandas()</span>
+<span id="cb26-12"><a href="#cb26-12" aria-hidden="true" tabindex="-1"></a></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>23/11/27 09:07:46 WARN DAGScheduler: Broadcasting large task binary with size 2.7 MiB
+23/11/27 09:10:12 WARN DAGScheduler: Broadcasting large task binary with size 2.7 MiB
+                                                                                </code></pre>
+</div>
+</div>
+<div class="cell" data-tags="[]" data-execution_count="84">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Merging the dataframes on labels</span></span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>merged_counts <span class="op">=</span> pd.merge(actual_counts_pd, predicted_counts_pd, left_on<span class="op">=</span><span class="st">'ActualLabel'</span>, right_on<span class="op">=</span><span class="st">'predictedLabel'</span>)</span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Dropping duplicate columns</span></span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>merged_counts <span class="op">=</span> merged_counts.drop(columns<span class="op">=</span>[<span class="st">'predictedLabel'</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-tags="[]" data-execution_count="115">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Save to a CSV file</span></span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>csv_file_path <span class="op">=</span> <span class="st">'../../data/csv/title_classification_merged_counts.csv'</span></span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>merged_counts.to_csv(csv_file_path, index<span class="op">=</span><span class="va">False</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-tags="[]" data-execution_count="23">
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Initialize the figure with grouped bar chart for the 'All' selection</span></span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>fig <span class="op">=</span> go.Figure(data<span class="op">=</span>[</span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>    go.Bar(name<span class="op">=</span><span class="st">'Actual'</span>, x<span class="op">=</span>merged_counts[<span class="st">'ActualLabel'</span>], y<span class="op">=</span>merged_counts[<span class="st">'ActualCount'</span>]),</span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>    go.Bar(name<span class="op">=</span><span class="st">'Predicted'</span>, x<span class="op">=</span>merged_counts[<span class="st">'ActualLabel'</span>], y<span class="op">=</span>merged_counts[<span class="st">'PredictedCount'</span>])</span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a>])</span>
+<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Add a set of bars for each label, these will be hidden initially</span></span>
+<span id="cb30-8"><a href="#cb30-8" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> label <span class="kw">in</span> merged_counts[<span class="st">'ActualLabel'</span>]:</span>
+<span id="cb30-9"><a href="#cb30-9" aria-hidden="true" tabindex="-1"></a>    actual <span class="op">=</span> merged_counts[merged_counts[<span class="st">'ActualLabel'</span>] <span class="op">==</span> label][<span class="st">'ActualCount'</span>].values[<span class="dv">0</span>]</span>
+<span id="cb30-10"><a href="#cb30-10" aria-hidden="true" tabindex="-1"></a>    predicted <span class="op">=</span> merged_counts[merged_counts[<span class="st">'ActualLabel'</span>] <span class="op">==</span> label][<span class="st">'PredictedCount'</span>].values[<span class="dv">0</span>]</span>
+<span id="cb30-11"><a href="#cb30-11" aria-hidden="true" tabindex="-1"></a>    fig.add_trace(go.Bar(name<span class="op">=</span><span class="ss">f'Actual - </span><span class="sc">{</span>label<span class="sc">}</span><span class="ss">'</span>, x<span class="op">=</span>[label], y<span class="op">=</span>[actual], visible<span class="op">=</span><span class="va">False</span>))</span>
+<span id="cb30-12"><a href="#cb30-12" aria-hidden="true" tabindex="-1"></a>    fig.add_trace(go.Bar(name<span class="op">=</span><span class="ss">f'Predicted - </span><span class="sc">{</span>label<span class="sc">}</span><span class="ss">'</span>, x<span class="op">=</span>[label], y<span class="op">=</span>[predicted], visible<span class="op">=</span><span class="va">False</span>))</span>
+<span id="cb30-13"><a href="#cb30-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-14"><a href="#cb30-14" aria-hidden="true" tabindex="-1"></a><span class="co"># The initial button that shows all labels</span></span>
+<span id="cb30-15"><a href="#cb30-15" aria-hidden="true" tabindex="-1"></a>buttons <span class="op">=</span> [<span class="bu">dict</span>(label<span class="op">=</span><span class="st">'All'</span>,</span>
+<span id="cb30-16"><a href="#cb30-16" aria-hidden="true" tabindex="-1"></a>                method<span class="op">=</span><span class="st">'update'</span>,</span>
+<span id="cb30-17"><a href="#cb30-17" aria-hidden="true" tabindex="-1"></a>                args<span class="op">=</span>[{<span class="st">'visible'</span>: [<span class="va">True</span>, <span class="va">True</span>] <span class="op">+</span> [<span class="va">False</span>] <span class="op">*</span> (<span class="bu">len</span>(merged_counts) <span class="op">*</span> <span class="dv">2</span>),</span>
+<span id="cb30-18"><a href="#cb30-18" aria-hidden="true" tabindex="-1"></a>                       <span class="st">'title'</span>: <span class="st">'All'</span>}])]</span>
+<span id="cb30-19"><a href="#cb30-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-20"><a href="#cb30-20" aria-hidden="true" tabindex="-1"></a><span class="co"># Add buttons for each label in the dropdown</span></span>
+<span id="cb30-21"><a href="#cb30-21" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i, label <span class="kw">in</span> <span class="bu">enumerate</span>(merged_counts[<span class="st">'ActualLabel'</span>]):</span>
+<span id="cb30-22"><a href="#cb30-22" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Set visibility: only the two traces for the selected label are visible</span></span>
+<span id="cb30-23"><a href="#cb30-23" aria-hidden="true" tabindex="-1"></a>    visibility <span class="op">=</span> [<span class="va">False</span>] <span class="op">*</span> <span class="dv">2</span> <span class="op">+</span> [i<span class="op">*</span><span class="dv">2</span> <span class="op">==</span> j <span class="kw">or</span> i<span class="op">*</span><span class="dv">2</span><span class="op">+</span><span class="dv">1</span> <span class="op">==</span> j <span class="cf">for</span> j <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(merged_counts) <span class="op">*</span> <span class="dv">2</span>)]</span>
+<span id="cb30-24"><a href="#cb30-24" aria-hidden="true" tabindex="-1"></a>    button <span class="op">=</span> <span class="bu">dict</span>(label<span class="op">=</span>label,</span>
+<span id="cb30-25"><a href="#cb30-25" aria-hidden="true" tabindex="-1"></a>                  method<span class="op">=</span><span class="st">'update'</span>,</span>
+<span id="cb30-26"><a href="#cb30-26" aria-hidden="true" tabindex="-1"></a>                  args<span class="op">=</span>[{<span class="st">'visible'</span>: visibility,</span>
+<span id="cb30-27"><a href="#cb30-27" aria-hidden="true" tabindex="-1"></a>                         <span class="st">'title'</span>: label}])</span>
+<span id="cb30-28"><a href="#cb30-28" aria-hidden="true" tabindex="-1"></a>    buttons.append(button)</span>
+<span id="cb30-29"><a href="#cb30-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-30"><a href="#cb30-30" aria-hidden="true" tabindex="-1"></a><span class="co"># Update the layout with the dropdown</span></span>
+<span id="cb30-31"><a href="#cb30-31" aria-hidden="true" tabindex="-1"></a>fig.update_layout(</span>
+<span id="cb30-32"><a href="#cb30-32" aria-hidden="true" tabindex="-1"></a>    updatemenus<span class="op">=</span>[{</span>
+<span id="cb30-33"><a href="#cb30-33" aria-hidden="true" tabindex="-1"></a>        <span class="st">'buttons'</span>: buttons,</span>
+<span id="cb30-34"><a href="#cb30-34" aria-hidden="true" tabindex="-1"></a>        <span class="st">'direction'</span>: <span class="st">'down'</span>,</span>
+<span id="cb30-35"><a href="#cb30-35" aria-hidden="true" tabindex="-1"></a>        <span class="st">'showactive'</span>: <span class="va">True</span>,</span>
+<span id="cb30-36"><a href="#cb30-36" aria-hidden="true" tabindex="-1"></a>        <span class="st">'active'</span>: <span class="dv">0</span>,</span>
+<span id="cb30-37"><a href="#cb30-37" aria-hidden="true" tabindex="-1"></a>        <span class="st">'x'</span>: <span class="fl">0.29</span>,</span>
+<span id="cb30-38"><a href="#cb30-38" aria-hidden="true" tabindex="-1"></a>        <span class="st">'y'</span>: <span class="fl">1.7</span>,</span>
+<span id="cb30-39"><a href="#cb30-39" aria-hidden="true" tabindex="-1"></a>        <span class="st">'xanchor'</span>: <span class="st">'left'</span>,</span>
+<span id="cb30-40"><a href="#cb30-40" aria-hidden="true" tabindex="-1"></a>        <span class="st">'yanchor'</span>: <span class="st">'top'</span></span>
+<span id="cb30-41"><a href="#cb30-41" aria-hidden="true" tabindex="-1"></a>    }],</span>
+<span id="cb30-42"><a href="#cb30-42" aria-hidden="true" tabindex="-1"></a>    xaxis_title<span class="op">=</span><span class="st">'Labels'</span>,</span>
+<span id="cb30-43"><a href="#cb30-43" aria-hidden="true" tabindex="-1"></a>    yaxis_title<span class="op">=</span><span class="st">'Count'</span>,</span>
+<span id="cb30-44"><a href="#cb30-44" aria-hidden="true" tabindex="-1"></a>    barmode<span class="op">=</span><span class="st">'group'</span>,</span>
+<span id="cb30-45"><a href="#cb30-45" aria-hidden="true" tabindex="-1"></a>    legend_title<span class="op">=</span><span class="st">'&lt;b&gt;Legend&lt;/b&gt;'</span>,</span>
+<span id="cb30-46"><a href="#cb30-46" aria-hidden="true" tabindex="-1"></a>    legend<span class="op">=</span><span class="bu">dict</span>(</span>
+<span id="cb30-47"><a href="#cb30-47" aria-hidden="true" tabindex="-1"></a>        traceorder<span class="op">=</span><span class="st">'normal'</span>,</span>
+<span id="cb30-48"><a href="#cb30-48" aria-hidden="true" tabindex="-1"></a>        itemsizing<span class="op">=</span><span class="st">'constant'</span></span>
+<span id="cb30-49"><a href="#cb30-49" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb30-50"><a href="#cb30-50" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb30-51"><a href="#cb30-51" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-52"><a href="#cb30-52" aria-hidden="true" tabindex="-1"></a><span class="co"># Show the figure</span></span>
+<span id="cb30-53"><a href="#cb30-53" aria-hidden="true" tabindex="-1"></a>fig.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+
+<div>                            <div id="8023d69c-b81b-472e-b836-d554af50c12f" class="plotly-graph-div" style="height:525px; width:100%;"></div>            <script type="text/javascript">                require(["plotly"], function(Plotly) {                    window.PLOTLYENV=window.PLOTLYENV || {};                                    if (document.getElementById("8023d69c-b81b-472e-b836-d554af50c12f")) {                    Plotly.newPlot(                        "8023d69c-b81b-472e-b836-d554af50c12f",                        [{"name":"Actual","x":["Swatches","Rule 7 Removal: Self Promo","Discussion","Review","Unknown","Meta","Rule 2 Removal: Photo Editing","FOTD","PSA","Question","Organization","Rule 5 Removal: Product List","Rule 6 Removal: Gore NSFW","Tutorial","Halloween","Rule 4 Removal: Showcase Makeup","Rule 3 Removal: Before/After","Haul","Simple Questions Removal","AMA","Reviewed","News","Shitpost Saturday Removal","Text Tuesday Removal","Mod Post","Progress","Removal: Off-topic","Clutter Removal","Rule 9 Removal: Title","Rule 10 Removal: Image Sources","Under Review"],"y":[164,43,1513,406,10996,62,284,6167,148,7817,63,181,4,262,204,96,21,139,15,9,18,67,5,7,26,15,3,7,4,4,5],"type":"bar"},{"name":"Predicted","x":["Swatches","Rule 7 Removal: Self Promo","Discussion","Review","Unknown","Meta","Rule 2 Removal: Photo Editing","FOTD","PSA","Question","Organization","Rule 5 Removal: Product List","Rule 6 Removal: Gore NSFW","Tutorial","Halloween","Rule 4 Removal: Showcase Makeup","Rule 3 Removal: Before/After","Haul","Simple Questions Removal","AMA","Reviewed","News","Shitpost Saturday Removal","Text Tuesday Removal","Mod Post","Progress","Removal: Off-topic","Clutter Removal","Rule 9 Removal: Title","Rule 10 Removal: Image Sources","Under Review"],"y":[165,43,1516,408,11046,62,284,6168,149,7834,63,181,4,262,205,96,21,142,15,9,18,67,5,7,26,15,3,7,4,4,5],"type":"bar"},{"name":"Actual - Swatches","visible":false,"x":["Swatches"],"y":[164],"type":"bar"},{"name":"Predicted - Swatches","visible":false,"x":["Swatches"],"y":[165],"type":"bar"},{"name":"Actual - Rule 7 Removal: Self Promo","visible":false,"x":["Rule 7 Removal: Self Promo"],"y":[43],"type":"bar"},{"name":"Predicted - Rule 7 Removal: Self Promo","visible":false,"x":["Rule 7 Removal: Self Promo"],"y":[43],"type":"bar"},{"name":"Actual - Discussion","visible":false,"x":["Discussion"],"y":[1513],"type":"bar"},{"name":"Predicted - Discussion","visible":false,"x":["Discussion"],"y":[1516],"type":"bar"},{"name":"Actual - Review","visible":false,"x":["Review"],"y":[406],"type":"bar"},{"name":"Predicted - Review","visible":false,"x":["Review"],"y":[408],"type":"bar"},{"name":"Actual - Unknown","visible":false,"x":["Unknown"],"y":[10996],"type":"bar"},{"name":"Predicted - Unknown","visible":false,"x":["Unknown"],"y":[11046],"type":"bar"},{"name":"Actual - Meta","visible":false,"x":["Meta"],"y":[62],"type":"bar"},{"name":"Predicted - Meta","visible":false,"x":["Meta"],"y":[62],"type":"bar"},{"name":"Actual - Rule 2 Removal: Photo Editing","visible":false,"x":["Rule 2 Removal: Photo Editing"],"y":[284],"type":"bar"},{"name":"Predicted - Rule 2 Removal: Photo Editing","visible":false,"x":["Rule 2 Removal: Photo Editing"],"y":[284],"type":"bar"},{"name":"Actual - FOTD","visible":false,"x":["FOTD"],"y":[6167],"type":"bar"},{"name":"Predicted - FOTD","visible":false,"x":["FOTD"],"y":[6168],"type":"bar"},{"name":"Actual - PSA","visible":false,"x":["PSA"],"y":[148],"type":"bar"},{"name":"Predicted - PSA","visible":false,"x":["PSA"],"y":[149],"type":"bar"},{"name":"Actual - Question","visible":false,"x":["Question"],"y":[7817],"type":"bar"},{"name":"Predicted - Question","visible":false,"x":["Question"],"y":[7834],"type":"bar"},{"name":"Actual - Organization","visible":false,"x":["Organization"],"y":[63],"type":"bar"},{"name":"Predicted - Organization","visible":false,"x":["Organization"],"y":[63],"type":"bar"},{"name":"Actual - Rule 5 Removal: Product List","visible":false,"x":["Rule 5 Removal: Product List"],"y":[181],"type":"bar"},{"name":"Predicted - Rule 5 Removal: Product List","visible":false,"x":["Rule 5 Removal: Product List"],"y":[181],"type":"bar"},{"name":"Actual - Rule 6 Removal: Gore NSFW","visible":false,"x":["Rule 6 Removal: Gore NSFW"],"y":[4],"type":"bar"},{"name":"Predicted - Rule 6 Removal: Gore NSFW","visible":false,"x":["Rule 6 Removal: Gore NSFW"],"y":[4],"type":"bar"},{"name":"Actual - Tutorial","visible":false,"x":["Tutorial"],"y":[262],"type":"bar"},{"name":"Predicted - Tutorial","visible":false,"x":["Tutorial"],"y":[262],"type":"bar"},{"name":"Actual - Halloween","visible":false,"x":["Halloween"],"y":[204],"type":"bar"},{"name":"Predicted - Halloween","visible":false,"x":["Halloween"],"y":[205],"type":"bar"},{"name":"Actual - Rule 4 Removal: Showcase Makeup","visible":false,"x":["Rule 4 Removal: Showcase Makeup"],"y":[96],"type":"bar"},{"name":"Predicted - Rule 4 Removal: Showcase Makeup","visible":false,"x":["Rule 4 Removal: Showcase Makeup"],"y":[96],"type":"bar"},{"name":"Actual - Rule 3 Removal: Before/After","visible":false,"x":["Rule 3 Removal: Before/After"],"y":[21],"type":"bar"},{"name":"Predicted - Rule 3 Removal: Before/After","visible":false,"x":["Rule 3 Removal: Before/After"],"y":[21],"type":"bar"},{"name":"Actual - Haul","visible":false,"x":["Haul"],"y":[139],"type":"bar"},{"name":"Predicted - Haul","visible":false,"x":["Haul"],"y":[142],"type":"bar"},{"name":"Actual - Simple Questions Removal","visible":false,"x":["Simple Questions Removal"],"y":[15],"type":"bar"},{"name":"Predicted - Simple Questions Removal","visible":false,"x":["Simple Questions Removal"],"y":[15],"type":"bar"},{"name":"Actual - AMA","visible":false,"x":["AMA"],"y":[9],"type":"bar"},{"name":"Predicted - AMA","visible":false,"x":["AMA"],"y":[9],"type":"bar"},{"name":"Actual - Reviewed","visible":false,"x":["Reviewed"],"y":[18],"type":"bar"},{"name":"Predicted - Reviewed","visible":false,"x":["Reviewed"],"y":[18],"type":"bar"},{"name":"Actual - News","visible":false,"x":["News"],"y":[67],"type":"bar"},{"name":"Predicted - News","visible":false,"x":["News"],"y":[67],"type":"bar"},{"name":"Actual - Shitpost Saturday Removal","visible":false,"x":["Shitpost Saturday Removal"],"y":[5],"type":"bar"},{"name":"Predicted - Shitpost Saturday Removal","visible":false,"x":["Shitpost Saturday Removal"],"y":[5],"type":"bar"},{"name":"Actual - Text Tuesday Removal","visible":false,"x":["Text Tuesday Removal"],"y":[7],"type":"bar"},{"name":"Predicted - Text Tuesday Removal","visible":false,"x":["Text Tuesday Removal"],"y":[7],"type":"bar"},{"name":"Actual - Mod Post","visible":false,"x":["Mod Post"],"y":[26],"type":"bar"},{"name":"Predicted - Mod Post","visible":false,"x":["Mod Post"],"y":[26],"type":"bar"},{"name":"Actual - Progress","visible":false,"x":["Progress"],"y":[15],"type":"bar"},{"name":"Predicted - Progress","visible":false,"x":["Progress"],"y":[15],"type":"bar"},{"name":"Actual - Removal: Off-topic","visible":false,"x":["Removal: Off-topic"],"y":[3],"type":"bar"},{"name":"Predicted - Removal: Off-topic","visible":false,"x":["Removal: Off-topic"],"y":[3],"type":"bar"},{"name":"Actual - Clutter Removal","visible":false,"x":["Clutter Removal"],"y":[7],"type":"bar"},{"name":"Predicted - Clutter Removal","visible":false,"x":["Clutter Removal"],"y":[7],"type":"bar"},{"name":"Actual - Rule 9 Removal: Title","visible":false,"x":["Rule 9 Removal: Title"],"y":[4],"type":"bar"},{"name":"Predicted - Rule 9 Removal: Title","visible":false,"x":["Rule 9 Removal: Title"],"y":[4],"type":"bar"},{"name":"Actual - Rule 10 Removal: Image Sources","visible":false,"x":["Rule 10 Removal: Image Sources"],"y":[4],"type":"bar"},{"name":"Predicted - Rule 10 Removal: Image Sources","visible":false,"x":["Rule 10 Removal: Image Sources"],"y":[4],"type":"bar"},{"name":"Actual - Under Review","visible":false,"x":["Under Review"],"y":[5],"type":"bar"},{"name":"Predicted - Under Review","visible":false,"x":["Under Review"],"y":[5],"type":"bar"}],                        {"template":{"data":{"histogram2dcontour":[{"type":"histogram2dcontour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"choropleth":[{"type":"choropleth","colorbar":{"outlinewidth":0,"ticks":""}}],"histogram2d":[{"type":"histogram2d","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"heatmap":[{"type":"heatmap","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"heatmapgl":[{"type":"heatmapgl","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"contourcarpet":[{"type":"contourcarpet","colorbar":{"outlinewidth":0,"ticks":""}}],"contour":[{"type":"contour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"surface":[{"type":"surface","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"mesh3d":[{"type":"mesh3d","colorbar":{"outlinewidth":0,"ticks":""}}],"scatter":[{"fillpattern":{"fillmode":"overlay","size":10,"solidity":0.2},"type":"scatter"}],"parcoords":[{"type":"parcoords","line":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolargl":[{"type":"scatterpolargl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"bar":[{"error_x":{"color":"#2a3f5f"},"error_y":{"color":"#2a3f5f"},"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"bar"}],"scattergeo":[{"type":"scattergeo","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolar":[{"type":"scatterpolar","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"histogram":[{"marker":{"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"histogram"}],"scattergl":[{"type":"scattergl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatter3d":[{"type":"scatter3d","line":{"colorbar":{"outlinewidth":0,"ticks":""}},"marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattermapbox":[{"type":"scattermapbox","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterternary":[{"type":"scatterternary","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattercarpet":[{"type":"scattercarpet","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"carpet":[{"aaxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"baxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"type":"carpet"}],"table":[{"cells":{"fill":{"color":"#EBF0F8"},"line":{"color":"white"}},"header":{"fill":{"color":"#C8D4E3"},"line":{"color":"white"}},"type":"table"}],"barpolar":[{"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"barpolar"}],"pie":[{"automargin":true,"type":"pie"}]},"layout":{"autotypenumbers":"strict","colorway":["#636efa","#EF553B","#00cc96","#ab63fa","#FFA15A","#19d3f3","#FF6692","#B6E880","#FF97FF","#FECB52"],"font":{"color":"#2a3f5f"},"hovermode":"closest","hoverlabel":{"align":"left"},"paper_bgcolor":"white","plot_bgcolor":"#E5ECF6","polar":{"bgcolor":"#E5ECF6","angularaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"radialaxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"ternary":{"bgcolor":"#E5ECF6","aaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"baxis":{"gridcolor":"white","linecolor":"white","ticks":""},"caxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"coloraxis":{"colorbar":{"outlinewidth":0,"ticks":""}},"colorscale":{"sequential":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"sequentialminus":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"diverging":[[0,"#8e0152"],[0.1,"#c51b7d"],[0.2,"#de77ae"],[0.3,"#f1b6da"],[0.4,"#fde0ef"],[0.5,"#f7f7f7"],[0.6,"#e6f5d0"],[0.7,"#b8e186"],[0.8,"#7fbc41"],[0.9,"#4d9221"],[1,"#276419"]]},"xaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"yaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"scene":{"xaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"yaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"zaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2}},"shapedefaults":{"line":{"color":"#2a3f5f"}},"annotationdefaults":{"arrowcolor":"#2a3f5f","arrowhead":0,"arrowwidth":1},"geo":{"bgcolor":"white","landcolor":"#E5ECF6","subunitcolor":"white","showland":true,"showlakes":true,"lakecolor":"white"},"title":{"x":0.05},"mapbox":{"style":"light"}}},"legend":{"title":{"text":"<b>Legend</b>"},"traceorder":"normal","itemsizing":"constant"},"updatemenus":[{"active":0,"buttons":[{"args":[{"visible":[true,true,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false],"title":"All"}],"label":"All","method":"update"},{"args":[{"visible":[false,false,true,true,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false],"title":"Swatches"}],"label":"Swatches","method":"update"},{"args":[{"visible":[false,false,false,false,true,true,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false],"title":"Rule 7 Removal: Self Promo"}],"label":"Rule 7 Removal: Self Promo","method":"update"},{"args":[{"visible":[false,false,false,false,false,false,true,true,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false],"title":"Discussion"}],"label":"Discussion","method":"update"},{"args":[{"visible":[false,false,false,false,false,false,false,false,true,true,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false],"title":"Review"}],"label":"Review","method":"update"},{"args":[{"visible":[false,false,false,false,false,false,false,false,false,false,true,true,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false],"title":"Unknown"}],"label":"Unknown","method":"update"},{"args":[{"visible":[false,false,false,false,false,false,false,false,false,false,false,false,true,true,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false],"title":"Meta"}],"label":"Meta","method":"update"},{"args":[{"visible":[false,false,false,false,false,false,false,false,false,false,false,false,false,false,true,true,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false],"title":"Rule 2 Removal: Photo Editing"}],"label":"Rule 2 Removal: Photo Editing","method":"update"},{"args":[{"visible":[false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,true,true,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false],"title":"FOTD"}],"label":"FOTD","method":"update"},{"args":[{"visible":[false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,true,true,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false],"title":"PSA"}],"label":"PSA","method":"update"},{"args":[{"visible":[false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,true,true,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false],"title":"Question"}],"label":"Question","method":"update"},{"args":[{"visible":[false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,true,true,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false],"title":"Organization"}],"label":"Organization","method":"update"},{"args":[{"visible":[false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,true,true,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false],"title":"Rule 5 Removal: Product List"}],"label":"Rule 5 Removal: Product List","method":"update"},{"args":[{"visible":[false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,true,true,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false],"title":"Rule 6 Removal: Gore NSFW"}],"label":"Rule 6 Removal: Gore NSFW","method":"update"},{"args":[{"visible":[false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,true,true,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false],"title":"Tutorial"}],"label":"Tutorial","method":"update"},{"args":[{"visible":[false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,true,true,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false],"title":"Halloween"}],"label":"Halloween","method":"update"},{"args":[{"visible":[false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,true,true,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false],"title":"Rule 4 Removal: Showcase Makeup"}],"label":"Rule 4 Removal: Showcase Makeup","method":"update"},{"args":[{"visible":[false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,true,true,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false],"title":"Rule 3 Removal: Before/After"}],"label":"Rule 3 Removal: Before/After","method":"update"},{"args":[{"visible":[false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,true,true,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false],"title":"Haul"}],"label":"Haul","method":"update"},{"args":[{"visible":[false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,true,true,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false],"title":"Simple Questions Removal"}],"label":"Simple Questions Removal","method":"update"},{"args":[{"visible":[false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,true,true,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false],"title":"AMA"}],"label":"AMA","method":"update"},{"args":[{"visible":[false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,true,true,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false],"title":"Reviewed"}],"label":"Reviewed","method":"update"},{"args":[{"visible":[false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,true,true,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false],"title":"News"}],"label":"News","method":"update"},{"args":[{"visible":[false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,true,true,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false],"title":"Shitpost Saturday Removal"}],"label":"Shitpost Saturday Removal","method":"update"},{"args":[{"visible":[false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,true,true,false,false,false,false,false,false,false,false,false,false,false,false,false,false],"title":"Text Tuesday Removal"}],"label":"Text Tuesday Removal","method":"update"},{"args":[{"visible":[false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,true,true,false,false,false,false,false,false,false,false,false,false,false,false],"title":"Mod Post"}],"label":"Mod Post","method":"update"},{"args":[{"visible":[false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,true,true,false,false,false,false,false,false,false,false,false,false],"title":"Progress"}],"label":"Progress","method":"update"},{"args":[{"visible":[false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,true,true,false,false,false,false,false,false,false,false],"title":"Removal: Off-topic"}],"label":"Removal: Off-topic","method":"update"},{"args":[{"visible":[false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,true,true,false,false,false,false,false,false],"title":"Clutter Removal"}],"label":"Clutter Removal","method":"update"},{"args":[{"visible":[false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,true,true,false,false,false,false],"title":"Rule 9 Removal: Title"}],"label":"Rule 9 Removal: Title","method":"update"},{"args":[{"visible":[false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,true,true,false,false],"title":"Rule 10 Removal: Image Sources"}],"label":"Rule 10 Removal: Image Sources","method":"update"},{"args":[{"visible":[false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,true,true],"title":"Under Review"}],"label":"Under Review","method":"update"}],"direction":"down","showactive":true,"x":0.29,"xanchor":"left","y":1.7,"yanchor":"top"}],"xaxis":{"title":{"text":"Labels"}},"yaxis":{"title":{"text":"Count"}},"barmode":"group"},                        {"responsive": true}                    ).then(function(){
+                            
+var gd = document.getElementById('8023d69c-b81b-472e-b836-d554af50c12f');
+var x = new MutationObserver(function (mutations, observer) {{
+        var display = window.getComputedStyle(gd).display;
+        if (!display || display === 'none') {{
+            console.log([gd, 'removed!']);
+            Plotly.purge(gd);
+            observer.disconnect();
+        }}
+}});
+
+// Listen for the removal of the full notebook cells
+var notebookContainer = gd.closest('#notebook-container');
+if (notebookContainer) {{
+    x.observe(notebookContainer, {childList: true});
+}}
+
+// Listen for the clearing of the current output cell
+var outputEl = gd.closest('.output');
+if (outputEl) {{
+    x.observe(outputEl, {childList: true});
+}}
+
+                        })                };                });            </script>        </div>
+</div>
+</div>
+<div class="cell" data-tags="[]" data-execution_count="24">
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Save the figure to an HTML file</span></span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>html_file_path <span class="op">=</span> <span class="st">'../../data/plots/title_classification_interactive_bar_chart.html'</span></span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>fig.write_html(html_file_path)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Prediction Accuracy:</p>
+<p>The model seems to be highly accurate for most labels since the ActualCount and PredictedCount are very close. For example, posts tagged as “Swatches” have an actual count of 164 and a predicted count of 165, indicating the model’s predictions are almost perfect.</p>
+<p>Model Performance on Different Labels:</p>
+<p>High Volume Labels: The model performs well on labels with a high number of posts, such as “Unknown”, “FOTD” (Face of the Day), and “Question”. This is expected as more data often leads to better model performance due to better learning of the patterns associated with these labels. Low Volume Labels: For labels with very few posts, such as “Rule 6 Removal: Gore NSFW” and “Removal: Off-topic”, the model still predicts accurately. However, it’s worth noting that with such a small sample size, the model may not be as reliable due to the lack of data.</p>
+<p>Error Analysis:</p>
+<p>The largest discrepancy occurs in the “Unknown” category, with a difference of 50 between actual and predicted counts. This suggests that the model may be classifying some posts into “Unknown” that humans would not, or vice versa. It could be an indication of posts that are difficult to categorize or a sign that the model might be using certain features that lead to uncertainty. For categories such as “Discussion”, “Review”, and “FOTD”, the model has a slight over-prediction. While these differences are small, they may point to certain features or words that the model is keying on, which could lead to overfitting.</p>
+<p>Consistency Across Categories:</p>
+<p>The model shows consistency in prediction for many categories, such as “Meta”, “Organization”, “Rule 5 Removal: Product List”, and “AMA”, where the predicted count matches the actual count exactly.</p>
+<p>Potential Improvements:</p>
+<p>Investigating the features that lead to predictions for the “Unknown” category could improve the model’s performance. It’s possible that the model lacks sufficient discriminative power or that the “Unknown” category is a catch-all for posts that don’t fit neatly into other categories. For categories with larger discrepancies, a more detailed feature analysis could reveal why the model is making these errors. For instance, it could be over-relying on certain keywords or not capturing the context effectively.</p>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>
