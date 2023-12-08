@@ -67,6 +67,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="add_external_data_files/libs/bootstrap/bootstrap.min.js"></script>
 <link href="add_external_data_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="add_external_data_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
 
 
 </head>
@@ -97,8 +100,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="new-varaible-posting_karma" class="level2">
 <h2 class="anchored" data-anchor-id="new-varaible-posting_karma">new varaible : posting_karma</h2>
 <p>“Karma is a reflection of how much a Redditor’s contributions mean to the community. Making posts that communities find valuable is the way to gain Karma.” –Reddit.com</p>
-<div class="cell" data-tags="[]">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Get posting karma of the creator from Python Reddit API Wrapper</span></span>
+<div class="cell" data-tags="[]" data-execution_count="19">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Get posting karma of the creator from Python Reddit API Wrapper</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> udf_get_karma(author_str):</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    <span class="co">#Reddit API Credential</span></span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    client_id <span class="op">=</span> <span class="st">'UViHJJ217cLodAY9AraMWg'</span></span>
@@ -112,62 +115,71 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">try</span>:</span>
 <span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>        redditor<span class="op">=</span> reddit.redditor(author_str)</span>
 <span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>        link_karma<span class="op">=</span> redditor.link_karma</span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>    <span class="co">#if the account was deleted or ..., set Karma to 0 </span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>    <span class="co"># if the account was deleted, set Karma to 0 </span></span>
 <span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>    <span class="cf">except</span>:</span>
 <span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>        link_karma<span class="op">=</span> <span class="dv">0</span>   </span>
 <span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> link_karma</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p><strong>Distribution of posting_karma:</strong></p>
-<div class="cell" data-tags="[]" data-execution_count="3">
+<div class="cell" data-tags="[]" data-execution_count="54">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>df<span class="op">=</span> pd.read_csv(<span class="st">'../../data/csv/sampled_creators_top10_total.csv'</span>)</span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> plotly.express <span class="im">as</span> px</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>df<span class="op">=</span> pd.read_csv(<span class="st">'../../data/csv/top10creator.csv'</span>)</span>
 <span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Filter DataFrame for years 2021, 2022, and 2023</span></span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>filtered_df <span class="op">=</span> df[df[<span class="st">'created_year'</span>].isin([<span class="dv">2021</span>, <span class="dv">2022</span>, <span class="dv">2023</span>])]</span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Scatter plot for posting_karma and creator_score</span></span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">6</span>))</span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>scatter <span class="op">=</span> plt.scatter(filtered_df[<span class="st">'creator_score'</span>], filtered_df[<span class="st">'posting_karma'</span>], c<span class="op">=</span>filtered_df[<span class="st">'created_year'</span>], cmap<span class="op">=</span><span class="st">'viridis'</span>, marker<span class="op">=</span><span class="st">'o'</span>)</span>
-<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Relationship between Creator Score and Posting Karma (2021-2023)'</span>)</span>
-<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Creator Score'</span>)</span>
-<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Posting Karma'</span>)</span>
-<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>plt.colorbar(scatter, ticks<span class="op">=</span>[<span class="dv">2021</span>, <span class="dv">2022</span>, <span class="dv">2023</span>], label<span class="op">=</span><span class="st">'Created Year'</span>)</span>
-<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>plt.show()</span>
-<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> plotly.express <span class="im">as</span> px</span>
-<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a><span class="co"># ... (your existing code)</span></span>
-<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a scatter plot using Plotly</span></span>
-<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>fig <span class="op">=</span> px.scatter(filtered_df, x<span class="op">=</span><span class="st">'creator_score'</span>, y<span class="op">=</span><span class="st">'posting_karma'</span>, color<span class="op">=</span><span class="st">'created_year'</span>, title<span class="op">=</span><span class="st">'Relationship between Creator Score and Posting Karma (2021-2023)'</span>)</span>
-<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a><span class="co"># Save the Plotly figure as an HTML file</span></span>
-<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>fig.write_html(<span class="st">'../../data/plots/karma_score_relation.html'</span>)</span>
-<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Convert 'created_year' to categorical</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>df[<span class="st">'created_year'</span>] <span class="op">=</span> df[<span class="st">'created_year'</span>].astype(<span class="st">'category'</span>)</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Plotting using Plotly Express</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>fig <span class="op">=</span> px.scatter(df, x<span class="op">=</span><span class="st">'posting_karma'</span>, y<span class="op">=</span><span class="st">'creator_score'</span>, color<span class="op">=</span><span class="st">'created_year'</span>, title<span class="op">=</span><span class="st">'Relationship between Posting Karma and Creator Score'</span>,</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>                 labels<span class="op">=</span>{<span class="st">'posting_karma'</span>: <span class="st">'Posting Karma'</span>, <span class="st">'creator_score'</span>: <span class="st">'Creator Score'</span>, <span class="st">'created_year'</span>: <span class="st">'Created Year'</span>},</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>                 hover_data<span class="op">=</span>[<span class="st">'author'</span>],</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>                 size<span class="op">=</span>[<span class="fl">0.5</span>] <span class="op">*</span> <span class="bu">len</span>(df))</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>fig.write_html(<span class="st">'../../data/plots/karma_relation_plot.html'</span>)</span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>fig.show()</span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate Pearson correlation coefficient and p-value</span></span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>correlation_coefficient, p_value <span class="op">=</span> pearsonr(df[<span class="st">'posting_karma'</span>], df[<span class="st">'creator_score'</span>])</span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Pearson Correlation Coefficient: </span><span class="sc">{</span><span class="bu">round</span>(correlation_coefficient,<span class="dv">3</span>)<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"P-value: </span><span class="sc">{</span><span class="bu">round</span>(p_value,<span class="dv">3</span>)<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
-<p><img src="add_external_data_files/figure-html/cell-4-output-1.png" class="img-fluid"></p>
+
+<div>                            <div id="4200c3d8-7153-41fa-a0a6-b4acc5b8b7b1" class="plotly-graph-div" style="height:525px; width:100%;"></div>            <script type="text/javascript">                require(["plotly"], function(Plotly) {                    window.PLOTLYENV=window.PLOTLYENV || {};                                    if (document.getElementById("4200c3d8-7153-41fa-a0a6-b4acc5b8b7b1")) {                    Plotly.newPlot(                        "4200c3d8-7153-41fa-a0a6-b4acc5b8b7b1",                        [{"customdata":[["ahbagelxo"],["cigarte"],["urfavdisappointmentf"],["sadperson123456"],["Veeeeezy"],["kyrazyme"],["glowymel"],["waterfromthevalley"],["Theotherdaytho"],["Dominorepulsa"]],"hovertemplate":"Created Year=2021<br>Posting Karma=%{x}<br>Creator Score=%{y}<br>size=%{marker.size}<br>author=%{customdata[0]}<extra></extra>","legendgroup":"2021","marker":{"color":"#636efa","size":[0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5],"sizemode":"area","sizeref":0.00125,"symbol":"circle"},"mode":"markers","name":"2021","orientation":"v","showlegend":true,"x":[129078,177409,61350,92361,325270,57773,99984,145266,32888,55993],"xaxis":"x","y":[116159.577,89684.031,66008.876,63073.23,61284.914,57412.021,48020.679,43339.453,42378.94,39295.591],"yaxis":"y","type":"scatter"},{"customdata":[["Ralucamakeup"],["The_Alchemyst"],["sadperson123456"],["Butt_Fucking_Smurfs"],["ahbagelxo"],["urfavdisappointmentf"],["cuziluvmakeup"],["Brittgirl23"],["Sick-Sad-World32"],["chinghiskhan"]],"hovertemplate":"Created Year=2022<br>Posting Karma=%{x}<br>Creator Score=%{y}<br>size=%{marker.size}<br>author=%{customdata[0]}<extra></extra>","legendgroup":"2022","marker":{"color":"#EF553B","size":[0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5],"sizemode":"area","sizeref":0.00125,"symbol":"circle"},"mode":"markers","name":"2022","orientation":"v","showlegend":true,"x":[70930,108994,92361,119404,129078,61350,16514,21458,18848,15556],"xaxis":"x","y":[160218.88,93012.218,81184.232,64631.0,62250.654,56407.277,48221.124,46164.235,37102.222,34828.134],"yaxis":"y","type":"scatter"},{"customdata":[["Faris-Hilton"],["The_Alchemyst"],["Evening_Attention_45"],["Lefty-boomer"],["zemele"],["BrandoLeeB"],["beesarebrown"],["sadperson123456"],["DisheveledBoy"],["No-Property-6892"]],"hovertemplate":"Created Year=2023<br>Posting Karma=%{x}<br>Creator Score=%{y}<br>size=%{marker.size}<br>author=%{customdata[0]}<extra></extra>","legendgroup":"2023","marker":{"color":"#00cc96","size":[0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5],"sizemode":"area","sizeref":0.00125,"symbol":"circle"},"mode":"markers","name":"2023","orientation":"v","showlegend":true,"x":[309183,108994,14561,8177,40024,47883,10812,92361,10383,9163],"xaxis":"x","y":[55392.327,32111.733,24529.679,21076.01,19036.404,17639.649,14266.653,11884.794,11773.02,10943.0],"yaxis":"y","type":"scatter"}],                        {"template":{"data":{"histogram2dcontour":[{"type":"histogram2dcontour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"choropleth":[{"type":"choropleth","colorbar":{"outlinewidth":0,"ticks":""}}],"histogram2d":[{"type":"histogram2d","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"heatmap":[{"type":"heatmap","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"heatmapgl":[{"type":"heatmapgl","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"contourcarpet":[{"type":"contourcarpet","colorbar":{"outlinewidth":0,"ticks":""}}],"contour":[{"type":"contour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"surface":[{"type":"surface","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"mesh3d":[{"type":"mesh3d","colorbar":{"outlinewidth":0,"ticks":""}}],"scatter":[{"fillpattern":{"fillmode":"overlay","size":10,"solidity":0.2},"type":"scatter"}],"parcoords":[{"type":"parcoords","line":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolargl":[{"type":"scatterpolargl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"bar":[{"error_x":{"color":"#2a3f5f"},"error_y":{"color":"#2a3f5f"},"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"bar"}],"scattergeo":[{"type":"scattergeo","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolar":[{"type":"scatterpolar","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"histogram":[{"marker":{"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"histogram"}],"scattergl":[{"type":"scattergl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatter3d":[{"type":"scatter3d","line":{"colorbar":{"outlinewidth":0,"ticks":""}},"marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattermapbox":[{"type":"scattermapbox","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterternary":[{"type":"scatterternary","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattercarpet":[{"type":"scattercarpet","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"carpet":[{"aaxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"baxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"type":"carpet"}],"table":[{"cells":{"fill":{"color":"#EBF0F8"},"line":{"color":"white"}},"header":{"fill":{"color":"#C8D4E3"},"line":{"color":"white"}},"type":"table"}],"barpolar":[{"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"barpolar"}],"pie":[{"automargin":true,"type":"pie"}]},"layout":{"autotypenumbers":"strict","colorway":["#636efa","#EF553B","#00cc96","#ab63fa","#FFA15A","#19d3f3","#FF6692","#B6E880","#FF97FF","#FECB52"],"font":{"color":"#2a3f5f"},"hovermode":"closest","hoverlabel":{"align":"left"},"paper_bgcolor":"white","plot_bgcolor":"#E5ECF6","polar":{"bgcolor":"#E5ECF6","angularaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"radialaxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"ternary":{"bgcolor":"#E5ECF6","aaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"baxis":{"gridcolor":"white","linecolor":"white","ticks":""},"caxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"coloraxis":{"colorbar":{"outlinewidth":0,"ticks":""}},"colorscale":{"sequential":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"sequentialminus":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"diverging":[[0,"#8e0152"],[0.1,"#c51b7d"],[0.2,"#de77ae"],[0.3,"#f1b6da"],[0.4,"#fde0ef"],[0.5,"#f7f7f7"],[0.6,"#e6f5d0"],[0.7,"#b8e186"],[0.8,"#7fbc41"],[0.9,"#4d9221"],[1,"#276419"]]},"xaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"yaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"scene":{"xaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"yaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"zaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2}},"shapedefaults":{"line":{"color":"#2a3f5f"}},"annotationdefaults":{"arrowcolor":"#2a3f5f","arrowhead":0,"arrowwidth":1},"geo":{"bgcolor":"white","landcolor":"#E5ECF6","subunitcolor":"white","showland":true,"showlakes":true,"lakecolor":"white"},"title":{"x":0.05},"mapbox":{"style":"light"}}},"xaxis":{"anchor":"y","domain":[0.0,1.0],"title":{"text":"Posting Karma"}},"yaxis":{"anchor":"x","domain":[0.0,1.0],"title":{"text":"Creator Score"}},"legend":{"title":{"text":"Created Year"},"tracegroupgap":0,"itemsizing":"constant"},"title":{"text":"Relationship between Posting Karma and Creator Score"}},                        {"responsive": true}                    ).then(function(){
+                            
+var gd = document.getElementById('4200c3d8-7153-41fa-a0a6-b4acc5b8b7b1');
+var x = new MutationObserver(function (mutations, observer) {{
+        var display = window.getComputedStyle(gd).display;
+        if (!display || display === 'none') {{
+            console.log([gd, 'removed!']);
+            Plotly.purge(gd);
+            observer.disconnect();
+        }}
+}});
+
+// Listen for the removal of the full notebook cells
+var notebookContainer = gd.closest('#notebook-container');
+if (notebookContainer) {{
+    x.observe(notebookContainer, {childList: true});
+}}
+
+// Listen for the clearing of the current output cell
+var outputEl = gd.closest('.output');
+if (outputEl) {{
+    x.observe(outputEl, {childList: true});
+}}
+
+                        })                };                });            </script>        </div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Pearson Correlation Coefficient: 0.362
+P-value: 0.049</code></pre>
 </div>
 </div>
-<ul>
-<li><p><strong>X-Axis (<code>Creator Score</code>):</strong> Represents the influencers’ scores related to their popularity and frequency within the subreddit.</p></li>
-<li><p><strong>Y-Axis (<code>Posting Karma</code>):</strong> Indicates the posting karma earned by the influencers for their posts, reflecting the contributions to the community.</p></li>
-<li><p><strong>Color Code (<code>Created Year</code>):</strong> Differentiates data points based on the year the influencer’s post was created (2021, 2022, or 2023).</p></li>
-</ul>
-<p><strong>Interpretation:</strong> -The correlation coefficient between posting karma and creator score for the provided data is approximately 0.46. - Users with higher posting karma tend to have higher creator scores, suggesting a positive association between these two variables.</p>
-<ol type="1">
-<li><strong>Strength of Relationship:</strong>
-<ul>
-<li>The positive correlation indicates that as posting karma increases, there is a tendency for the creator score to increase as well.</li>
-<li>The strength of the correlation is considered moderate. It’s not a perfect correlation, but there is a discernible pattern.</li>
-</ul></li>
-<li><strong>Interpretation:</strong>
-<ul>
-<li>Users with higher posting karma tend to have higher creator scores, suggesting a positive association between these two variables.</li>
-</ul></li>
-</ol>
+<p>The Pearson correlation coefficient between “posting karma” and “creator score” is approximately 0.362, indicating a moderately positive correlation. The p-value of 0.0494 is close to the common significance threshold of 0.05. This suggests that there is some evidence to reject the null hypothesis that the correlation is zero (no correlation).</p>
+<p>Quality of Contributions: The positive correlation could imply that users who receive positive engagement externally out of our dataset, possibly through quality contributions or popular content, are likely to be recognized as influential contributors by our creator score calculating scheme.</p>
 <section id="why-we-choose-to-select-google-index-as-reference-data" class="level3">
 <h3 class="anchored" data-anchor-id="why-we-choose-to-select-google-index-as-reference-data">Why we choose to select Google Index as Reference Data?</h3>
 <p>Accessing external data from Google’s index of top brands and products in the Makeup and Skincare industry can offer invaluable insights for businesses. Firstly, it serves as a powerful tool for market research by unveiling current consumer trends and preferences. Identifying the most popular brands and products enables companies to stay competitive and understand the dynamics of the market. Additionally, this data facilitates competitor analysis, allowing businesses to benchmark themselves against industry leaders and identify opportunities for improvement or innovation. The information gleaned can inform product development strategies by revealing gaps in the market and areas where consumer needs are not adequately addressed.</p>

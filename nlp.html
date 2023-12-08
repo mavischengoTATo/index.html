@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html>
 	<head>
-		<title>Elements - Stellar by HTML5 UP</title>
+		<title>NLP</title>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 		<link rel="stylesheet" href="assets/css/main.css" />
@@ -50,7 +50,7 @@
                       <li><b>Influencer Impact</b>: We discovered that influencers with high 'posting_karma' scores tend to generate more positive interactions, indicating their significant role in shaping a supportive community atmosphere. This insight is crucial for influencers and brands alike, highlighting the value of positive and engaging content.</li>
                       <li><b>Community Engagement with Hot Topics</b>: Our analysis of top tags revealed that topics like "Face of the day" and "question" garnered immense popularity and positive sentiments. This finding suggests that creative and interactive content resonates deeply with the subreddit members, guiding content creators and brands on topics that spark joy and engagement.</li>
                       <li><b>Brand Sentiment Analysis</b>:We combined Reddit sentiments with Google trends to provide a comprehensive view of consumer perceptions toward beauty brands. Positive sentiments dominated, especially for established brands like MAC and Clinique, underscoring their strong reputation within the community. This insight is invaluable for beauty brands in aligning their marketing and product development strategies with consumer preferences.</li>
-                      <li><b>Evolving Language of Beauty</b>: Our study highlighted dynamic trends in beauty-related terms. Words like "Tattmatte" saw significant fluctuations in usage, reflecting changing interests in the community. This aspect of our analysis is particularly beneficial for marketers and product developers in staying ahead of the curve in an ever-evolving industry.</li>
+                      <li><b>Evolving Language of Beauty</b>: Our study highlighted dynamic trends in beauty-related terms. Words like "Tanishbrown" saw significant fluctuations in usage, reflecting changing interests in the community. This aspect of our analysis is particularly beneficial for marketers and product developers in staying ahead of the curve in an ever-evolving industry.</li>
                       <p>In essence, our project provides key insights into the emotional and linguistic dynamics of the beauty community on Reddit. These findings are instrumental for influencers, brands, and enthusiasts in understanding and engaging with this vibrant online community.</p>
                     </section>
 									
@@ -61,59 +61,171 @@
                   <ul class="actions">
                     <li><a href="./nlp_code/Basic_data_text_analysis.html" class="button">Click to get the code!</a></li>
                   </ul>
+                  <h4><b>Text Length Analysis</b></h4>
+                  <p>In this Text Length Distribution Analysis, we explore the histograms revealing patterns in comment and submission text lengths. Our findings show a preference for brevity: comments typically under 500 characters and submission texts peaking between 20 to 40 units, with longer texts being increasingly rare. This concise analysis aims to uncover the underlying reasons for these trends, potentially influenced by platform norms and user behavior. Join us in deciphering these patterns and understanding the dynamics of textual communication on the platform.</p>
+                  <iframe src="nlp/text_len_comments.html" width="100%" height="600px"></iframe>
+                  <figcaption style="text-align: center;"><b>Fig 1: Comments Text Length Distribution</b></figcaption>
+                  <p>The histogram presents a left-skewed distribution, highlighting that shorter comments are more prevalent. The highest frequency is observed for comments with fewer than 500 characters, as indicated by the tallest initial bar. There is a notable decline in frequency as text length increases, with the subsequent bars quickly diminishing in height, reflecting fewer comments of longer lengths. Comments exceeding 1000 characters are scarce, and the occurrence of comments beyond 1500 characters is exceptionally rare, as shown by the sparse bars at the right end of the graph.</p>
+                  <iframe src="nlp/text_len_submissions.html" width="100%" height="600px"></iframe>
+                  <figcaption style="text-align: center;"><b>Fig 2: Submissions Text Length Distribution</b></figcaption>
+                  <p>The histogram displays a clear preference for brevity in text submissions, with a significant majority being under 250 characters. The frequency of longer texts drops sharply, indicating that submissions rarely exceed 1,000 characters. This trend of shorter submissions could be influenced by various factors, such as platform restrictions or the nature of the content. A deeper analysis of the platform's guidelines and user behavior would be necessary to understand the underlying causes. A notable observation is the prevalence of submissions with a selftext length of 0, attributable to the fact that titles are mandatory for submissions, but the body text is optional.</p>
+                  <iframe src="nlp/title_len_submissions.html" width="100%" height="600px"></iframe>
+                  <figcaption style="text-align: center;"><b>Fig 3: Submissions Title Length Distribution</b></figcaption>
+                  <p>The histogram shows the distribution of text lengths in submission texts, with the majority being short, peaking between 20 to 40 units in length. The distribution is right-skewed, indicating that longer texts are less common, with very few submissions approaching the maximum observed length of 300. This suggests a preference or requirement for brevity in submissions.</p>
+
+
                     <h4><b>Most Common Words Analysis</b></h4>
+                    <p>Analyzing the "Top 20 Words" tables for both submissions and comments within the MakeupAddiction subreddit reveals distinct patterns of interaction and content moderation. In the submissions table, the prevalence of 'deleted' and 'removed' as the top two words implies rigorous moderation activity, perhaps indicating strict adherence to community guidelines or a high rate of content turnover. The presence of 'makeup' as the third most frequent term underscores the subreddit's primary focus. Additionally, terms like 'skin', 'foundation', and 'look' reflect common topics of discussion related to beauty and makeup application.<br><br>
+
+                      In the comments table, the word 'please' ranks highest, which may point towards a culture of courtesy within the subreddit's discourse. 'Search' being the second most frequent word could imply a norm of self-service in finding information, while 'post' suggests active discussions and content sharing. Words such as 'thank', 'mua', and 'sidebar' further indicate a supportive environment where gratitude is expressed, expertise is acknowledged, and resources are utilized.</p>
                     <iframe src="nlp/ranked_submission_words.html" width="100%" height="600px"></iframe>
+                    <figcaption style="text-align: center;"><b>Table 1: Top 20 Frequent Words Submissions</b></figcaption>
                     <iframe src="nlp/ranked_comments_words.html" width="100%" height="600px"></iframe>
-                    <p>Top words in submissions: 'deleted', 'removed', 'makeup', 'like', 'ive'.</p>
-                    <p>Top words in comments: 'please', 'search', 'post', 'look', 'thank'.</p>
+                    <figcaption style="text-align: center;"><b>Table 2: Top 20 Frequent Words Comments</b></figcaption>
                     <iframe src="nlp/Submission_yearly_data_plot.html" width="100%" height="600px"></iframe>
-                    <iframe src="nlp/Submission_monthly_data_plot.html" width="100%" height="600px"></iframe>
-                    <p>
-                      The frequent appearance of <b>'deleted'</b> and <b>'removed'</b> could indicate a strict moderation policy in the subreddit or a high level of self-moderation (users deleting their own posts). It might also suggest discussions about the removal of posts or comments. Words like <b>'makeup'</b>, <b>'skin'</b>, <b>'foundation'</b> are expected in a makeup-related subreddit. Their high frequency shows a strong focus on product discussions and advice. Other frequent words like <b>'like'</b>, <b>'look'</b>, <b>'use'</b>, <b>'really'</b>, and <b>'good'</b> are likely part of conversations about product recommendations, reviews, or sharing makeup looks. Top Words by Year Submissions Filtered (top_words_by_year_submissions_filtered_pd):<br><br>
-                    
-                      The consistency of certain words (<b>'deleted'</b>, <b>'removed'</b>, <b>'makeup'</b>, <b>'skin'</b>, <b>'foundation'</b>) across different years suggests that the nature of discussions in the subreddit remains stable over time. The persistence of moderation-related words over the years could also imply ongoing concerns or discussions about content policies, user behavior, or community guidelines within the subreddit. Top Words by Month Submissions Filtered (top_words_by_month_submissions_filtered_pd):<br><br>
-                    
-                      This table offers insight into any seasonal trends or monthly variations in discussions. For instance, certain makeup products or techniques might become more popular in specific months. The presence of words like <b>'foundation'</b>, <b>'skin'</b>, <b>'eye'</b>, <b>'face'</b>, <b>'mascara'</b> across different months indicates a consistent interest in various aspects of makeup application and products. Overall Analysis:<br><br>
-                    
-                      Community Dynamics: The frequent appearance of <b>'deleted'</b> and <b>'removed'</b> in all tables highlights the importance of community moderation in shaping discussions. This could be a point of interest for understanding user behavior and community management in online forums. Focus on Products and Techniques: The consistent mention of specific makeup items and terms such as <b>'makeup'</b>, <b>'foundation'</b>, and others suggests that product recommendations, reviews, and makeup application techniques are central to the subreddit's content. This shows a community actively engaged in sharing and seeking advice on makeup products and practices. Temporal Trends: While some words are consistent throughout the year, looking deeper into the monthly data might reveal seasonal trends in makeup interests (like certain products being more popular in summer or winter). This can be valuable for marketing strategies or understanding consumer behavior in the beauty industry.<br><br>
-                    </p>                    
+                    <figcaption style="text-align: center;"><b>Fig 4: Top Frequent Words Comments Yearly</b></figcaption>
+                    <p>The provided bar plot illustrates the term frequency changes in submissions over three consecutive years: 2021, 2022, and 2023. In 2021, the terms "removed" and "makeup" dominate the chart, indicating they were prevalent in discussions or submissions for that year. As we progress to 2022, there's a noticeable decrease in the frequency of almost all terms, with "removed" still leading but with a significantly lower count compared to the previous year. This could suggest a change in the nature of discussions, a different user base, or perhaps a change in content policies or trends. By 2023, all terms show a subdued presence, with no term reaching the heights observed in 2021, which might imply either a diversification in the vocabulary used in submissions or a decrease in activity or engagement levels. This downward trend across all terms suggests a shift in the community's focus or possibly the introduction of new, unrepresented terms that have taken precedence in submissions.</p>
+                    <iframe src="nlp/Submission_time_series_dropdown_plot.html" width="100%" height="600px"></iframe>
+                    <figcaption style="text-align: center;"><b>Fig 5: Top Frequent Words Comments Monthly</b></figcaption>
+                    <p>The plotted data illustrates the monthly frequency of selected terms over a year, providing insights into their usage patterns. For instance, the term "foundation" shows a significant decline from the beginning of the year until mid-year, followed by a relatively stable frequency towards the year-end. In contrast, the term "makeup" experiences a sharp decline early in the year, then fluctuates moderately throughout the remaining months. The term "use" presents a general downward trend with a slight increase towards the end of the year. Notably, the term "deleted" spikes early in the year, decreases significantly in the following months, and then levels out. The interactive element of the plot allows users to click on a dropdown menu to view the fluctuations of each specific term, providing a tailored analysis of term usage that can reflect various external factors or internal shifts in discussion themes.</p>                 
                     <iframe src="nlp/Comment_yearly_data_plot.html" width="100%" height="600px"></iframe>
-                    <iframe src="nlp/Comment_monthly_data_plot.html" width="100%" height="600px"></iframe>
-                    <p>
-                      Words like <b>'please'</b>, <b>'search'</b>, <b>'post'</b>, and <b>'look'</b> are very frequent. <b>'Please'</b> and <b>'search'</b> could indicate a community that values politeness and encourages searching for information before posting. <b>'Mua'</b> (makeup artist) is common, reflecting the subreddit's focus on professional makeup artistry. <b>'Sidebar'</b> and <b>'rules'</b> suggest that users frequently refer to or remind others about the subreddit's guidelines. Words like <b>'makeup'</b>, <b>'shade'</b>, <b>'product'</b> show a clear focus on makeup products and their specifics. Top Words by Year in Comments Filtered (top_words_by_year_comments_filtered_pd):<br><br>
-                    
-                      The consistent appearance of words over the years <b>'please'</b>, <b>'search'</b>, <b>'look'</b>, <b>'thank'</b> indicates a stable culture in the subreddit, with emphasis on politeness and information-seeking. The presence of <b>'sidebar'</b>, <b>'rules'</b>, <b>'posting'</b> across years suggests ongoing guidance or reminders about community norms and rules. Makeup-related words <b>'makeup'</b>, <b>'shade'</b>, <b>'product'</b> remain prominent, underscoring the subreddit's focus on makeup discussion. Top Words by Month in Comments Filtered (top_words_by_month_comments_filtered_pd):<br><br>
-                    
-                      Monthly data shows similar patterns to the yearly data, with <b>'please'</b>, <b>'search'</b>, <b>'post'</b>, and <b>'look'</b> consistently ranking high. This indicates a steady community culture throughout the year. Seasonal trends in makeup discussions might be inferred by changes in the frequency of certain makeup-related words <b>'shade'</b>, <b>'product'</b>, <b>'makeup'</b>. Overall Analysis:<br><br>
-                    
-                      Community Culture: The consistent use of words like <b>'please'</b>, <b>'thank'</b>, and <b>'search'</b> suggests a community that values politeness, helpfulness, and self-reliance in finding information. This could be indicative of a positive and supportive online environment. Guidance and Moderation: Frequent references to <b>'sidebar'</b>, <b>'rules'</b>, and <b>'posting'</b> indicate an active moderation presence and a community that self-regulates by reminding each other of guidelines. Focus on Makeup Artistry and Products: The regular appearance of words like <b>'mua'</b>, <b>'makeup'</b>, <b>'shade'</b>, and <b>'product'</b> aligns with the subreddit's theme, showing an engaged user base discussing various aspects of makeup.
-                    </p>
+                    <figcaption style="text-align: center;"><b>Fig 6: Top Frequent Words Submission Yearly</b></figcaption>
+                    <p>The provided plots display the frequency of specific terms within comments over the course of three years. Each bar represents a year, and the colors differentiate the terms. The term "search" peaked in early 2021, followed by a sharp decline and leveling off throughout the rest of the year. "Please" shows a similar pattern of decline from a high early in the year. The term "thank" has a more consistent presence with less variability. "Use" shows a significant decline over time, potentially indicating a shift in the context or focus of the discussions. The term "posting" has a less consistent pattern, with noticeable peaks and troughs, suggesting varying engagement or relevance throughout the year. The fluctuation in the usage of these terms could reflect changes in the interests, behaviors, or rules governing the comments over time. It is also important to use the dropdown menu to select individual terms for a more detailed view of their frequency changes month by month.</p>
+                    <iframe src="nlp/Comment_time_series_dropdown_plot.html" width="100%" height="600px"></iframe>
+                    <figcaption style="text-align: center;"><b>Fig 7: Top Frequent Words Submission Monthly</b></figcaption>
+                    <p>The provided plots represent term frequency changes over time, with each plot corresponding to a specific term indicated by the dropdown menu. For instance, the term "search" shows a significant decline from the first month before stabilizing at a lower frequency for the subsequent months. The term "please" also exhibits a decrease but with some fluctuation in the middle months. "Thank" sees a sharp drop initially, followed by a relatively stable trend with minor ups and downs. "Use" maintains a downward trend with a slight recovery towards the end of the year. The term "posting" displays more variability with peaks and troughs indicating inconsistent usage over the months. To analyze specific term fluctuations accurately, one should select the term from the dropdown menu provided in the interactive plot interface. This granular approach allows for a focused analysis of how each term's usage has changed over time, which could be indicative of shifts in discussion topics or the popularity of certain phrases within the dataset.                    </p>
                     <h4><b>TF-IDF Analysis</b></h4>  
                     <p>
-                      <strong>First Submission:</strong><br>
-                      Top Word: <b>'deleted'</b> with a score of 0.8975.<br>
-                      Analysis: This might indicate that the first submission was deleted or the text content was removed before analysis. The presence of the word <b>'deleted'</b> suggests that the post might have been redacted or edited after initial posting.<br><br>
-                  
-                      <strong>Second Submission:</strong><br>
-                      Top Words: <b>'eye'</b> (score: 7.7804), <b>'needed'</b> (6.7856), <b>'low'</b> (6.1390), <b>'rare'</b> (6.0054), <b>'prep'</b> (5.9646), <b>'eyelids'</b> (5.8513), <b>'wasnt'</b> (5.7823), <b>'general'</b> (5.7177), <b>'fenty'</b> (5.0891), <b>'nars'</b> (4.9494).<br>
-                      Analysis: The words like <b>'eye'</b>, <b>'eyelids'</b>, <b>'fenty'</b>, and <b>'nars'</b> suggest a focus on eye makeup and possibly specific brands (Fenty and Nars). Words such as <b>'needed'</b>, <b>'low'</b>, and <b>'rare'</b> might indicate a discussion about the necessity or rarity of certain products or techniques, possibly in the context of eye makeup. <b>'prep'</b> could refer to makeup preparation techniques. This submission seems to be rich in content about eye makeup preferences, techniques, or product recommendations.<br><br>
-                  
-                      <strong>Third Submission:</strong><br>
-                      Top Word: <b>'removed'</b> with a score of 1.5530.<br>
-                      Analysis: Similar to the first submission, this might indicate a post that was edited or had its content removed. The word <b>'removed'</b> can be associated with posts that have undergone modifications or deletions.<br><br>
-                  
-                      <strong>Overall Insights:</strong> The dominant presence of words related to eye makeup in the second submission suggests that this is a key topic of interest or discussion in the subreddit. The frequent mention of specific brands (<b>'fenty'</b>, <b>'nars'</b>) could indicate brand preferences or discussions about these brands' products. The presence of words like <b>'deleted'</b> and <b>'removed'</b> in other submissions suggests that some posts might be moderated, edited, or removed post-publishing, which is common in online communities for various reasons.<br><br>
-                  
-                      <strong>First Comment:</strong><br>
-                      <b>'brother'</b> (7.64): High relevance, possibly discussing a personal experience or story involving a brother. <b>'sheer'</b> (5.75): Could refer to a type of makeup finish, indicating a discussion about product characteristics. <b>'onto'</b> (5.60): A connecting word, its high score might indicate unique usage in the context. <b>'ones'</b> (4.78): Likely referring to specific products or types of makeup. <b>'get'</b> (2.91): General usage, but its context in the comment could be unique.<br><br>
-                  
-                      <strong>Second Comment:</strong><br>
-                      <b>'mentioned'</b> (6.05): Indicates reference to something previously discussed, possibly a product or technique. <b>'nose'</b> (4.57): Likely discussing makeup application related to the nose, such as contouring. <b>'concealer'</b> (3.60): Direct reference to a makeup product, possibly discussing its use or properties.<br><br>
-                  
-                      <strong>Third Comment:</strong><br>
-                      <b>'lipsticks'</b> (5.63): Direct reference to a category of makeup product. <b>'ones'</b> (4.78): As before, likely refers to specific types of products or brands. <b>'cool'</b> (4.12): Could be describing a color palette or general appeal of a product. <b>'looks'</b> (2.34): Might refer to makeup looks or styles.<br><br>
-                  
-                      <strong>Interpretation and Insights:</strong> The words with the highest TF-IDF scores are likely key topics or themes within each comment. These words are more unique to the comment in the context of your entire dataset. Words like <b>"brother"</b>, <b>"sheer"</b>, <b>"nose"</b>, <b>"concealer"</b>, and <b>"lipsticks"</b> suggest a focus on personal experiences, product characteristics, and specific makeup items. The context in which these words are used (e.g., discussing a product, sharing a personal story, giving advice) would provide more depth to the analysis. However, this requires examining the full text of the comments. The presence of more general words like <b>"get"</b> and <b>"ones"</b> with high scores may indicate a unique usage pattern in these specific comments, which sets them apart from the rest of the dataset.
+                      <strong>Submissions: </strong><br>
+                      <table>
+                        <tr>
+                            <th>Term</th>
+                            <th>Score</th>
+                        </tr>
+                        <tr>
+                            <td>eczema</td>
+                            <td>13.708287019066976</td>
+                        </tr>
+                        <tr>
+                            <td>lift</td>
+                            <td>12.208601970593994</td>
+                        </tr>
+                        <tr>
+                            <td>one</td>
+                            <td>11.11660670330881</td>
+                        </tr>
+                        <tr>
+                            <td>likelooks</td>
+                            <td>10.255340891195644</td>
+                        </tr>
+                        <tr>
+                            <td>drywounds</td>
+                            <td>10.255340891195644</td>
+                        </tr>
+                        <tr>
+                            <td>gel</td>
+                            <td>9.574561500121025</td>
+                        </tr>
+                        <tr>
+                            <td>brow</td>
+                            <td>9.22686764051506</td>
+                        </tr>
+                        <tr>
+                            <td>colour</td>
+                            <td>9.516345331804883</td>
+                        </tr>
+                        <tr>
+                            <td>palettes</td>
+                            <td>8.882420718741153</td>
+                        </tr>
+                        <tr>
+                            <td>scalp</td>
+                            <td>8.75126349441937</td>
+                        </tr>
+                        <tr>
+                            <td>whoever</td>
+                            <td>8.175899349515808</td>
+                        </tr>
+                        <tr>
+                            <td>dangerous</td>
+                            <td>8.175899349515808</td>
+                        </tr>
+                        <tr>
+                            <td>difficulty</td>
+                            <td>7.690391533734107</td>
+                        </tr>
+                        <tr>
+                            <td>amounts</td>
+                            <td>7.770434241407643</td>
+                        </tr>
+                        <tr>
+                            <td>returned</td>
+                            <td>7.393140010266175</td>
+                        </tr>
+                        <tr>
+                            <td>experimenting</td>
+                            <td>6.4051932894855845</td>
+                        </tr>
+                        <tr>
+                            <td>disappointed</td>
+                            <td>6.275659237293683</td>
+                        </tr>
+                        <tr>
+                            <td>result</td>
+                            <td>6.080953621300006</td>
+                        </tr>
+                        <tr>
+                            <td>tried</td>
+                            <td>5.814794136093912</td>
+                        </tr>
+                        <tr>
+                            <td>applied</td>
+                            <td>5.264908304416907</td>
+                        </tr>
+                        <tr>
+                            <td>removed</td>
+                            <td>1.089527284602935</td>
+                        </tr>
+                    </table>
+                    <figcaption style="text-align: center;"><b>Table 3: TF-IDF(Submission)</b></figcaption>
+                    <p>The results indicate that terms such as 'lift', 'gel', 'brow', and 'eczema' have high IDF scores, which implies these terms are relatively rare and possibly of significant importance within the corpus. In contrast, terms like 'removed' have a lower IDF score, suggesting they are more common in the dataset. The highest IDF score for 'eczema' suggests it's a specific and infrequent topic in the discourse, indicating discussions may be centered around niche or specialized subjects. These IDF values provide insights into the distinctiveness of terms within the submissions and comments, highlighting the terms that could be of particular interest for further analysis or for understanding the thematic focus of the conversations.</p>
+                      <strong>Comments: </strong><br>
+                      <table>
+                        <tr>
+                            <th>Term</th>
+                            <th>Score</th>
+                        </tr>
+                        <tr>
+                            <td>aww</td>
+                            <td>6.182638537820234</td>
+                        </tr>
+                        <tr>
+                            <td>sweet</td>
+                            <td>5.370313296964741</td>
+                        </tr>
+                        <tr>
+                            <td>omg</td>
+                            <td>4.375410677520932</td>
+                        </tr>
+                        <tr>
+                            <td>thats</td>
+                            <td>3.384324924342017</td>
+                        </tr>
+                        <tr>
+                            <td>thanks</td>
+                            <td>3.2649055361271606</td>
+                        </tr>
+                        <tr>
+                            <td>much</td>
+                            <td>2.887663770562357</td>
+                        </tr>
+                        <tr>
+                            <td>thank</td>
+                            <td>1.7262858300691992</td>
+                        </tr>
+                    </table>
+                    <figcaption style="text-align: center;"><b>Table 4: TF-IDF(Comment)</b></figcaption>
+                    <p>In analyzing the results of the Inverse Document Frequency (IDF) transformation on the comments dataset, we see that the terms 'aww', 'sweet', and 'omg' have the highest IDF scores in their respective documents, suggesting they are less common across all comments and may carry more weight in the context they are used. This could reflect specific, sentiment-laden discussions or reactions within the comments. The accompanying terms 'thank', 'thats', 'thanks', and 'much' are also of interest but have lower scores, indicating they are more frequently used. The IDF scores thus help in identifying which terms are more unique and potentially more significant within the text data.</p>
                   </p>
                                     
                   </section>  
@@ -131,7 +243,7 @@
                         <li style="margin-right: 20px;"><a href="#topic1">Evaluating Influencers’ Emotional Impact</a></li>
                         <li style="margin-right: 20px;"><a href="#topic2">Unlocking Positivity in Hot Topics</a></li>
                         <li style="margin-right: 20px;"><a href="#topic3">Elevating Beauty Brands through Brand Sentiment Analysis</a></li>
-                        <li><a href="#topic4">Evolving Language of Beauty: A Diachronic Study</a></li>
+                        <li style="margin-right: 20px;"><a href="#topic4">Evolving Language of Beauty: A Diachronic Study</a></li>
                       </ul>
                     </nav>
                   </section>
@@ -145,554 +257,101 @@
                       <li><a href="./nlp_code/add_external_data.html" class="button">Karma (External) is here!</a></li>
                     </ul>
                     <ul>
-                      <li><b>1. Project Overview and Data Preparation with Karma Analysis</b></li>
-                      <p>The project "Evaluating Influencers’ Emotional Impact" expanded to include the dimension of 'posting_karma' to measure the value of influencers' contributions to the "MakeupAddiction" subreddit. Our methodology combined PySpark and Spark NLP for data sourcing and preparation, ensuring that our sentiment analysis was grounded on a dataset enriched with additional metrics like karma scores.</p>
-                      <p>Our dataset was augmented with external data from the Python Reddit API Wrapper, adding a new variable 'posting_karma'. This allowed us to assess not only the sentiment of the influencers' interactions but also the community's valuation of their contributions.</p>
-                      <li><b>2. Sentiment Analysis Pipeline Enhanced with Karma Consideration</b></li>
-                      <p>Our sophisticated sentiment analysis model was enriched with an understanding of the influencers' karma scores. This helped us contextualize the emotional tones of responses within the broader scope of the influencers' reputation and authority as reflected by their karma.</p>
-                      <li><b>3. Revised Business Goals with External Data Integration</b></li>
-                      <p>Following the exploratory task of identifying the top 10 creators, we move on to assess the sentiment of top creators' comments to gauge the overall emotional tone of their response. This will provide further and more scientific insights into the influencer-audience interactions in MakeupAddiction.</p>                      
-                      <li><b>4. Results and Visualization Incorporating Karma Data</b></li>
-                      <p>Integrating 'posting_karma' data revealed a correlation between influencers' engagement levels and their recognized value in the community. We visualized this relationship, showing a moderate correlation coefficient of 0.46 between posting karma and creator scores, suggesting that influencers who contribute valuable content also tend to engage positively with their audience.</p>
+                      <h4><b>Project Overview</b></h4>
+                      <p>After carefully examining our data, we faced challenges in correlating comments with their corresponding submissions, despite efforts using inner joins on submission IDs and comment link or parent IDs. Due to these difficulties, we have redirected our business goal. We are now concentrating on analyzing the responses of influencers to their audience. This new focus allows us to investigate the interactive exchanges and feedback between influencers and their followers, providing key insights into the nature of engagement within our platform.</p>
                       <iframe src="nlp/Top10Creators_stmt_results.html" width="100%" height="600px"></iframe>
-                      <p>Key Points from the Visualization:</p>
-                      <p>
-                        <b>Predominance of Positive Sentiments:</b> Positive sentiments dominate, with 78% of the total, signifying a supportive engagement by influencers.<br>
-                        <b>Minority of Negative Sentiments:</b> Negative sentiments are less frequent but notable, representing 11.3% of the total.<br>
-                        <b>Impact of Posting Karma:</b> Influencers with higher 'posting_karma' tend to exhibit more positive sentiments, possibly indicating that more valued contributors are also more positive in their interactions.<br>
-                      </p>
-                      <p>Visualization of Karma and Sentiment Relationship:</p>
-                      <p>
-                        We presented a scatter plot to depict the relationship between 'posting_karma' and sentiment analysis results. Our visualization demonstrates that influencers with higher karma scores, indicating valuable contributions, also tend to engage more positively with the community.
-                      </p>
-                      <p>Integrating 'posting_karma' data, we observed the relationship between influencers' engagement levels and the community's valuation of their contributions. Our analysis revealed a positive correlation coefficient of 0.46 between posting karma and creator scores. This correlation suggests that influencers who are valued for their content contributions also tend to foster positive engagements within the community.</p>
-                      <iframe src="./nlp/karma_score_relation_plot.html" width="100%" height="600px"></iframe>
-                      <p><b>Visualization Interpretation:</b></p>
-                      <p>
-                        The interactive scatter plot, titled 'Relationship between Creator Score and Posting Karma (2021-2023)', is an essential part of our visualization effort. It elucidates:
-                        <ul>
-                          <li><b>X-Axis (Creator Score):</b> Reflects the influencers' popularity and engagement frequency in the subreddit.</li>
-                          <li><b>Y-Axis (Posting Karma):</b> Demonstrates the community's appreciation for the influencers' contributions, as manifested in their posting karma.</li>
-                          <li><b>Color Code (Created Year):</b> Distinguishes the data points based on the creation year of the influencers' posts, offering insights into the temporal trends of influence and community engagement.</li>
-                        </ul>
-                      </p>
-                      <p>
-                        This plot serves not just as a reflection of past interactions but also as a directional compass for future engagement strategies. By understanding the association between karma and creator scores, influencers can strategize to enhance their community presence and contribution value.
-                      </p>
-                      <li><b>5. Conclusion with Insights from Karma and Sentiment Interplay</b></li>
-                      <p>Our project has unveiled the multifaceted role of influencers in shaping online communities. The positive correlation between 'posting_karma' and sentiment underlines the dual importance of valuable content creation and positive community engagement. Our findings underscore the significance of influencers' contributions, both in terms of content and interaction, in fostering a vibrant and supportive subreddit ecosystem.</p>
-                    </ul>
+                      <figcaption style="text-align: center;"><b>Fig 8: Top 10 Creator Sentiment Results</b></figcaption>
+                      <p>The sentiment analysis of the provided authors reveals distinctive communication styles. Notably, "sadperson123456," "ahbagelxo," and "waterfromthevalley" consistently exhibit an optimistic tone, with a significant abundance of positive sentiments in their content. This suggests a generally positive and upbeat approach in their communication. On the contrary, "zemele" stands out for a more critical or negative expression, as evidenced by the higher count of negative sentiments. Authors such as "Sick-Sad-World32" and "DisheveledBoy" present a more balanced mix of sentiments, showcasing a nuanced and diverse communication style. The prevalence of both positive and negative expressions suggests a range of topics and perspectives covered in their content. Meanwhile, authors like "cuziluvmakeup," "Veeeeezy," and "Dominorepulsa" exhibit a clear positive dominance, suggesting an overall optimistic or favorable communication style.</p>
+                      <iframe src="./nlp/karma_relation_plot.html" width="100%" height="600px"></iframe>
+                      <figcaption style="text-align: center;"><b>Fig 9: Creator Score V.S. Posting Karma</b></figcaption>
+                      <p><code>Pearson Correlation Coefficient: 0.362</code>
+                        <code>P-value: 0.049</code><br>
+
+                        The Pearson correlation coefficient between "posting karma" and "creator score" is approximately 0.362, indicating a moderately positive correlation. The p-value of 0.0494 is close to the common significance threshold of 0.05. This suggests that there is some evidence to reject the null hypothesis that the correlation is zero (no correlation). The positive correlation could imply that users who receive positive engagement externally out of our dataset, possibly through quality contributions or popular content, are likely to be recognized as influential contributors by our creator score calculating scheme.</p>
                     <hr />
                       <h3 id = "topic2"><b>2. Unlocking Positivity in Hot Topics:</b></h3>
                       <ul class="actions">
                         <li><a href="./nlp_code/Top100_topic_sentiment_analysis.html" class="button">Click to get the code!</a></li>
                       </ul>
                       <ul>
-                          <li>1. Project Overview and Data Preparation:</li>
+                          <li><b>1. Project Overview and Data Preparation</b></li>
                           <ul>
-                              <li>Our project aimed to uncover the sentiment and community reception of content within the top 30 tags in the MakeupAddiction subreddit.</li>
-                              <li>We started by setting up a PySpark session, ensuring the necessary NLP libraries like Spark NLP and NLTK were in place.</li>
-                              <li>Data was sourced from the subreddit, focusing on posts tagged within our scope. This dataset was then sampled, reducing its size to a manageable level while retaining statistical significance.</li>
+                              <p>we aim to analyze sentiment within the top 35 most commented tags, identified as "Hot sensitive topics." This analysis will enable creators, moderators, and brands to better understand community reception and adjust their strategies accordingly. By employing Natural Language Processing (NLP) tools for sentiment analysis, we'll process submission texts to identify positive sentiments, thus providing valuable insights for content alignment, brand positioning, and community management.</p>
                           </ul>
-                          <li>2. Data Preprocessing and Analysis:</li>
+                          <li><b>2. Data Preprocessing and Analysis</b></li>
                           <ul>
-                            <li>The preprocessing phase involved employing Document Assembler and Normalizer from Spark NLP to standardize and clean the text data.</li>
-                            <li>We identified the top 30 tags based on the volume of comments, allowing us to concentrate our analysis on the most engaging topics within the subreddit.</li>
-                            <li>A pivot in our initial strategy occurred here: <b>instead of the top 100 tags, we refocused on the top 30, as they represented the core areas of community interest.</b></li>
+                            <p>In our data processing procedure, we utilize a Natural Language Processing (NLP) pipeline to extract tags from each submission within the "MakeupAddiction" subreddit. Initially, we parse the 'link_flair_text' field to identify tags. These tags are then segmented into tokens, normalized to lower case for consistency, and cleansed to remove any non-alphanumeric characters. Abbreviations like 'fotd' are also expanded to ensure clarity. The result is a set of clean, uniform tags associated with each submission, providing a structured dataset ready for in-depth analysis and insights extraction.</p>
                             <iframe src="nlp/top_100_tag_table.html" width="100%" height="400px"></iframe>
-                            <p>As illustrated by the table where the frequency of comments noticeably declines beyond the 30th tag. This concentration indicates that the community's discourse is not spread thinly over numerous subjects but is instead deeply rooted in a select few areas of significant interest. By focusing our NLP and sentiment analysis on these core 30 tags, we ensure that our evaluation is not only more robust due to the rich density of data points within each category but also more representative of the subreddit's active and dynamic discussions. This pivot to a more targeted analysis of the top 30 tags allows us to deliver insights with greater precision, offering a distilled view of the community's pulse and enabling stakeholders to craft strategies that resonate strongly with the most engaging content areas.</p>
-                            <iframe src="nlp/top_30_tags.html"  width="100%" height="600px"></iframe>
+                            <figcaption style="text-align: center;"><b>Table 5: Top 100 tags</b></figcaption>
+<p>The table reveals a notable decline in comment frequency beyond the 35th tag, indicating a concentrated focus of community discourse on a select few topics. By targeting our NLP and sentiment analysis on these top 35 tags, we capture the essence of the subreddit's most active discussions, providing a robust and representative dataset. This focused approach enhances the precision of our insights, offering a clear understanding of the community's interests and guiding stakeholders in developing highly resonant strategies.</p>
+                            <iframe src="nlp/top_35_tags.html"  width="100%" height="600px"></iframe>
+                            <figcaption style="text-align: center;"><b>Fig 10: Top 35 tags</b></figcaption>
                             <p>
-                              The graph titled "Top 30 Tags by Number of Comments" visualizes the distribution of comments across various tags in the "MakeupAddiction" subreddit. It's immediately apparent that the community engagement is heavily skewed towards a few specific tags, with "face of the day" and "question" garnering the most attention, indicated by the tallest bars on the graph. These two tags alone have a significantly higher number of comments—over 30,000 and nearly 29,000 respectively—highlighting them as the most popular and engaging topics within the community.<br><br>
-                              As we move beyond these tags, there's a steep drop-off in the number of comments, with the third most popular tag, "discussion," having just under 6,000 comments. The graph then shows a gradual decline as we move through the subsequent tags. This pattern indicates that while there is a range of topics that interest the community, a select few topics dominate the conversation. The sharp decrease from the second to the third tag and the relatively flat distribution amongst the remaining tags suggest that while the subreddit has a variety of discussions, user engagement is concentrated in top-tier topics.<br><br>
-                              The lower end of the graph, which includes tags such as "self," "saturday," "shitpost," "harassmentbigotry," "ama," and "news," has the least number of comments, all below 100. This suggests that these topics are either more niche or less provocative of discussion among the community members.<br><br>
-                              Overall, the graph effectively illustrates the disparity in user engagement across different discussion tags within the "MakeupAddiction" subreddit and could be indicative of the community's preferences or the influence of trending topics at the time of data collection. For stakeholders looking to engage with or market to this community, focusing on the highly engaging tags could provide better visibility and interaction rates.
-                          </p></ul>
-                         <li>3. Sentiment Analysis Implementation:</li>
+                              The data indicates a heavy-tailed distribution in user engagement on the forum, with 'face of the day' and 'question' tags dominating the conversation with over 250,000 comments each. This is contrasted by a steep decline in engagement for other tags, such as 'discussion' at 66,000 comments, and even more so for 'removal', 'rule', and 'photo', none surpassing 20,000. This distribution suggests a user focus on a few hot topics. Sentiment analysis on these tags could further elucidate the nature of user interactions, a step we intend to pursue to gain better insights into subreddit dynamics.</p>
+                              <p>From a business perspective, the 'face of the day' and 'question' tags present prime opportunities for marketing, with potential for high returns on engagement efforts. However, the less popular tags, reflecting specific interests, also offer niche marketing possibilities and community-building potential. A balanced engagement strategy could leverage high-traffic tags for visibility while tapping into lower-traffic discussions for niche positioning. Seasonal trends, such as increased activity around 'Halloween', also suggest opportunities for timely and thematic engagement, particularly for content creators and marketers looking to capitalize on these peak interest periods.</p> 
+                          </ul>
+                         <li><b>3. Sentiment Analysis Implementation</b></li>
                          <ul>
-                          <li>Employing TextBlob, we performed sentiment analysis on both the titles and bodies of the submissions.</li>
-                          <li>We categorized sentiments into Positive, Neutral, and Negative based on their polarity scores, which gave us a clear picture of the emotional tone associated with each tag.</li>
-                          <li>This sentiment categorization was pivotal in understanding the community's reception and interaction with various topics.</li>
+                          <p>Utilizing TextBlob, we conducted sentiment analysis on the titles and bodies of subreddit submissions, a method tailored to Reddit's unique format where titles often contain the most compelling and expressive words, while the body text is optional. We classified sentiments into Positive, Neutral, and Negative, using polarity scores to discern the emotional tone linked to each tag. This categorization played a crucial role in revealing the community's reception and engagement with different topics, offering insightful perspectives on how users interact with various content areas.</p>
                          </ul>
 
-                      <li>4. Visual Representation and Insights:</li>
-                      <iframe src="nlp/autosize_top30-senti-prop.html" style="transform: scale(0.65); transform-origin: top left;"width="160%" height="800px"></iframe>
-                       <p>The provided bar chart visualizes the proportion of sentiment categories—Positive, Neutral, and Negative—across various tags. The data suggests a predominant occurrence of Neutral sentiments across most tags, which implies a balanced or moderate tone in discussions related to those topics. Notably, the tags associated with 'tutorial', 'swatches', and 'showcase' exhibit a higher percentage of Positive sentiments, indicating a favorable reception or approval from the community in these areas.<br><br>
-
-                        Conversely, the 'harassmentbigotry' tag shows an overwhelming Negative sentiment, which could be attributed to discussions around negative experiences or issues that are critically viewed by the community. The 'face of the day' and 'haul' tags also display a significant portion of Positive sentiment, suggesting these are well-received topics within the community.<br><br>
-                        
-                        The presence of Positive sentiment in creative or personal sharing tags like 'tutorial', 'swatches', and 'haul' could reflect a supportive community environment that encourages individual expression. In contrast, the high Negative sentiment in 'harassmentbigotry' could reflect community concerns or discussions around sensitive topics.<br><br>
-                        
-                        Overall, the chart provides a valuable snapshot of the community's emotional response to different topics, highlighting areas of common interest, support, and contention. This insight could guide content moderation, community engagement strategies, and the development of resources to foster positive interactions and address areas of concern.</p>
-                      <iframe src="nlp/top30-senti-prop-body.html" style="transform: scale(0.65); transform-origin: top left;"width="160%" height="800px"></iframe>
-                      <p>The bar chart presents the proportion of sentiment categories—Negative, Neutral, and Positive—associated with different tags derived from the "MakeupAddiction" subreddit. At a glance, the predominance of green bars, which signify positive sentiment, suggests that the overall tone of discussions is generally positive across the majority of tags. This indicates an engaging and supportive community atmosphere, especially in discussions around "tutorial," "swatches," and "haul," where the Positive sentiment seems to be notably high.<br><br>
-
-                        Some tags, like "review" and "question," have a significant presence of red bars, indicating a higher proportion of negative sentiments. These could potentially point to critical evaluations or challenging questions within the community discourse. The "psa" (public service announcement) tag shows a relatively balanced distribution across all three sentiment categories, which could signify a mix of informative, advisory, and cautionary tones in these posts.<br><br>
-                        
-                        The "harassmentbigotry" tag stands out with a high negative sentiment, likely reflecting serious discussions around negative experiences or issues within the community that evoke a strong emotional response.<br><br>
-                        
-                        The visualization serves as a helpful tool for subreddit moderators and community managers to understand the emotional undertones across different discussion topics, which can inform content moderation policies and community engagement strategies. It also provides an indication of which topics are received well by the community and which may require more attention due to the presence of negative sentiments.</p>
-                        <li>5. Findings and Implications:</li>
-                        <p>The analysis of sentiment across different tags in the "MakeupAddiction" subreddit yields significant insights. A predominance of Neutral sentiments in many tags suggests that conversations are generally balanced and moderate, avoiding extreme emotional tones. However, certain tags like 'tutorial', 'swatches', and 'showcase' predominantly feature Positive sentiments, indicating these subjects are highly favored and well-received in the community. This positive reception showcases a community that values and supports creative and personal sharing endeavors.<br><br>
-                        
-                        Conversely, the noticeable Negative sentiment in tags like 'harassmentbigotry' highlights critical or sensitive issues within the community that might be of concern. This could be reflective of discussions around negative experiences or issues that are critically viewed by the community members. The existence of Negative sentiment in tags like 'review' and 'question' could point to critical evaluations or challenging questions, suggesting a space for open and honest discourse, albeit possibly contentious.<br><br>
-                        
-                        The Positive sentiments observed in 'face of the day', 'haul', and similar tags underline their popularity and engagement levels within the community, indicating these topics are areas of high interest and interaction. However, the high Negative sentiment in 'harassmentbigotry' warrants attention, as it reflects serious community concerns and discussions around sensitive topics.<br><br>
-                        
-                        Overall, these findings provide crucial insights for subreddit moderators, community managers, and brands looking to engage with this community. They highlight areas of common interest and support, as well as potential zones of contention. This understanding is vital for shaping effective content moderation, community engagement strategies, and marketing approaches. It also points to the necessity for resources to foster positive interactions and address areas of concern within the community.</p>                        
-                      <hr />
+                      <li><b>4. Visual Representation and Insights</b></li>
+                      <iframe src="nlp/top35-senti-prop.html" style="transform: scale(0.8); transform-origin: top left;"width="160%" height="750px"></iframe>
+                      <figcaption style="text-align: center;"><b>Fig 11: Top tags Sentiment Analysis</b></figcaption>
+                       <p>The sentiment analysis of the "MakeupAddiction" subreddit, visualized through a bar chart, offers an intricate depiction of the community's interactive dynamics. The prevalence of Neutral sentiment across the spectrum of tags may point to a community that prizes balanced and thoughtful exchanges. However, the concentrated Negative sentiment in the 'harassmentbigotry' tag could indicate either a focused discussion on challenging issues or a potential echo chamber for dissenting voices. The distribution of Positive sentiment, particularly in tags associated with practical advice and product discussion ('tutorial', 'swatches', 'product'), suggests that utilitarian content is highly appreciated. The presence of both Positive and Negative sentiments in discussion-centric tags ('face of the day', 'discussion', 'question') is indicative of a dynamic discourse environment. </p>
+                       <p>For stakeholders, including KOLs and brands, navigating the "MakeupAddiction" community sentiment landscape demands a nuanced strategy. Tags with a Positive sentiment underscore the community's affinity for actionable content. This insight can be pivotal for KOLs to craft content strategies that align with the subreddit's preferences for tutorials and product showcases, potentially increasing follower engagement and driving conversion rates for promoted products.</p>
+                       <p>The prominent Negative sentiment in the 'harassmentbigotry' tag presents a dual opportunity: to engage in corporate social responsibility by fostering positive interactions and to possibly mitigate negative brand association through proactive community management. For KOLs, it is an opportunity to establish thought leadership by addressing difficult topics with sensitivity and insight.</p>
+                      <p>In popular, debate-rich tags showing a mix of sentiments, KOLs and brands have the chance to differentiate themselves. Here, the challenge lies in striking a balance between contributing to discussions in a way that respects the diversity of opinions and maintaining brand integrity. Engaging with these debates could potentially be rewarding, but requires a deft touch, possibly involving sentiment trend analysis to time interventions for maximum impact.</p>
+                      <p>Overall, a granular understanding of sentiment data enables KOLs and brands to tailor their approach, ensuring that their engagement is not only robust and data-driven but also empathetic and community-oriented. This strategic approach is key to building lasting relationships within the "MakeupAddiction" subreddit, leading to sustained brand loyalty and community trust.</p>
+                         <hr />
                       <h3 id = "topic3"><b>3. Elevating Beauty Brands through Brand Sentiment Analysis</b></h3>
                       <ul class="actions">
                         <li><a href="./nlp_code/Top10Brands_sentimentAnalysis.html" class="button">Click to get the code!</a></li>
                       </ul>
-                      <ul class="actions">
-                        <li><a href="./nlp_code/google_trend_plot.html" class="button">Google Index (External) is here!</a></li>
-                      </ul>
-                      <div class="container">
-                        <section>
-                          <p><b>Project Overview and Data Preparation</b></p>
-                          <p>This report presents an in-depth sentiment analysis of conversations on the "MakeupAddiction" subreddit, with the aim to gauge consumer sentiment towards top beauty brands and products from 2021 to 2023. Additionally, we incorporate insights from Google's index to understand the online visibility and search interest in these brands and products. Our findings offer actionable insights for beauty brands to optimize their marketing strategies and product development.</p>
-                          <p>The journey began with the collection and cleaning of data from the MakeupAddiction subreddit. We created dummy variables to segregate the dataset into distinct categories: "Skincare," "Makeup," and "Bodycare." This classification allowed us to conduct a focused sentiment analysis on each category.</p>
-                        </section>
-                      
-                        <section>
-                          <p><b>Sentiment Analysis Implementation</b></p>
-                          <p>Employing NLP and sentiment analysis tools, we categorized comments into positive, negative, and neutral sentiments, quantifying the emotional tone within consumer interactions. The analysis highlighted a dominance of positive sentiment, which can significantly influence brand reputation.</p>
-                          <iframe src="nlp/makeup_sentiment.html"  width="100%" height="600px"></iframe>
-                          <iframe src="nlp/skincare_sentiment.html"  width="100%" height="600px"></iframe>
-                          <iframe src="nlp/makeup_product_sentiment.html"  width="100%" height="600px"></iframe>
-                          <iframe src="nlp/makeup_product_brand_sentiment.html"  width="100%" height="600px"></iframe>
-                        </section>
-                      
-                        <section>
-                          <p><b>Brand and Product Popularity</b></p>
-                          <p>Our study extracted mentions of brands and products to identify trends. The consistent popularity of foundational makeup items like foundations and mascaras was evident, with brands like MAC and Clinique frequently appearing in discussions.</p>
-
-                        </section>
-                      
-                        <section>
-                          <p><b>Revised Business Goals</b></p>
-                          <p>The initial goal to link influencer posts with comments was pivoted to analyze the sentiments in influencer responses due to data limitations. This provided a richer understanding of influencer-audience dynamics.</p>
-                        </section>
-                      
-                        <section>
-                          <p><b>Integration of Google Index Data</b></p>
-                          <p>Google Index data was chosen for its robust reflection of consumer trends and preferences. It provided a complementary view of our Reddit-based sentiment analysis, offering a broader perspective on market dynamics. The Google Index served as a barometer for brand and product popularity, guiding content creation and SEO optimization strategies.</p>
-                        </section>
-                      
-                        <section>
-                          <p><b>Comparative Analysis of Skincare and Makeup Categories</b></p>
-                          <p>Our comparative analysis over the years revealed:
-                          <li>Makeup Products Analysis Summary:</li>
-                          <iframe src="nlp/top_10_makeup_product.html" width="100%" height="600px"></iframe>
-                            <p><b>Foundation's Dominant Role:</b> Foundation has consistently been a top-mentioned makeup product, indicating its central role in the industry. The notable surge in mentions in 2022 suggests increased consumer interest, possibly due to marketing efforts, product innovations, or evolving trends. This enduring popularity underlines foundation's key position in the makeup market.</p>
-
-                            <p><b>Mascara's Resilient Demand:</b> Mascara remains a top-three product each year, highlighting its persistent demand. The stable interest, especially in 2021 and 2022, points to a solid market position. Businesses could benefit from focusing on mascara through targeted marketing and innovative product developments.</p>
-
-                            <p><b>Lipstick's Steady Appeal:</b> Lipstick consistently ranks in the top three, emphasizing its importance as a staple in makeup routines. This steady interest presents an opportunity for businesses to concentrate on lip products, possibly expanding their offerings in this category.</p>
-
-                            <p><b>Evolving Product Preferences:</b> The changing makeup landscape, with varying product preferences each year, signals the need for businesses to remain adaptable. Keeping pace with these shifts is crucial for aligning marketing strategies and product development with consumer interests.</p>
-
-                            <p><b>Annual Specific Trends:</b></p>
-                            <ul>
-                                <li><b>2021:</b> The popularity of a diverse range of products (mascara, foundation, lipstick, concealer) suggests a broad interest across different makeup categories.</li>
-                                <li><b>2022:</b> Foundation's rise to the top spot may indicate a shift towards face makeup, providing a direction for product development and marketing strategies.</li>
-                                <li><b>2023:</b> The enduring popularity of mascara and the emerging prominence of primer point to sustained interest in eye makeup and preparation products.</li>
-                            </ul>
-
-                            <p><b>Strategic Business Recommendations:</b></p>
-                            <ul>
-                                <li><b>Product Development:</b> Leverage insights to focus on consistently in-demand products like foundation, mascara, and lipstick.</li>
-                                <li><b>Marketing Campaigns:</b> Create targeted campaigns, especially during peak periods identified in the trend analysis.</li>
-                                <li><b>Trend Adaptability:</b> Stay flexible to accommodate changing makeup trends, ensuring that business strategies align with consumer preferences.</li>
-                                <li><b>Market Expansion:</b> Consider expanding product lines in areas like face makeup and eye preparation, responding to observed market trends.</li>
-                            </ul>
-                          <li>Google Trends Analysis:</li>
-                          <iframe src="nlp/makeup_product_trend.html"  width="100%" height="600px"></iframe>
-                          <p>Based on the Google Trend plot which appears identical to the description of the first, we can make the following comparative analysis:<br><br>
-
-                            <b>Foundation's Dominant Role</b>: The trends for foundation are consistent with the previous analysis, maintaining a significant presence in the market. The surge in 2022, which could be associated with increased consumer interest, is evident in both plots.<br><br>
-                            
-                            <b> Mascara's Resilient Demand</b>: Mascara shows a steady presence in both plots, maintaining its position as a top-three product. This reaffirms its stable interest and solid market position mentioned in the provided analysis.<br><br>
-                            
-                            <b>Lipstick's Steady Appeal</b>: Lipstick continues to rank in the top three across both plots, which supports the idea that it remains a staple in makeup routines and a consistent performer in the makeup market.<br><br>
-                            
-                            <b>Evolving Product Preferences</b>: The changes in product preferences from year to year are similar in both plots, underscoring the need for businesses to stay adaptable to shifts in the makeup landscape.<br><br>
-                            
-                            <b>Annual Specific Trends</b>: The trends for 2021, 2022, and 2023 show similar patterns in both plots, with broad interests in 2021, a pivot towards face makeup in 2022, and a sustained interest in eye makeup and preparation products in 2023.<br><br>
-                            
-                            <b>Strategic Business Recommendations</b>: Given the consistent patterns observed, the strategic business recommendations provided would be equally applicable. Focusing on product development and marketing for foundation, mascara, and lipstick, as well as staying flexible to trends and considering market expansion in specific makeup categories, would remain prudent strategies.<br><br>
-                            
-                            <b>Overall, the comparative analysis reinforces the insights provided from the first plot's analysis. Foundation, mascara, and lipstick continue to be key products with enduring popularity, and the importance of agility in business strategy to adapt to market trends is emphasized. </b>​</p>
-
-                          </ul>
-                          <li>Makeup Products Brand Analysis Summary:</li>
-                          <iframe src="nlp/top_10_makeup_brand.html"  width="100%" height="600px"></iframe>
-                          <p>Based on the Above generates a bar plot using Plotly Express to visualize the top 10 mentioned makeup brands each year, based on a Pandas DataFrame. Below is a detailed analysis of the results with a focus on business insights:</p>
-                          
-                          <p>Overall Trends and Insights:</p>
-                          <p><b>Dominant Brands:</b></p>
-                          <ul>
-                              <li>Established and widely recognized brands such as MAC, Sephora, and NARS consistently rank among the top mentioned makeup brands across all three years.</li>
-                              <li>These brands have a strong and enduring presence in user discussions.</li>
-                          </ul>
-
-                          
-                          <p><b>Dynamic Landscape:</b></p>
-                          <ul>
-                              <li>The makeup landscape is dynamic, with varying brand mentions from year to year.</li>
-                              <li>Newer or trendier brands may emerge, and businesses should stay attuned to these changes for strategic planning.</li>
-                          </ul>
-                      
-                          <p><b>Yearly Specifics:</b></p>
-                          <p><b>2021:</b></p>
-                          <ul>
-                              <li>Top Brand: MAC</li>
-                              <li>Key Brands: Sephora, NARS, Urban Decay</li>
-                              <li>Observations: MAC takes the lead, indicating its popularity among users. Other notable brands include Sephora and NARS.</li>
-                          </ul>
-                      
-                          <p><b>2022:</b></h5>
-                          <ul>
-                              <li>Top Brand: MAC</li>
-                              <li>Key Brands: Sephora, NARS, Urban Decay, Estee Lauder</li>
-                              <li>Observations: MAC maintains its top position, and Estee Lauder emerges among the key brands, suggesting a potential marketing push or product innovation.</li>
-                          </ul>
-                      
-                          <p><b>2023:</b></p>
-                          <ul>
-                              <li>Top Brand: MAC</li>
-                              <li>Key Brands: Sephora, NARS, Urban Decay, Estee Lauder</li>
-                              <li>Observations: Similar to 2022, MAC continues to dominate, with consistent key brands indicating sustained interest.</li>
-                          </ul>
-                      
-                          <p><b>Business Strategy Considerations:</b></p>
-                          <ul>
-                              <li>Brand Partnerships: Businesses may explore partnerships or collaborations with popular brands like MAC to leverage their established market presence.</li>
-                              <li>Monitoring Emerging Brands: Keep a close eye on emerging brands that enter the top mentions, as they may represent evolving trends or rising competition.</li>
-                              <li>Product Placement and Marketing: Allocate marketing resources strategically, focusing on the most mentioned brands each year to maximize visibility and engagement.</li>
-                              <li>Market Expansion: Identify opportunities for expanding product lines in collaboration with popular brands, aligning with user preferences.</li>
-                          </ul>
-                      
-                          <p>The interactive nature of the Plotly Express plot allows users to explore brand mentions dynamically, facilitating a deeper understanding of makeup brand trends over the specified years.</p>
-                          <p>The dark theme and color scheme enhance the visual appeal and user engagement with the plot.</p>
-                      
-                          <p><b>Considerations:</b></p>
-                          <ul>
-                              <li>The analysis assumes accurate data and appropriate preprocessing.</li>
-                              <li>Further analysis could involve sentiment analysis to understand user sentiments towards specific brands.</li>
-                              <li>Continuous monitoring of brand mentions is crucial for staying responsive to evolving consumer preferences and market trends.</li>
-                          </ul>
-                      
-                          <p>In conclusion, the analysis provides valuable insights into the popularity of makeup brands over the specified years, guiding businesses in strategic decision-making and brand positioning.</p>
-                          <ul>
-                            <li>Google Trends Analysis:</li>
-                            <iframe src="nlp/makeup_brand_trend.html"  width="100%" height="600px"></iframe>
-                            <p>In the comparative analysis of the second plot against the first plot's description, we can observe the following:<br><br>
-
-                            Dominant Brands Loreal seems to have a significant peak in search interest, surpassing other brands in certain periods, which might indicate strong marketing campaigns or popularity surges. This differs from the consistent dominance of MAC, Sephora, and NARS mentioned in the first plot's description.<br><br>
-                              
-                            <b>Dynamic Landscape</b>: The second plot supports the notion of a dynamic landscape. The search interest for different brands fluctuates over time, with some showing pronounced spikes that could correspond to new product releases, marketing initiatives, or trends.<br><br>
-                              
-                            <b>Yearly Specifics</b>:<br><br>
-                              
-                              In 2021, the plot shows notable peaks for brands like Loreal and a few others, which may differ from the top brand MAC indicated in the first plot's description.<br><br>
-                              In 2022, the data shows a significant peak for Loreal, suggesting a potential marketing push or product innovation, possibly aligning with the emergence of Estee Lauder as mentioned in the first plot.<br><br>
-                              For 2023, while MAC was noted as the top brand in the first plot, the second plot suggests that Loreal has notable search interest, which could indicate a shift in consumer interest or brand strategies.<br><br>
-                              Business Strategy Considerations: The Google Trends data in the second plot can be used to inform the business strategy considerations mentioned in the first plot's description. The spikes in search interest for certain brands at specific times may guide strategic marketing and product placement decisions.<br><br>
-                              
-                            <b>Emerging Brands</b>: While the first plot's description does not mention emerging brands, the second plot might indicate the rise in popularity of certain brands that are not traditionally top-ranked, which businesses should monitor closely.<br><br>
-                              
-                            <b>Consistency with Business Insights</b>: The second plot's data could potentially support the business insights provided in the first plot, especially regarding the need for continuous monitoring of brand mentions and strategic resource allocation based on brand popularity.<br><br>
-                              
-                              In conclusion, while the first plot emphasizes the consistent popularity of certain brands, the second plot highlights the fluctuating nature of brand interest over time, suggesting that businesses should remain agile in their marketing and product development strategies to capitalize on these trends. </p>
-                            </ul>
-                            <li>Skincare Products Analysis Summary:</li>
-                            <iframe src="nlp/top_skincare_products.html"  width="100%" height="600px"></iframe>
-                            <p><b>Overall Trends and Insights:</b></p>
-                            <ul>
-                              <p><b>2021:</b></p>
-                              <li><b>Essence and Cleanser: </b>Essence and cleanser make it to the top mentions in 2021, indicating a focus on essential skincare steps.</li>
-                              <li><b>Mask, Moisturizer, and Sunscreen:</b> Masks, moisturizers, and sunscreens are highly mentioned, emphasizing skincare routines that involve hydration and sun protection.</li>
-                              <li><b>Business Insight:</b>Products related to hydration and sun protection are popular, suggesting potential market demand.</li>
-                              <p><b>2022:</b></p>
-                              <li><b>Serum, Moisturizer, and Sunscreen Dominate: </b>Serum, moisturizer, and sunscreen take the lead in 2022, reflecting a continued emphasis on hydration and sun protection.</li>
-                              <li><b>BHA Mention: </b> BHA (Beta Hydroxy Acid) makes an appearance, suggesting a growing interest in specific skincare ingredients.</li>
-                              <li><b>Business Insight:</b>Continuing the focus on hydration and sun protection, businesses may consider promoting BHA-related products. </li>
-                              <p><b>2023:</b></p>
-                              <li><b>Toner and Essence Introduction: </b>Toner and essence emerge in 2023, indicating a potential shift towards additional skincare steps.</li>
-                              <li><b>Cleanser, Serum, and Moisturizer:  </b> These remain prominent, emphasizing a balanced skincare routine.</li>
-                              <li><b>Business Insight:</b>The introduction of toner and essence suggests evolving skincare routines, offering opportunities for product diversification.</li>
-                            </ul>
-                            <p><b>Business Strategy Considerations:</b></p>
-                            <ul>
-                              <li><b>Product Development:</b></li>
-                              <ul>
-                                <li>Develop and promote products aligned with popular skincare categories each year.</li>
-                                <li>Consider introducing products with specific ingredients, such as BHA, to meet emerging trends.</li>
-                              </ul>
-                              <li><b>Marketing Emphasis:</b></li>
-                              <ul>
-                                <li>Allocate marketing resources to highlight top skincare products.</li>
-                                <li>Create educational content around the benefits of specific ingredients to cater to informed consumers.</li>
-                              </ul>
-                              <li><b>Market Monitoring:</b></li>
-                              <ul>
-                                <li>Regularly monitor shifts in skincare trends to stay ahead of consumer preferences.</li>
-                                <li>Adapt product offerings and marketing strategies based on evolving trends.</li>
-                              </ul>
-                              <li><b>Consumer Preferences:</b></li>
-                              <ul>
-                                <li>Identify and capitalize on growing interest in specific skincare steps or ingredients.</li>
-                                <li>Tailor marketing messages to resonate with consumer preferences reflected in the data.</li>
-                              </ul>
-                            </ul>
-                            <p><b>Visualization and User Engagement:</b></p>
-                            <p>The interactive nature of the Plotly Express plot allows users to explore skincare trends dynamically.</p>
-                            <p>The color scale enhances visual appeal, providing a quick overview of the popularity of each skincare product.</p>
-                            <p><b>Considerations:</b></p>
-                            <ul>
-                              <li>Ensure data accuracy and appropriate preprocessing for robust analysis.</li>
-                              <li>Incorporate sentiment analysis for deeper insights into consumer attitudes towards skincare products.</li>
-                              <li>Continuous monitoring and adaptation to evolving skincare trends are crucial for business success.</li>
-                            </ul>
-                            <p>In conclusion, the analysis provides valuable insights into the evolving landscape of skincare product mentions over the specified years. These insights can guide businesses in strategic decision-making, product development, and marketing efforts to meet the dynamic needs of consumers in the skincare industry.</p>
-                            
-                          <ul>
-                            <li>Google Trends Analysis:</li>
-                            <iframe src="nlp/skincare_product_trend.html"  width="100%" height="600px"></iframe>
-                            <p><b>Comparative Analysis of Original Plot and Google Trends Plot</b></p>
-
-                              <p><b>Overall Trends and Insights:</b></p>
-
-                              <p><b>2021 Insights:</b></p>
-                              <ul>
-                                <li>The Original Plot highlighted essence and cleanser as top mentions, indicating an emphasis on fundamental skincare steps.</li>
-                                <li>The Google Trends Plot shows a consistent pattern with moisturizer and cleanser maintaining a steady search interest throughout the year, corroborating the importance of these basic skincare products.</li>
-                                <li>Masks show significant fluctuation in the Google Trends Plot, suggesting variable interest throughout the year, possibly influenced by seasonal trends or specific events.</li>
-                              </ul>
-
-                              <p><b>2022 Insights:</b></p>
-                              <ul>
-                                <li>Serum, moisturizer, and sunscreen were noted as dominant in the Original Plot, which is partially reflected in the Google Trends Plot where moisturizer maintains high interest, but sunscreen does not appear to have a significant presence.</li>
-                                <li>The mention of BHA in the Original Plot suggests a growing interest in active skincare ingredients, which is also indicated in the Google Trends Plot by the gradual increase in search interest for BHA over the year.</li>
-                              </ul>
-
-                              <p><b>2023 Insights:</b></p>
-                              <ul>
-                                <li>The Original Plot describes the introduction of toner and essence, hinting at a potential shift towards more comprehensive skincare routines. The Google Trends Plot shows a marked increase in search interest for toner at the beginning of the year, aligning with this observation.</li>
-                                <li>Cleanser, serum, and moisturizer remain prominent in both plots, underscoring their continued relevance in skincare routines.</li>
-                                <li>The Google Trends Plot shows that AHA maintains a lower but consistent interest level, suggesting it remains a niche concern among skincare trends.</li>
-                              </ul>
-
-                              <p><b>Business Strategy Considerations:</b></p>
-                              <ul>
-                                <li><b>Product Development:</b> Both plots indicate a steady consumer interest in moisturizers, cleansers, and serums, suggesting these should be focus areas for product development. The emerging popularity of ingredients like BHA points to opportunities for incorporating such ingredients into new product formulations.</li>
-                                <li><b>Marketing Emphasis:</b> Given the sustained interest in foundational skincare products, marketing resources should continue to highlight these items. Educational content around the benefits of specific ingredients like BHA can cater to a more ingredient-conscious consumer base.</li>
-                                <li><b>Market Monitoring:</b> Regular monitoring of skincare trends is validated by the fluctuating interests shown in the Google Trends Plot, which emphasizes the need for businesses to remain agile in their marketing strategies. The increasing interest in toner and the sustained relevance of moisturizer and serum suggest that companies should adapt their offerings to include these products prominently.</li>
-                                <li><b>Consumer Preferences:</b> Identifying and capitalizing on growing interests, such as the apparent rise in searches for toner, would allow businesses to align with consumer preferences. Marketing messages should reflect the data-driven insights, particularly focusing on the consistent demand for essential skincare products.</li>
-                              </ul>
-
-                              <p><b>Visualization and User Engagement:</b></p>
-                              <p>The interactive nature of the Plotly Express plot, as described for the Original Plot, is a useful tool for exploring dynamic skincare trends. Although the Google Trends Plot is not interactive within this environment, its trends suggest that an interactive plot would be beneficial for analyzing the variations in product popularity over time.</p>
-
-                              <p><b>Considerations:</b></p>
-                              <ul>
-                                <li>Ensuring data accuracy and conducting appropriate preprocessing is crucial for robust analysis, as fluctuations in search interest could be influenced by external factors not immediately apparent in the data.</li>
-                                <li>Sentiment analysis, not visible in the plots, would provide deeper insights into consumer attitudes toward specific skincare products, which is critical for aligning product development and marketing strategies with consumer sentiment.</li>
-                              </ul>
-
-                              <p><b>Conclusion:</b></p>
-                              <p>Both the Original Plot and the Google Trends Plot offer valuable insights into the skincare industry's evolving landscape, highlighting the importance of hydration-focused products and indicating a potential shift towards more comprehensive skincare routines. These insights reinforce the need for businesses to focus on product development, targeted marketing, and adaptation to consumer trends to remain competitive in the dynamic skincare market.</p>
-
-                            <li>Skincare Products Brand Analysis Summary:</li>
-                            <iframe src="nlp/top_skincare_brands.html" width="100%" height="600px"></iframe>
-                            <p><b>Overall Trends and Insights:</b></p>
-                            <ul>
-                              <p><b>2021:</b></p>
-                              <li><b>Glossier and Simple Lead: </b>Glossier and Simple emerge as the top skincare brands in 2021, with a notable lead in mentions.</li>
-                              <li><b>Cerave, Aveeno, and Clinique: </b>These brands also secure positions in the top mentions, showcasing diversity in consumer preferences.</li>
-                              <li><b>Business Insight: </b>The dominance of Glossier and Simple suggests a preference for minimalist and effective skincare, offering potential market niches.</li>
-                              <p><b>2022:</b></p>
-                              <li><b>Fresh and Cerave Dominate: </b>Fresh and Cerave take the lead in 2022, indicating a shift in popular brands.</li>
-                              <li><b>Neutrogena, Shiseido, and Others: </b>Established brands like Neutrogena and Shiseido continue to have a presence, showcasing a mix of established and emerging preferences.</li>
-                              <li><b>Business Insight: </b>Businesses may consider collaborations or promotions with trending brands like Fresh to align with evolving consumer choices.</li>
-                              <p><b>2023:</b></p>
-                              <li><b>Simple Maintains Top Position: </b>Simple retains its top position in 2023, suggesting continued consumer trust.</li>
-                              <li><b>New Entrants: </b>Neogen, Biore, and Fresh make appearances, indicating potential shifts in consumer preferences.</li>
-                              <li><b>Business Insight: </b>Opportunities exist for businesses to capitalize on emerging brands like Neogen and Biore through strategic partnerships or targeted marketing.</li>
-                            </ul>
-                            <p><b>Business Strategy Considerations:</b></p>
-                            <ul>
-                              <li><b>Brand Collaboration:</b></li>
-                              <ul>
-                                <li>Identify opportunities for collaboration with top-performing brands, leveraging their popularity for mutual benefit.</li>
-                              </ul>
-                              <li><b>Product Promotion:</b></li>
-                              <ul>
-                                <li>Tailor marketing strategies based on the popularity of specific brands each year, ensuring effective product promotion.</li>
-                              </ul>
-                              <li><b>Diversity in Offerings:</b></li>
-                              <ul>
-                                <li>Consider offering a diverse range of skincare products to cater to the varied preferences reflected in the top brand mentions.</li>
-                              </ul>
-                              <li><b>Market Positioning:</b></li>
-                              <ul>
-                                <li>Stay informed about the emergence of new brands and adjust market positioning to align with evolving consumer choices.</li>
-                              </ul>
-                              <li><b>Consumer Trust:</b></li>
-                              <ul>
-                                <li>Build and maintain consumer trust by consistently delivering quality products, as reflected in brands like Simple maintaining popularity.</li>
-                              </ul>
-                            </ul>
-                            <p><b>Visualization and User Engagement:</b></p>
-                            <p>The interactive nature of the Plotly Express plot allows users to explore skincare brand trends dynamically.</p>
-                            <p>The color scale enhances visual appeal, providing a quick overview of the popularity of each skincare brand.</p>
-                            <p><b>Considerations:</b></p>
-                            <ul>
-                              <li>Ensure data accuracy and appropriate preprocessing for robust analysis.</li>
-                              <li>Incorporate sentiment analysis for deeper insights into consumer attitudes towards skincare brands.</li>
-                              <li>Continuous monitoring and adaptation to evolving brand preferences are crucial for business success.</li>
-                            </ul>
-                            <p>In conclusion, the analysis provides valuable insights into the changing landscape of skincare brand mentions over the specified years. These insights can guide businesses in strategic decision-making, brand collaborations, and marketing efforts to meet the dynamic needs of consumers in the skincare industry.</p>                            
-                            <li>Google Trends Analysis:</li>
-                            <iframe src="nlp/skincare_brand_trend.html"  width="100%" height="600px"></iframe>
-                            <p><b>Comparative Analysis of Original Plot and Google Trends Plot</b></p>
-
-                                <p><b>Overall Trends and Insights:</b></p>
-
-                                <p><b>2021 Insights:</b></p>
-                                <ul>
-                                  <li>Glossier and Simple emerge as the top skincare brands in the Original Plot for 2021, indicating a focus on minimalist and effective skincare.</li>
-                                  <li>In the Google Trends Plot, Glossier shows a peak in interest, which aligns with the Original Plot's findings. Simple does not appear to be represented in the Google Trends Plot, suggesting a discrepancy between the two data sets.</li>
-                                  <li>Cerave shows a steady and significant presence in the Google Trends Plot, which supports the Original Plot's observation of its strong position.</li>
-                                </ul>
-
-                                <p><b>2022 Insights:</b></p>
-                                <ul>
-                                  <li>The Original Plot notes Fresh and Cerave as leading brands in 2022. The Google Trends Plot reflects this with Cerave maintaining a prominent interest level throughout the year.</li>
-                                  <li>Neutrogena and Shiseido are noted for their continued presence in the Original Plot, which is consistent with the moderate and steady interest shown in the Google Trends Plot.</li>
-                                </ul>
-
-                                <p><b>2023 Insights:</b></p>
-                                <ul>
-                                  <li>According to the Original Plot, Simple maintains the top position in 2023, which is not reflected in the Google Trends Plot where Simple's presence is not evident.</li>
-                                  <li>Neogen and Biore, mentioned as new entrants in the Original Plot, do not appear in the Google Trends Plot, highlighting a potential gap in the captured data or a difference in the timeframe of data collection.</li>
-                                </ul>
-
-                                <p><b>Business Strategy Considerations:</b></p>
-                                <ul>
-                                  <li><b>Brand Collaboration:</b> The presence of Cerave across both plots suggests it is a strong candidate for brand collaborations.</li>
-                                  <li><b>Product Promotion:</b> Consistency in brand interest across both plots for brands like Cerave and Neutrogena indicates the potential effectiveness of product promotion strategies centered around these brands.</li>
-                                  <li><b>Diversity in Offerings:</b> The varying interest levels in different brands across the plots suggest that a diverse range of products could cater to consumer preferences effectively.</li>
-                                  <li><b>Market Positioning:</b> Discrepancies between the plots indicate the need for businesses to have adaptable market positioning strategies.</li>
-                                  <li><b>Consumer Trust:</b> The sustained popularity of certain brands in both plots emphasizes the importance of building and maintaining consumer trust through consistent quality.</li>
-                                </ul>
-
-                                <p><b>Visualization and User Engagement:</b></p>
-                                <p>While the Original Plot provides a dynamic tool for exploring skincare brand trends, the Google Trends Plot, though static in this context, still offers valuable insights into brand popularity and consumer interest over time.</p>
-
-                                <p><b>Considerations:</b></p>
-                                <ul>
-                                  <li>Data accuracy and appropriate preprocessing are vital to ensure robust analysis, as highlighted by the differences in brand mentions between the two plots.</li>
-                                  <li>Sentiment analysis could complement these findings by providing depth to the understanding of consumer attitudes towards these brands.</li>
-                                </ul>
-
-                                <p><b>Conclusion:</b></p>
-                                <p>The analysis of the Original Plot and the Google Trends Plot together offer a comprehensive overview of the skincare brand landscape over recent years. These analyses can inform strategic decision-making, brand collaborations, and marketing efforts to align with consumer trends and preferences in the skincare industry.</p>
-
-                            </ul>
-                        </section>
-                      
-                        <section>
-                          <p><b>Business Insights and Recommendations</b></p>
-                          <p>The analysis indicates that high posting karma on Reddit could translate to higher creator scores, implying that content valued by the community enhances brand image. The integration of Google Index data suggests that an effective online presence and SEO strategies are crucial for brand visibility.</p>
-                          <p>We recommend that beauty brands:</p>
-                          <ol>
-                            <li>Leverage Positive Engagement: Maintain a positive tone in interactions to build a favorable brand image.</li>
-                            <li>Track Evolving Trends: Stay abreast of popular discussions to align products with consumer interests.</li>
-                            <li>Optimize SEO Strategies: Utilize insights from Google Index data for better online visibility.</li>
-                            <li>Refine Content Strategy: Develop content that resonates with current sentiments and search trends.</li>
-                            <li>Embrace Flexibility: Be ready to adapt to the dynamic consumer preferences reflected in the sentiment analysis and Google Index trends.</li>
-                          </ol>
-                        </section>
-                      
-                        <section>
-                          <p><b>Visualizations and Technical Proficiency</b></p>
-                          <p>Our visualizations, adhering to best practices, featured clarity in titles, axis labels, and legends. Interactive elements in the visualizations made the analysis more engaging and informative, highlighting our data science acumen.</p>
-                        </section>
-                      
-                        <section>
-                          <p><b>Conclusion</b></p>
-                          <p>The combination of sentiment analysis with Google Index insights provides a powerful tool for understanding and forecasting consumer behavior. Our report demonstrates a robust technical expertise and a deep understanding of NLP, sentiment analysis, and search trend analysis, equipping beauty brands with the knowledge to make informed strategic decisions.</p>
-                        </section>
-                      <hr />
+                      <h4><b>Project Overview</b></h4>
+                      <p>The business initiative employs Natural Language Processing (NLP) to discern the most frequently mentioned brands within "Skincare" and "Makeup" discussions on the MakeupAddiction subreddit. This endeavor is not just about counting mentions; it's about probing the sentiments embedded in those discussions, with an eye toward understanding consumer sentiment—whether it skews positive, negative, or neutral towards specific brands. By marrying the quantitative frequency of brand mentions with the qualitative insights from sentiment analysis, the project promises to deliver a dual-layered perspective on consumer preferences and perceptions. This dual analysis, encompassing both volume and valence of brand discussions over the period from 2021 to 2023, aims to arm beauty industry stakeholders with nuanced intelligence to fine-tune marketing approaches and product innovation, aligning them more closely with the pulse of market demand as expressed by a community of makeup enthusiasts.</p>
+                      <h4><b>Sentiment Analysis</b></h4>
+                      <iframe src="nlp/Top10_makeup_brand.html" width="100%" height="440px"></iframe>
+                      <figcaption style="text-align: center;"><b>Fig 12: Top Makeup Brand Sentiment Analysis</b></figcaption>
+                      <p>The sentiment analysis of the top 10 makeup brands, accessible via a dropdown menu for specific yearly data, reveals a predominantly positive public perception across 2021, 2022, and 2023. In 2021, ELF led the positive sentiment count, nearing 800, markedly outpacing other brands such as NYX, PUR, and TARTE, which also maintained strong positive sentiment with counts above 500. Neutral sentiments were relatively infrequent, generally staying below 200 counts, while negative sentiments were the least common, seldom surpassing 100 counts, underscoring a favorable view towards these brands.<br><br>
+                        In the subsequent years, while ELF's positive sentiment slightly waned, it remained the frontrunner. The increase in negative sentiments was marginal, indicating a consistent consumer favorability. By 2023, a modest rise in negative sentiment was observed, particularly for ELF, where counts exceeded 100. Despite this, the positive sentiment continued to dominate the narrative. The analysis indicates a dichotomous consumer attitude, where neutral sentiment is rare, suggesting that consumers are distinctly positive or negative in their brand perception.</p>
+                        <iframe src="nlp/Top10_makeup_product.html" width="100%" height="430px"></iframe>
+                        <figcaption style="text-align: center;"><b>Fig 13: Top Makeup Product Sentiment Analysis</b></figcaption>
+                      <p>The sentiment analysis for the top 10 makeup products, as shown in the dropdown menu for the years 2021, 2022, and 2023, reveals a consistent trend of positive feedback across all product categories. In 2021, 'FOUNDATION' led with the highest count of positive sentiments, followed closely by 'POWDER' and 'EYESHADOW', which also demonstrated a strong positive sentiment. Neutral sentiments were moderate, and negative sentiments were the least frequent, signifying a generally positive public sentiment towards these makeup products.<br><br>
+                          In 2022, 'FOUNDATION' sustained its lead in positive sentiment, but with an increased count, indicating a growth in favorable perceptions. The same trend of high positive and lower negative sentiments continued in 2023, although the counts of positive sentiments for some products such as 'FOUNDATION' slightly decreased. Despite this, the positive sentiment largely dominated the narrative over the three years. The analysis reflects a clear consumer preference, with positive sentiments far outweighing neutral and negative ones, suggesting that consumers are more likely to express either positive or negative views on makeup products, with neutral opinions being comparatively rare.</p>
+                          <iframe src="nlp/Top10_skincare_brand.html" width="100%" height="460px"></iframe> 
+                          <figcaption style="text-align: center;"><b>Fig 14: Top Skincare Brand Sentiment Analysis</b></figcaption>
+                          <p>The sentiment analysis of the top 10 skincare brands, accessible via a dropdown menu for specific yearly data, exhibits a generally positive public perception for the years 2021, 2022, and 2023. In 2021, LUSH was at the forefront of positive sentiment, with the count significantly higher than other brands. Other brands, such as FRESH and SIMPLE, also displayed strong positive sentiment, although with lower counts. Neutral sentiments were less frequent, typically not exceeding the mid-range, while negative sentiments were relatively rare, indicating an overall positive reception of these brands.<br><br>
+                        As time progressed to 2022 and 2023, LUSH maintained its lead in positive sentiment, although with a slight decrease. Negative sentiments remained minimal, demonstrating sustained consumer favorability towards these skincare brands. By 2023, a slight increase in negative sentiment was noted for some brands; however, the positive sentiment largely prevailed. This pattern suggests that consumers have a polarized view of skincare brands, often expressing either a positive or negative opinion with few neutral stances.</p>
+                        <iframe src="nlp/Top10_skincare_product.html" width="100%" height="440px"></iframe>
+                        <figcaption style="text-align: center;"><b>Fig 15: Top Skincare Product Sentiment Analysis</b></figcaption>
+                        <p>The sentiment analysis charts of the top 10 skincare categories over the years 2021, 2022, and 2023 demonstrate a predominantly positive public sentiment. In 2021, the category 'FACE' received the highest number of positive sentiments, surpassing other categories by a significant margin, similar to the trend seen with 'ELF' in the makeup brands analysis. Other categories like 'EYE' and 'LIP' also showed a high count of positive sentiments. Neutral sentiments were relatively lower across all categories, and negative sentiments were the least common, indicating an overall positive consumer response toward these skincare categories.<br><br>
+                          Moving into 2022, the positive sentiment for 'FACE' continued to outperform other categories, although the overall counts for positive sentiments appear to have increased across the board, suggesting a growing positive perception of skincare categories. By 2023, while 'FACE' remained the most positively perceived category, there was a slight decrease in positive sentiment counts compared to the previous year. Nonetheless, positive sentiments continued to dominate over neutral and negative sentiments. This analysis indicates that consumers have a decidedly positive or negative opinion toward skincare categories, with neutral opinions being less common, a trend consistent with the findings from the makeup brands sentiment analysis.</p>
+                          <h4><b>Comparative Analysis with Google Trends(External Data)</b></h4>
+                          <iframe src="nlp/google_trend_comparative.html" width="100%" height="600px"></iframe>
+                          <figcaption style="text-align: center;"><b>Fig 16: Top Brands Comparative Analysis with Google Trends</b></figcaption>
+                          <p>From the plot, we observe that in the Google Shopping context, the skincare brand FRESH significantly leads in search counts over the three years considered, indicating a strong consumer intent to purchase or explore purchasing options. The persistent high search volume for FRESH could be attributed to successful marketing campaigns, product launches, or high consumer satisfaction that translates into repeat purchases or word-of-mouth referrals.<br><br>
+                            In contrast, the search interest in makeup brands like e.l.f., NYX, PUR, and TARTE appears more uniform across the board without a single brand dominating the search counts. This suggests a competitive landscape where multiple brands have comparable visibility and possibly market share within the Google Shopping platform. It's indicative of a diverse consumer base whose interests are spread among various options, reflecting a healthy competition among these brands.<br><br>
+                            In summary, the Google Trends data extracted from Google Shopping searches provides a valuable layer of insight, emphasizing not just brand awareness but also potential market performance and consumer purchasing trends. The stark difference between the search counts for FRESH and other skincare brands points to its strong market positioning, whereas the more level playing field among makeup brands suggests a variety of preferences among consumers looking to purchase makeup products.</p>
+                        <hr />
                       <h3 id = "topic4"><b>4. Evolving Language of Beauty: A Diachronic Study</b></h3>
+                      <h4><b>Project Overview</b></h4>
+                        <p>Our primary objective was to explore the evolving language landscape of the "MakeupAddiction" subreddit between 2021 and 2023. We aimed to trace the development of colloquialisms and terminology, offering insights into consumer preferences, cultural shifts, and emerging trends in the beauty and cosmetics community.</p>
                       <ul class="actions">
                         <li><a href="./nlp_code/popular_words.html" class="button">Click to get the code!</a></li>
                       </ul>
-                      </ul>
-                      <ul>
-                        <li>1. Project Overview and Data Preparation:</li>
-                        <p>Our primary objective was to explore the evolving language landscape of the "MakeupAddiction" subreddit between 2021 and 2023. We aimed to trace the development of colloquialisms and terminology, offering insights into consumer preferences, cultural shifts, and emerging trends in the beauty and cosmetics community.<br><br>
-                          We initiated our journey by setting up a PySpark session to handle the vast dataset efficiently. Data was sourced from the subreddit, ensuring a comprehensive collection of user interactions and discussions. Our preprocessing steps included text normalization, such as lowercasing, removing URLs, numbers, punctuation, and short words. We employed Tokenizer and StopWordsRemover for a clean dataset, ready for deeper analysis.
-                        </p>
-                        <li>2. Term Frequency-Inverse Document Frequency (TF-IDF):</li>
-                        <p>Utilizing TF-IDF, we identified and highlighted significant terms in the dataset. We chose a subset of data to maintain a focus on the most relevant content. Each term's TF-IDF score helped us understand its relative importance in the subreddit's discussions. This step was crucial in pinpointing emerging or declining trends in makeup-related terminology.<br><br>
-                          We extended our analysis to a temporal dimension, extracting year and month information from the posts. This allowed us to observe how certain terms gained or lost popularity over time, reflecting the dynamic nature of the makeup community's language.
+                        <h4><b>Term Frequency-Inverse Document Frequency (TF-IDF):</b></h4>
                           <iframe src="nlp/top_terms_monthly_figure.html"  width="100%" height="800px"></iframe>
-                        </p>
-                        <li>3. Visualization:</li>
-                        <p>For an intuitive understanding of our findings, we created visualizations using Plotly. We represented the top terms by their frequency and visualized their trends over the analyzed period. This not only made the data accessible but also provided clear insights into the evolving linguistic patterns within the community.</p>
+                          <figcaption style="text-align: center;"><b>Table 6: Top 10 Popular Words From 2021-2023</b></figcaption>
+                        <p>The table captures the top 10 terms for January 2021, showcasing the frequency of mentions or usage within a dataset. "Tanishbrown" leads as the most frequently mentioned term with 27 occurrences, suggesting it was a topic of significant interest or relevance during this time. "Mischievous" follows with 14 counts, possibly indicating discussions around playful or cunning themes. "Poreprofessional" with 12 mentions could point to a focus on skincare or beauty products. Other terms such as "whatre," "reformulatedand," and "idealy" have fewer mentions, implying they were of moderate interest. Terms like "giveaways" and "nudeslightly," each with 6 mentions, could be associated with promotional activities or beauty trends, respectively. The presence of varied terms indicates a diverse range of topics were prevalent in the discourse of that period.</p>
+                        <h4><b>Visualization: </b></h4>
                         <iframe src="nlp/top_20_terms.html"  width="100%" height="600px"></iframe>
-                        <p>Term Analysis:</p>
-                        <ul>
-                            <li><span style="color: navy;">Tattmatte (Navy Blue Line):</span> This term shows significant variability, with the most notable peaks around October 2021 and April 2023, reaching a frequency of just over 50.</li>
-                            <li><span style="color: green;">Alike (Green Line):</span> Exhibits moderate fluctuations, with a noticeable increase around July 2021 and a peak in early 2023.</li>
-                            <li><span style="color: red;">Straighten (Red Line):</span> Relatively stable with minor peaks, the most notable being around April 2022.</li>
-                            <li><span style="color: brown;">Kaleido (Brown Line):</span> This line shows a gradual increase over time, with spikes that appear to be seasonal, peaking in mid-2021 and early 2023.</li>
-                            <li><span style="color: purple;">Crucial (Purple Line):</span> Shows a spike around April 2022 and maintains a low to moderate frequency at other times.</li>
-                            <li><span style="color: teal;">Saraxb (Teal Line):</span> Remains relatively low-frequency with slight peaks, the highest being around mid-2022.</li>
-                            <li><span style="color: orange;">Runaround (Orange Line):</span> This term's frequency increases in the latter half of 2022 and maintains a moderate frequency thereafter.</li>
-                            <li><span style="color: lightblue;">Sisters (Light Blue Line):</span> Shows occasional spikes but remains generally low in frequency.</li>
-                            <li><span style="color: pink;">Lookbooks (Pink Line):</span> After being relatively flat, it shows a peak in early 2022 and another in early 2023.</li>
-                            <li><span style="color: rgb(218, 201, 15);">Camping (Yellow Line):</span> Very low frequency throughout, with no significant peaks.</li>
-                            <li><span style="color: lightgreen;">Directs (Light Green Line):</span> Not clearly visible on the graph, indicating a very low or negligible frequency compared to the other terms.</li>
-                        </ul>
-                        <p><strong>Overall Trends:</strong></p>
-                        <p>The term "tattmatte" dominates the graph in terms of frequency, suggesting it's a highly discussed topic or term in the subreddit. There is an observable increase in the frequency of several terms from the beginning of 2022, which might indicate an overall increase in activity or specific events that prompted discussions in the subreddit. Seasonal or event-driven peaks suggest that some terms are associated with specific times of the year or events within the makeup community.</p>
-                        <li>4. Sentiment Analysis:</li>
-                        <p>To add depth to our linguistic analysis, we performed sentiment analysis on the subreddit's text data. This revealed the emotional undertones associated with specific terms and discussions. Understanding the sentiment associated with certain words or phrases helped us grasp the community's perception of various beauty trends, products, and brands.</p>
+                        <figcaption style="text-align: center;"><b>Fig 17: Top 20 Popular Terms Fluctuations</b></figcaption>
+                        <p>The plot presents the frequency of the top 20 popular terms over time from January 2021 through April 2023. The term "tanishbrown" dominates the frequency count, especially notable in February 2022 and February 2023, suggesting peak discussion or usage during these periods. The term "poreprofessional" also shows consistent prominence throughout the timeline, with notable peaks and troughs. Interestingly, "whatre" spikes in frequency around May 2022, whereas "reformulatedand" sees its highest peaks towards the latter part of 2022 and early 2023. "Mischievous" experiences a significant surge in March 2023, indicating a possible event or discussion that caused this term to trend. Overall, the terms fluctuate in frequency, indicating changing trends or seasonal interests in these topics.</p>
+                        <h4><b> Sentiment Analysis:</b></h4>
                         <iframe src="nlp/top_20_terms_sentiment.html"  width="100%" height="800px"></iframe>
-                        <p><b>Variability Over Time:</b></p>
-                        <p><strong>Stability:</strong> Some terms show relatively stable sentiment scores over time. For example, "aloe" maintains a positive sentiment throughout, suggesting consistent perception.</p>
-                        <p><strong>Fluctuation:</strong> Other terms exhibit more significant fluctuations. For instance, "zippered" and "loooove" have varied sentiment scores across different months, indicating changing perceptions or contexts in which they are discussed.</p>
-                        <p><b>Comparative Sentiment Analysis:</b></p>
-                        <p><strong>Positive Terms:</strong> Terms like "aloe", "iredale", and "loooove" generally have higher sentiment scores, suggesting a positive perception. <strong>Negative Terms:</strong> Conversely, terms like "dentist" and "hairy" occasionally dip into negative sentiment scores, indicating less favorable perceptions at times.</p>
-                        <p><b>Contextual Trends:</b></p>
-                        <p><strong>Seasonal Variations:</strong> Some terms may have sentiment scores that correlate with seasons or events. For example, "hairy" and "dentist" show fluctuating sentiments possibly tied to specific events or seasons. <strong>Consistent Terms:</strong> Terms like "spread" and "small" maintain a relatively consistent sentiment, possibly indicating a stable context or usage.</p>
-                        <p><b>Notable Observations:</b></p>
-                        <p><strong>Significant Changes:</strong> Some terms show significant changes in sentiment from one year to another. For instance, "iredale" goes from negative to positive sentiment, which could be due to changing discussions or perceptions over time. <strong>High and Low Points:</strong> The term "saying" reaches a sentiment high of 0.5 in September 2022, while "ideally" drops to -0.46 in February 2021, highlighting their most polarized sentiment moments.</p>
-                        <p><b>Overall Sentiment Trends:</b></p>
-                        <p>The general trend for most terms is a mix of positive and negative sentiments, indicating diverse contexts and perceptions. Terms like "careful" and "stained" exhibit an upward trend in sentiment over time, suggesting improving perceptions or more positive contexts.</p>
-                        <ul>
-                            <li><strong>"Town":</strong> Exhibits fluctuations from a low of -0.22 in November 2021 to a high of 0.1 in March 2023. Notable Dip: Significant negative sentiment in November 2021, possibly due to specific events or discussions.</li>
-                            <li><strong>"Aloe":</strong> Generally Positive: Consistently positive sentiment across months, with the highest in May 2021 (0.226) and the lowest in April 2022 (-0.102). Stable Perception: The term seems to maintain a generally favorable perception.</li>
-                            <li><strong>"Hairbrush":</strong> Varying Scores: Shows a wide range in sentiment from -0.125 in May 2022 to 0.25 in July 2021. Context Sensitivity: The sentiment seems to vary possibly due to the different contexts in which it's discussed.</li>
-                            <li><strong>"Zippered":</strong> High Positive Score: Peaks at 0.367 in February 2021. Inconsistent Trend: Shows inconsistency in sentiment, which might suggest varied usage or context.</li>
-                            <li><strong>"Ideally":</strong> Significant Negative in February 2021: Drops to -0.461, indicating a strongly negative perception or context. Recovery: Shows an upward trend in sentiment in later months, reaching 0.243 in September 2021.</li>
-                            <li><strong>"PayPal":</strong> Generally Positive: Ranges from 0.125 in February 2023 to a high of 0.376 in April 2022. Positive Perception: Mostly positive sentiment, indicating favorable views or experiences related to PayPal.</li>
-                            <li><strong>"Hairy":</strong> Varied Sentiment: Fluctuates from -0.102 in May 2021 to 0.18 in August 2022. Negative Peaks: Shows negative sentiment peaks, particularly in May 2021 and September 2022.</li>
-                            <li><strong>"Spread":</strong> Consistent Positivity: Maintains positive sentiment, peaking at 0.24 in January 2022. Stable Positive Perception: Indicates a generally positive context or usage across different months.</li>
-                            <li><strong>"Dentist":</strong> Mixed Sentiment: Ranges from -0.29 in March 2021 to a high of 0.4 in August 2022. Seasonal Influence: Possible seasonal influence on sentiment, with higher positive sentiment in summer months.</li>
-                            <li><strong>"Stained":</strong> Fluctuating Scores: Ranges from -0.016 in September 2022 to a high of 0.218 in May 2021. Context-Dependent: The term's sentiment seems highly dependent on the context of discussion.</li>
-                            <li><strong>"Seduction":</strong> Generally Low Scores: Maintains relatively low sentiment scores, peaking at 0.263 in August 2021. Varied Perception: The sentiment varies, suggesting different contexts or connotations.</li>
-                            <li><strong>"Looove":</strong> High Positive Scores: Peaks at 0.633 in May 2021, indicating a very positive context. Negative Scores: Shows negative sentiment in 2022, indicating a shift in perception or context.</li>
-                            <li><strong>"Dabbling":</strong> Generally Positive: Shows mostly positive sentiment, peaking at 0.148 in December 2022. Consistent Positive Context: Suggests a generally positive or favorable context in discussions.</li>
-                        </ul>
-                        <li>5. Findings and Observations:</li>
-                        <p>The comprehensive NLP analysis of the "MakeupAddiction" subreddit, incorporating both term frequency visualization and sentiment analysis, reveals dynamic linguistic trends and emotional undertones within the community. Key terms like "Tattmatte" and "Alike" displayed significant fluctuations over time, highlighting their changing relevance in beauty discussions. The sentiment analysis further augmented these findings by uncovering the emotional context associated with specific terms. For instance, "Aloe" consistently exhibited positive sentiment, indicating a stable and favorable perception within the community. Conversely, terms like "Zippered" and "Ideally" showed notable sentiment shifts, reflecting the community's evolving attitudes towards certain topics. This blend of linguistic and sentiment insights paints a vivid picture of the shifting landscape of interests, preferences, and perceptions in the beauty subreddit, offering valuable cues for brands, influencers, and enthusiasts engaged in this vibrant online community.</p>
-                      </ul>
+                        <figcaption style="text-align: center;"><b>Fig 18: Top 20 Popular Terms Sentiment Analysis</b></figcaption>
+                        <p>The plot visualizes the average sentiment scores for various terms from January 2021 to March 2023, displaying a general trend towards positive sentiment for most terms. Notably, terms like "powderswhatever," "reformulatedand," and "mischievous" show particularly high sentiment scores towards the end of the period, with "mischievous" registering the highest sentiment in March 2023. There are fluctuations throughout the timeline, reflecting the changing contexts or perceptions associated with these terms. Some terms like "youthforia" experience both negative and positive sentiment swings, suggesting varied reactions over time. The visualization captures the sentiment trajectory for each term, offering insights into public sentiment trends over the given period.</p>
                     </section>
 									
                 

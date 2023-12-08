@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html>
 	<head>
-		<title>Elements - Stellar by HTML5 UP</title>
+		<title>EDA</title>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 		<link rel="stylesheet" href="assets/css/main.css" />
@@ -20,9 +20,9 @@
 				<nav id="nav">
 					<ul>
 						<li><a href="index.html">Home</a></li>
-						<li><a href="#clean" class="active">Data Cleaning</a></li>
-						<li><a href="#eda" class="active">Visualization</a></li>
-						<li><a href="#v&e" class="active">Variables & External</a></li>
+            <li><a href="#Dataclean" class="active">Data Cleaning</a></li>
+						<li><a href="#Exesumm" class="active">Executive Summary</a></li>
+						<li><a href="#AR" class="active">Anaysis Report</a></li>
 
 					</ul>
 				</nav>
@@ -34,351 +34,134 @@
 							<section id="content" class="main">
 
 								<!-- Text -->
-								<section id="clean" class="main">
+								<section id="Exesumm" class="main">
 									<div style="display: flex; align-items: center;">
-										<h2><b>Data Cleaning</b></h2>
+										<h2><b>Executive Summary</b></h2>
+                    <ul class="icons">
+                      <li><a href="https://github.com/gu-dsan6000/fall-2023-reddit-project-team-33/tree/main/code/ML" class="icon brands fa-github alt"><span class="label">GitHub</span></a></li>
+                    </ul>
 										<span class="logo" style="margin-left: 500px;">
-												<img src="images/clean.png" alt="" style="border-radius: 50%;width: 300px; height: 300px; object-fit: cover;" />
+												<img src="images/bg.png" alt="" style="border-radius: 50%;width: 300px; height: 300px; object-fit: cover;" />
 											</a>
 										</span>
-									</div>
-										<p>The following schema pertains to a sampled subset of the ‘MakeupAddiction’ subreddit, featuring both submissions and comments datasets. Given the considerable size of the original data and computational constraints, each dataset has been sampled down to approximately 10,000 rows. For the comments dataset, we have a total of 9,959 entries, encompassing contributions from 6,993 distinct authors. The submissions dataset comprises 9,734 entries, with 5,573 unique authors having made submissions.</p>
-										<code>sampled_submissions.printSchema()</code>
-                    <iframe src="eda/submission.html" width="100%" height="400px"></iframe>
-                    <code>sampled_comments.printSchema()</code>
-                    <iframe src="eda/comment.html" width="100%" height="400px"></iframe>
-                    <p>In our analysis of the sampled datasets from the “MakeupAddiction” subreddit, we first undertake a thorough assessment of missing values. Given the extensive number of columns in the submissions dataset, we streamline our focus by pre-selecting columns pertinent to our forthcoming analysis. This targeted approach allows us to evaluate missing data with greater efficiency and specificity.</p>
-                    <p>Simultaneously, we analyze the textual content within the ‘body’ field of both submissions and comments datasets, examining the length of entries as a measure of engagement and detail. This step includes computing word counts to gain insights into the depth of discussions and user contributions.</p>
-                    <p>Furthermore, we conduct a rigorous examination for potential data corruption. This involves identifying and scrutinizing any rows with anomalies that could signify data integrity issues, such as irregular patterns or incomplete records. By addressing these critical areas, we ensure the robustness and reliability of our dataset before proceeding with deeper analytical endeavors.</p>
-                    <p>Upon inspecting the comments dataset for missing values, we discovered that the columns <code>author_cakeday</code>, <code>author_flair_css_class</code>, and <code>author_flair_text</code> exhibit a missing value rate exceeding 99%. This high percentage of absence indicates that these columns hold minimal informational value. Consequently, to streamline our dataset and enhance analytical efficiency, we have decided to omit these columns from the comments dataset.</p>
-                    <p>While inspecting the submissions dataset for missing values, we discorvered that the columns <code>thumbnail_height</code>,<code>thumbnail_width</code>,<code>Media</code>,<code>post_hint</code>,<code>promoted</code>,<code>promoted_by</code>,<code>promoted_display_name</code>,</p>
-                    <p><code>promoted_url</code>,<code>original_link</code>,<code>link_flair_text</code>,<code>embed_type</code>,<code>domain_override</code>,<code>author_flair_text</code>,</p>
-                    <p><code>brand_safe</code>,<code>crosspost_parent</code>,<code>crosspost_parent_list</code>,<code>disable_comments</code>,<code>distinguished</code> and <code>domain</code> exhibit a missing value rate exceeding 99%. This high percentage of absence indicates that these columns hold minimal informational value. Consequently, to streamline our dataset and enhance analytical efficiency, we have decided to omit these columns from the submissions dataset.</p>
-                    <iframe src="eda/text_len_comments.html" width="100%" height="600px"></iframe>
-                    <p>The most striking feature of this graph is the left-skewed distribution, indicating that the majority of comments are of shorter length. Specifically, a large number of comments have a text length of under 500 characters, as shown by the first bar towering over the rest. As the text length increases, the frequency of such comments sharply decreases, which is evidenced by the rapid drop in bar heights moving rightward on the x-axis.</p>
-                    <p>We observe very few comments with a text length greater than 1000 characters. This trend continues to taper off as the text length increases further, with minimal occurrences of comments exceeding 1500 characters in length. Overall, the distribution suggests that within this particular set of data, users tend to leave shorter comments rather than longer ones.</p>
-                    <iframe src="eda/text_len_submissions.html" width="100%" height="800px"></iframe>
-                    <p>The distribution is highly left-skewed, signifying that a vast majority of the submissions consist of shorter texts. The first bar, representing submissions with text lengths of up to around 250 characters, is the most prominent feature of the graph, indicating that most submissions contain relatively short text.                    </p>
-                    <p>The frequency of submissions decreases precipitously as text length increases, with very few submissions featuring text lengths over 1,000 characters. Submissions with text lengths beyond this point are exceedingly rare, suggesting that longer form submissions are not common within this dataset.</p>
-                    <p>This pattern suggests that users of this platform or community tend to favor brevity in their submissions. To understand the reasons behind this trend, one might need to look into the platform’s character limits, user behavior, or the nature of the content being submitted.</p>
-                    <table border="1">
-                      <!-- Header Row -->
-                      <tr>
-                        <th>Column Name</th>
-                        <th>Missing or Not</th>
-                        <th>Values</th>
-                      </tr>
-                      <!-- Data Rows -->
-                      <tr>
-                        <td>gilded</td>
-                        <td>False</td>
-                        <td>0</td>
-                      </tr>
-                      <tr>
-                        <td>media_embed</td>
-                        <td>False</td>
-                        <td>0</td>
-                      </tr>
-                      <tr>
-                        <td>Media</td>
-                        <td>True</td>
-                        <td>9526</td>
-                      </tr>
-                      <tr>
-                        <td>pinned</td>
-                        <td>False</td>
-                        <td>0</td>
-                      </tr>
-                      <tr>
-                        <td>post_hint</td>
-                        <td>True</td>
-                        <td>8168</td>
-                      </tr>
-                      <tr>
-                        <td>promoted</td>
-                        <td>True</td>
-                        <td>9734</td>
-                      </tr>
-                      <tr>
-                        <td>promoted_by</td>
-                        <td>True</td>
-                        <td>9734</td>
-                      </tr>
-                      <tr>
-                        <td>promoted_display_name</td>
-                        <td>True</td>
-                        <td>9734</td>
-                      </tr>
-                      <tr>
-                        <td>promoted_url</td>
-                        <td>True</td>
-                        <td>9734</td>
-                      </tr>
-                      <tr>
-                        <td>score</td>
-                        <td>False</td>
-                        <td>0</td>
-                      </tr>
-                      <tr>
-                        <td>selftext</td>
-                        <td>False</td>
-                        <td>0</td>
-                      </tr>
-                      <tr>
-                        <td>spoiler</td>
-                        <td>False</td>
-                        <td>0</td>
-                      </tr>
-                      <tr>
-                        <td>stickied</td>
-                        <td>False</td>
-                        <td>0</td>
-                      </tr>
-                      <tr>
-                        <td>thumbnail</td>
-                        <td>False</td>
-                        <td>0</td>
-                      </tr>
-                      <tr>
-                        <td>domain_override</td>
-                        <td>True</td>
-                        <td>9734</td>
-                      </tr>
-                      <tr>
-                        <td>edited</td>
-                        <td>False</td>
-                        <td>0</td>
-                      </tr>
-                      <tr>
-                        <td>embed_type</td>
-                        <td>True</td>
-                        <td>9734</td>
-                      </tr>
-                      <tr>
-                        <td>hidden</td>
-                        <td>False</td>
-                        <td>0</td>
-                      </tr>
-                      <tr>
-                        <td>hide_score</td>
-                        <td>False</td>
-                        <td>0</td>
-                      </tr>
-                      <tr>
-                        <td>id</td>
-                        <td>False</td>
-                        <td>0</td>
-                      </tr>
-                      <tr>
-                        <td>is_crosspostable</td>
-                        <td>False</td>
-                        <td>0</td>
-                      </tr>
-                      <tr>
-                        <td>is_reddit_media_domain</td>
-                        <td>False</td>
-                        <td>0</td>
-                      </tr>
-                      <tr>
-                        <td>is_self</td>
-                        <td>False</td>
-                        <td>0</td>
-                      </tr>
-                      <tr>
-                        <td>is_video</td>
-                        <td>False</td>
-                        <td>0</td>
-                      </tr>
-                    </table>
-                    
-                   <hr />
-								</section>
-								<section id="eda" class="main">
-                  <!-- Container for Visualization and Statistics -->
-                  <div style="display: flex;  flex-direction: column;">
-                      <!-- Title for the Visualization Section -->
-                      <h2><b>Visualization</b></h2>
-              
-                      <!-- Subtitle for the Statistics Table -->
-                      <h3><b>Statistics table for submission dataset in MakeupAddiction Subreddit</b></h3>
-              
-                      <!-- Embedded HTML File for Styled Statistics -->
-                      <iframe src="eda/styled_statistics_with_title.html" width="100%" height="400px"></iframe>
-              
-                      <!-- Summary Paragraph -->
-                      <p>
-                          The “Summary Statistics of Subreddit Submissions” table presents a comprehensive overview of various metrics related to subreddit posts, analyzed over 9734 submissions. Key insights include a moderate average number of comments per post (about 10.39), but with a high variance indicating significant differences in engagement levels across posts. Crossposting appears to be a rare activity, as reflected by an average of just 0.011 crossposts per submission. The scores of posts show a wide range, from 0 to a striking 22,251, pointing to substantial variability in how posts are received by the community. Thumbnail dimensions, analyzed for a subset of 6075 submissions, average around 123 by 133 pixels, with less variation compared to other metrics. Lastly, the gilding feature is scarcely used, with an average of 0.0035 gilds per post, underscoring its rarity.
-                      </p>
-
-                      <h3><b>List Top 10 Creators in MakeupAddiction Subreddit</b></h3>
-                      <iframe src="eda/top_10_creators_dataframe.html" width="100%" height="800px"></iframe>
-                      <p></p>
-                      <p>First observation is that, since we cover 12-month data in 2021 and 2022, while only covers from Jan to March in 2023. It’s easily to find that the number of submission and creator score(with special emphasis to the sub_count) of 2023 is generally less than 2021 and 2022.
-                        Examining the external data, Reddit Karma stands as a reflection of a Redditor’s impact on the community. An interesting observation arises from the case of Redditor ‘strawbrryshrtcke’ with a Karma score of 0, suggesting possible account inactivity. In contrast, our analysis of the top 10 creators from 2021 to 2023 reveals consistently high Karma scores. Remarkably, the top 5 creators consistently exhibit substantially higher Karma, indicating that their contributions are exceptionally well-received by fellow Redditors. This correlation affirms the accuracy of our ranking methodology.
-                        It’s also worth mentioning that Redditor”ahbagelxo” is a consistent performer with high average scores and comments, who is active in both 2022 and 2023. Redditor “ahbagelxo” is active across all years with varying performance metrics.</p>
-                      <p></p>
-                      <h3><b>Exploring the Interest in Beauty Forums Among Adults and Minors</b></h3>
-                      <h4>Summary of Adult Engagement</h4>
-                      <table border="1">
-                        <tr>
-                          <th></th>
-                          <th>summary</th>
-                          <th>num_comments</th>
-                          <th>score</th>
-                        </tr>
-                        <tr>
-                          <td>0</td>
-                          <td>count</td>
-                          <td>143.000000</td>
-                          <td>143.000000</td>
-                        </tr>
-                        <tr>
-                          <td>1</td>
-                          <td>mean</td>
-                          <td>3.972028</td>
-                          <td>37.237762</td>
-                        </tr>
-                        <tr>
-                          <td>2</td>
-                          <td>stddev</td>
-                          <td>18.006237</td>
-                          <td>306.768573</td>
-                        </tr>
-                        <tr>
-                          <td>3</td>
-                          <td>min</td>
-                          <td>0.000000</td>
-                          <td>0.000000</td>
-                        </tr>
-                        <tr>
-                          <td>4</td>
-                          <td>max</td>
-                          <td>173.000000</td>
-                          <td>3358.000000</td>
-                        </tr>
-                      </table>
-                      <h4>Summary of Youth Engagement</h4>
-                      <table border="1">
-                        <!-- Header for Summary of Youth Engagement -->
-                        <tr>
-                          <th></th>
-                          <th>summary</th>
-                          <th>num_comments</th>
-                          <th>score</th>
-                        </tr>
-                        <!-- Data Rows -->
-                        <tr>
-                          <td>0</td>
-                          <td>count</td>
-                          <td>9591.000000</td>
-                          <td>9591.000000</td>
-                        </tr>
-                        <tr>
-                          <td>1</td>
-                          <td>mean</td>
-                          <td>10.488479</td>
-                          <td>102.584402</td>
-                        </tr>
-                        <tr>
-                          <td>2</td>
-                          <td>stddev</td>
-                          <td>35.788416</td>
-                          <td>539.728110</td>
-                        </tr>
-                        <tr>
-                          <td>3</td>
-                          <td>min</td>
-                          <td>0.000000</td>
-                          <td>0.000000</td>
-                        </tr>
-                        <tr>
-                          <td>4</td>
-                          <td>max</td>
-                          <td>758.000000</td>
-                          <td>22251.000000</td>
-                        </tr>
-                      </table>
-
-                      <p>
-                      </p>
-                      <p>In the first table, “Summary of Adult Engagement,” which contains 124 records, the average number of comments per record is approximately 3.83 with a standard deviation of about 10.71, while the score’s average is roughly 38.17 with a standard deviation of 268.89. The data ranges from a minimum of 0 comments and a score to a maximum of 97 comments and 2751 for the score. In contrast, the second table, “Summary of Youth Engagement,” has 8100 records. The average number of comments is higher at about 9.77, with a standard deviation of approximately 32.98, and the average score is around 101.36, with a standard deviation of 489.50. The data in this table ranges from 0 comments and score to a maximum of 1135 comments and 12984 for the score. These summaries provide an overview of the key statistics for both tables, revealing differences in the distribution of comments and scores between the two datasets</p>
-                      
                   </div>
-                  <h3><b>Investigate whether the controversiality of comments attracts more views and engagement.</b></h3>
-                  <iframe src="eda/combined_figure_controversality.html" width="100%" height="600px"></iframe>
-                  <p>
-                  </p>
-                  <p>This interactive chart allows you to delve into the distribution of comments in the MakeupAddiction subreddit, distinguishing between controversial and non-controversial remarks. A simple click of the button toggles between these two categories.</p>
-                  <li>Lightcoral: Represents comments marked as controversial.</li>
-                  <li>Lightblue: Represents non-controversial comments. This visualization offers a convenient means to assess the prevalence of contentious discussions within the subreddit. It efficiently demonstrates the substantial data imbalance, with a majority of comments falling into the non-controversial category, and only a small fraction being marked as controversial.</li>
-                  <p>In the MakeupAddiction subreddit, comments are categorized into two groups: controversial (lightcoral) and non-controversial (lightblue). Upon closer examination, it becomes evident that a significant portion of the comments is non-controversial, while only a limited number elicit debates.</p>
-                  <p>This chart serves as a catalyst for in-depth analysis of sensitive topics within the controversial comments. It also encourages us to explore predictive models that can identify and flag controversial comments in real-time. These models have the potential to boost content quality and foster a safer Reddit community.</p>
-                  <p>Moreover, during the prediction process, comments will be initially classified into their controversiality status. Subsequently, subdatasets will be sampled, providing a larger training set to lay the groundwork for predicting new comments.</p>
-                  <p>In summary, this chart marks the beginning of our journey to explore the intricacies of online conversations within MakeupAddiction. It provides insights that have the potential to transform how we navigate and engage in the realm of social media.</p>
+                    <section class = "content">
+                      <p>The Exploratory Data Analysis (EDA) of the MakeupAddiction subreddit offers a comprehensive view into the dynamics of this online community. It reveals key patterns in user engagement and content trends, providing insights into average user interactions, the influence of top content creators, and demographic engagement differences. This understanding is crucial for effective community engagement, content creation, and marketing strategies.<br><br>
 
-                  <h3><b>The peak hours and seasonality trends and potential festival or holiday impacts for makeup-related content</b></h3>
-                  <iframe src="eda/fig_hourly.html" width="100%" height="600px"></iframe>
-                  <p>There’s a clear cyclical pattern to the posting volume throughout the day.Post volume starts to increase from the early hours of the morning, peaking at around the 4th hour (4 AM). A significant dip occurs after this peak, where the volume gradually decreases and reaches the lowest point around the 9th hour (9 AM). There is a gradual increase in posting activity from the late morning to early afternoon, suggesting increased user activity during these hours. Another peak in post volume is observed in the evening, starting to rise around the 15th hour (3 PM) and peaking around the 21st hour (9 PM). The post volume decreases after the late evening peak, indicating that activity slows down as it gets later in the night.</p>
-                  <p>The average score, which can be a proxy for how engaged users are with the content or how well-received the posts are, does not follow the same pattern as the post volume. Despite lower post volumes in the early morning (around 4 AM), the average score for posts is relatively high. This might suggest that the users who are active during these hours are more engaged or the content is well-curated. There’s a noticeable dip in average score starting from the morning and reaching the lowest point around the 12th hour (noon). From the afternoon onwards, the average score gradually increases, suggesting that user engagement or the reception of the posts improves as the day progresses. The average score seems to peak in the later hours, around the same time as the second volume peak (evening), indicating that the evening content is both abundant and well-received.</p>
-                  <p>There doesn’t appear to be a strong direct correlation between post volume and average score. High post volumes sometimes correspond to lower average scores and vice versa. This lack of correlation might imply that when the platform is most crowded (high post volume), individual posts receive, on average, less attention or fewer upvotes. Conversely, during off-peak hours when there are fewer posts, individual posts might stand out more and, therefore, garner higher engagement or upvotes, reflected in a higher average score.</p>
-                  <p>Based on above analysis, we can conclude that Users might consider posting in the early morning or later in the evening to potentially achieve higher engagement, as indicated by the average score trends. Marketing strategies or important announcements could be scheduled for times when both post volume and engagement are high, like in the evening hours, to maximize visibility and interaction. Content creators looking for less competition but still decent engagement might target their posts for the early morning hours when the average score is higher even though the volume is lower.                  </p>
-
-                  <p></p>
-                  <iframe src="eda/fig_daily.html" width="100%" height="600px"></iframe>
-                  <p>The blue line represents the number of posts made each day on the subreddit.There is a significant variability in the daily post count, with some days experiencing much higher activity than others. There appears to be occasional spikes in post count, indicating days of particularly high engagement or events that prompt increased posting. For example, we can see an increase in posts around Halloween, where people share their makeup looks, also during the December holidays, the number of post is much higher than days before holidays.</p>
-                  <p>The orange line represents the average score of the posts for each day. Unlike post count, the average score seems to have less variability. It generally stays within a narrower range. There is a noticeable spike in average score around January 2023, where the score dramatically increases despite the post count not showing a corresponding spike. This could indicate that while fewer posts may have been made on that day, the posts received a lot of positive engagement (upvotes)                  </p>
-                  <p>There does not seem to be a clear long-term trend in post count or average score; both metrics fluctuate without a distinct direction over the two-year period. No strong seasonality is evident in the data, although careful statistical analysis might reveal subtle seasonal patterns.</p>
-                  <p>In comparison, while the hourly plot suggested a possible inverse relationship between post volume and average score (higher volume, lower score), the daily plot does not clearly support this on a day-to-day basis, as we see the average score does not always go down on days with higher post counts.</p>
-
-                  <p></p>
-                  <h3><b>Find the top 10 tags in MakeupAddiction Subreddits</b></h3>
-                  <iframe src="eda/top_10_tags.html" width="100%" height="600px"></iframe>
-                  <p>The provided bar charts visually represent the count of the top tags used in the years 2021, 2022, and 2023, offering a clear comparison of their frequency of use.</p>
-                  <p>All Years: This interactive plot displays all the tags across the years on a single graph. It has a drop-down menu to select between the years, which would update the graph accordingly. Each bar represents a tag, and the length of the bar shows the count of that tag in a particular year. Different colors distinguish the years—blue for 2021, orange for 2022, and green for 2023.</p>
-                  <li>Top Tags in 2021: The bar chart specific to 2021 indicates that ‘face of the day’ was the most popular tag, with the highest count, followed by ‘question’ and ‘discussion’. Other tags like ‘rule removal’, ‘review’, and ‘tutorial’ had significantly lower counts.</li>
-                  <li>Top Tags in 2022: In this chart, the ‘question’ tag shows a remarkable increase compared to the previous year, becoming the most used tag. The ‘face of the day’ tag remains high but sees a slight decrease in usage. Similar to 2021, the ‘discussion’ tag is the third most frequent. The other tags continue to show a relatively lower presence.</li>
-                  <li>Top Tags in 2023: For the year 2023, the ‘question’ tag continues to dominate, though the total count appears reduced. The ‘face of the day’ tag is still popular but with fewer mentions than in previous years. This chart also reflects a decline in the use of ‘discussion’, ‘review’, and other tags.</li>
-                  <p>Across all charts, we can see that the ‘question’ tag tends to be consistently high, which indicates a community focused on inquiries and information seeking. ‘Face of the day’ seems to be a persistently popular subject, though its frequency has diminished slightly over the years. The other tags show less fluctuation but are significant enough to feature in the top 10, suggesting that these topics have a steady but lesser degree of focus within the community. It’s important to note that for 2023, the data might only be partial, and trends could change as the year progresses.                  </p>
-                  <p>
-                  </p>
-                  <h3><b>The impact of visual elements in posts (e.g., images) on user engagement and popularity</b></h3>
-                  <p><code>T-test statistics: -9.019779338713029, P-value: 4.61502263055232e-18</code></p>
-                  <h4>Statistical Testing:</h4>
-                  <p>The t-test results which is provided indicate a very small p-value (4.61502263055232e-18), which is much less than the common significance levels (e.g., 0.05 or 0.01). This implies that the difference in engagement scores between posts with media and those without is statistically significant, and the likelihood that this difference is due to random chance is extremely low.                  </p>
-                  <p>The negative t-statistic value (-9.019779338713029) suggests that the mean score of the group with media is lower than the mean score of the group without media, assuming that the order of subtraction in the t-test was (mean of scores without media) - (mean of scores with media).</p>
-                  <p>Given this result, we can confidently assert that the presence of media in posts has a significant impact on engagement scores. However, without knowing the context, we can’t determine whether the impact is positive or negative — only that there is a significant difference.</p>
-                  <p></p>
-                  <iframe src="eda/visual_elements.html" width="100%" height="600px"></iframe>
-                  <p></p>
-                  <li>With Media: Most of the engagement scores seem to cluster around the lower end, near 0. This suggests that a majority of posts with media have low engagement scores. There is minimal spread, meaning there isn’t much variability in the scores.</li>
-                  <li>Without Media:The scores here show more variability than the “With Media” category. A majority of the posts without media also have low engagement scores, similar to the “With Media” category. However, there are a few scores that are significantly higher, even reaching the 20k mark. These outliers suggest that while most posts without media have low engagement, there are some that have exceptionally high engagement.</li>
-                  <li>Comparison: At first glance, it might seem that posts “Without Media” have a potential to achieve much higher engagement scores compared to those “With Media” because of the outliers.However, it’s important to note that the majority of posts in both categories have low engagement, so the outliers should be investigated further to understand the reasons behind their high engagement.                  </li>
-                  <p>In conclusion, while most posts, whether with or without media, tend to have low engagement scores, there are a few posts without media that stand out with exceptionally high scores. It would be beneficial to delve deeper into the nature or content of those specific high-scoring posts without media to gain insights into what factors might be driving their high engagement.</p>
-
-                </section>
-              </section>
-          
+                        The analysis also uncovers temporal patterns and peak engagement times, guiding content timing for maximum impact. It delves into the community's evolving interests and norms, highlighted by the study of top tags and comment controversiality. This aspect is particularly valuable for adapting to changing preferences and maintaining relevance within the community.<br><br>
+                        
+                        Additionally, the EDA's segmentation of data through new and dummy variables offers a granular look at content types and creator behaviors. The integration of external data like Reddit Karma and Google Trends enriches the analysis, providing a broader perspective on creator credibility and market trends. This multifaceted approach provides strategic insights for marketers, content strategists, and community managers, making it a valuable tool for informed decision-making in digital and beauty marketing.</p>
+                    </section>
+                    <hr />
+                    <section id="Dataclean" class="main">
+                      <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap;">
+                        <h2><b>Data Cleaning</b></h2>
+                            <img src="images/dataclean.png" alt="" style="border-radius: 50%;width: 300px; height: 300px; object-fit: cover;" />
+                          </a>
+                        </span>
+                      </div>
+                        <section class = "content">
+                          <p>Over a span of three years, from 2021 to 2023, our data collection encompassed the "MakeupAddiction" subreddit, yielding an extensive dataset. This dataset comprises 1,053,280 comments from 193,808 unique authors and 95,932 submissions posted by 37,635 distinct authors. This rich compilation of user-generated content provides a comprehensive foundation for our analysis, reflecting the vibrant activity and diverse participation within this online community.</p>
+                          <p>Please find the refined schema for the "MakeupAddiction" subreddit submissions detailed below:</p>
+                          <iframe src="eda/submission_schema.html"  width="100%" height="400px"></iframe>
+                          <p>Please find the refined schema for the "MakeupAddiction" subreddit Comments detailed below:</p>
+                          <iframe src="eda/comments_schema.html"  width="100%" height="400px"></iframe>
+                         <p>In our analysis of the datasets from the "MakeupAddiction" subreddit, we first undertake a thorough assessment of missing values. Given the extensive number of columns in the submissions dataset, we streamline our focus by pre-selecting columns pertinent to our forthcoming analysis. Furthermore, we conduct a rigorous examination for potential data corruption. This involves identifying and scrutinizing any rows with anomalies that could signify data integrity issues, such as irregular patterns or incomplete records.                         </p>
+                          <p>Upon inspecting the comments dataset for missing values, we discovered that the columns `author_cakeday`, `author_flair_css_class`, and `author_flair_text` exhibit a missing value rate exceeding 99%. This high percentage of absence indicates that these columns hold minimal informational value. Consequently, to streamline our dataset and enhance analytical efficiency, we have decided to omit these columns from the comments dataset.</p>
+                          <p>While inspecting the submissions dataset for missing values, we discorvered that the columns `thumbnail_height`,`thumbnail_width`,`Media`,`post_hint`,`promoted`,`promoted_by`,`promoted_display_name`,<br>`promoted_url`,`original_link`,`link_flair_text`,`embed_type`,`domain_override`,`author_flair_text`,`brand_safe`,<br>`crosspost_parent`,`crosspost_parent_list`,`disable_comments`,`distinguished` and `domain` exhibit a missing value rate exceeding 99%. This high percentage of absence indicates that these columns hold minimal informational value. Consequently, to streamline our dataset and enhance analytical efficiency, we have decided to omit these columns from the submissions dataset.</p>
+                      <p>Upon examining the text content of submissions and comments, it was discovered that there are more than 372,000 instances where comment bodies contain zero characters. Conversely, submission titles are consistently populated, with none having zero characters. However, there are more than 78,000 cases where the 'selftext' field—typically containing the main body of a submission—is empty, showing zero characters in length.</p>
+                        </section>
 									
                   <hr />
+                  
+                   <section id="AR" class="main">
+                    <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap;">
+                      <h2><b>Analysis Report</b></h2>
+                      <span class="logo">
+                        <img src="images/EDA_Analysis.png" alt="" style="border-radius: 50%; width: 300px; height: 300px; object-fit: cover;" />
+                      </span>
+                    </div>
+                    <ul class="actions">
+                      <li><a href="./eda_code/project_eda.html" class="button">Click to get all Code for EDA!</a></li>
+                    </ul>
+                    <nav style="margin-top: 20px;">
+                      <ul style="display: flex; justify-content: center; list-style: none; padding: 0;">
+                        <li style="margin-right: 20px;"><a href="#topic1">Three Table</a></li>
+                        <li style="margin-right: 20px;"><a href="#topic2">Five Plots</a></li>
+                        <li style="margin-right: 20px;"><a href="#topic3">Dummy Variables</a></li>
+                        <li style="margin-right: 20px;"><a href="#topic4">External Data Usage</a></li>
+                      </ul>
+                    </nav>
+                  </section>
+                </section>                  
+                    <section class = "content">
+                      
+                    <h3 id="topic1"><b>1. Exploring the MakeupAddiction Subreddit through Data</b></h3>
+                      <p>Embark on an analytical exploration of the MakeupAddiction subreddit through three meticulously crafted summary tables. These tables offer a comprehensive narrative, distilling the essence of a dynamic community into quantifiable insights. Each table is a carefully constructed compilation, not merely aggregating data but encapsulating the richness of dialogue, the exchange of knowledge, and the communal engagement within this digital ecosystem. They represent a convergence of data-driven storytelling and the shared passion of beauty aficionados, providing an informed perspective on the subreddit's vibrant discourse.</p>
+                      <h4><b>Statistics table for submission dataset in MakeupAddiction Subreddit</b></h4>
+                      <iframe src="eda/styled_statistics_with_title.html"  width="100%" height="400px"></iframe>
+                      <figcaption style="text-align: center;"><b>Table 1: Summary Statistics of Subreddit Submissions</b></figcaption>
+                      <p>Table 1 reveal moderate user interaction with an average of 10.61 comments per post, low crossposting activity, and a wide variance in post scores, indicating a mix of common and highly popular posts. Most posts receive few accolades, as evidenced by the near-zero average for gilding, and thumbnail dimensions are fairly standardized, suggesting uniformity in post presentation. This data underscores the typical user engagement and content patterns within a subreddit.</p>
+                      <h4><b>List Top 10 Creators in MakeupAddiction Subreddit</b></h4>
+                      <iframe src="eda/styled_top_10_creators_dataframe.html"  width="100%" height="400px"></iframe>
+                      <figcaption style="text-align: center;"><b>Table 2: Top 10 Creators in MakeupAddiction Subreddit</b></figcaption>
+                      <p>Table 2 summarizes performance metrics for top contributors on the MakeupAddiction subreddit, highlighting diverse content strategies. Key observations include "Veeezy's" high engagement rates, "DominoRepulsa" and "The_Alchemyst's" impactful posts that garner significant upvotes, and "RalucaMakeup's" rapid rise in influence. The data illustrates that both frequent posting and high-quality content are effective for community engagement.</p>
+                      <p>Posting Karma on Reddit quantifies the community's endorsement of a user's posts through upvotes, serving as an indicator of content popularity and perceived quality. We include Posting Karma in our analysis to gauge the influence of top contributors within the MakeupAddiction subreddit, as it highlights not only active participation but also the effectiveness of a creator's content in engaging the community, thereby shaping the subreddit's engagement dynamics and content quality.</p>
+                      <div style="display: flex; justify-content: space-between;">
+                          <div style="width: 50%; padding-right: 10px;">
+                            <iframe src="eda/styled_over18.html" width="100%" height="250px"></iframe>
+                          </div>
+                          <div style="width: 50%; padding-left: 10px;">
+                            <iframe src="eda/styled_under18.html" width="100%" height="250px"></iframe>
+                          </div>
+                        </div>
+                        <figcaption style="text-align: center;"><b>Table 3: Summary of Adult & Youth Engagement</b></figcaption>
+                        <p>We performed statistical tests to analyze engagement differences between adult and youth posts on a subreddit, where the null hypothesis posited no difference in engagement levels. Table 3 indicated adults had lower engagement, with an average of 4.67 comments and 33.39 scores, while youth had higher engagement, averaging 10.69 comments and 98.26 scores. Despite the difference, both demographics showed variability, as evidenced by high standard deviations and a range of interactions, with some posts reaching up to 821 comments for adults and 15,444 for youth, and scores peaking at 11,110 for adults and 49,187 for youth. Our t-test resulted in T-statistics of -7.29 for comments and -6.13 for scores, and the Mann-Whitney U Test showed U-statistics of 40,454,428 for comments and 37,070,713.5 for scores, with P-values far below the 0.05 threshold. These statistically significant results led us to reject the null hypothesis, confirming the observed differences in engagement between adult and youth submissions and suggesting more active engagement and possibly a broader audience among the youth.</p>                       
+                          
+                        </section>
+                        <hr />
+                      <h3 id = "topic2"><b>2. Five Vibrant Visualizations from the MakeupAddiction Subreddit</b></h3>
+                    
+                        <section>
+                          <h4><b>Investigate whether the controversiality of comments attracts more views and engagement.</b></h4>
+                          <iframe src="eda/EDA_contro.html"  width="100%" height="500px"></iframe>
+                      <figcaption style="text-align: center;"><b>Fig1: controversiality Analysis</b></figcaption>
+                            <p>Fig 1 displays the distribution of comments on the MakeupAddiction subreddit, distinguishing between non-controversial (light blue) and controversial (light coral) ones. The chart reveals that non-controversial comments exceed one million, dominating the discourse, while controversial comments number just over 10,000, highlighting their minimal presence in the community's interactions.</p>
+                      <h4><b>The peak hours and seasonality trends and potential festival or holiday impacts for makeup-related content</b></h4>
+                      <iframe src="eda/fig_hourly.html"  width="100%" height="400px"></iframe>
+                      <figcaption style="text-align: center;"><b>Fig2: Hourly Post Volume and Average Score</b></figcaption>
+<p>Fig 2 displays the hourly post volume and average score trends on the MakeupAddiction subreddit. The data indicates that post volume maintains a moderate level during morning hours, experiences a downturn in the early hours, and subsequently exhibits an ascending trajectory, culminating in a peak during the evening. Concurrently, the average score, indicative of user engagement, reaches its zenith at approximately 13:00-14:00. This peak in average score suggests a window of heightened interaction. As the day progresses into evening hours, both the post volume and average score witness a substantial increase, denoting a period of intensified activity and engagement within the subreddit community.</p>
+                      <iframe src="eda/fig_daily.html"  width="100%" height="400px"></iframe>
+                      <figcaption style="text-align: center;"><b>Fig3: Daily Post Volume and Average Score</b></figcaption>
+                      <p>The daily post count (depicted by the blue line) on the MakeupAddiction subreddit, Fig 3 demonstrates notable fluctuations, with episodic spikes that may correspond with specific events or seasonal trends, such as increased activity around Halloween or a surge during the festive period in December. These variations suggest that user participation is influenced by external events which inspire sharing related content. The average score per post, illustrated by the orange line, maintains a relatively stable pattern, with minimal variation, except for a striking upsurge around January 2023. This anomaly indicates a day of exceptional engagement, where the content, albeit less in quantity, resonated strongly with the community, garnering substantial upvotes.</p>
+                      <p>In the broader view, the data lacks a clear progressive trend or seasonality over the two-year span, with both metrics experiencing regular fluctuations. This observation implies that the community’s interaction and content appreciation are dynamic and do not adhere to a predictable pattern.While the hourly analysis previously hinted at an inverse correlation between post volume and average score, the daily data does not consistently support this relationship, underscoring the complexity of user engagement and content valuation on a day-to-day basis.</p>
+                      <h4><b>Find the top 10 tags in MakeupAddiction Subreddits</b></h4>
+                        <iframe src="eda/top_10_tags.html"  width="100%" height="600px"></iframe>
+                      <figcaption style="text-align: center;"><b>Fig4: Top 10 Tags Each Year</b></figcaption>
+                      <p>The bar chart from the MakeupAddiction subreddit shows changing trends over three years. In 2021, ‘face of the day’ was highly popular, indicating a focus on showcasing daily makeup looks. This interest sharply declines over the next two years. The ‘question’ tag gains prominence in 2022 and 2023, suggesting a shift towards seeking advice and knowledge sharing within the community. ‘Discussion’ remains stable initially but decreases in 2023, indicating possible changes in community engagement. ‘Haul’, ‘review’, and ‘tutorial’ tags have a moderate and relatively steady presence, reflecting a consistent interest in product-related content and educational posts. Seasonal tags like ‘Halloween’ and less frequent tags such as ‘news’ highlight specific, time-bound, or niche interests within the subreddit. Overall, the community’s focus seems to have moved from personal makeup displays to informational exchanges.</p>
+                      <h4><b>The impact of visual elements in posts (e.g., images) on user engagement and popularity</b></h4>
+                      <iframe src="eda/media.html"  width="100%" height="500px"></iframe>
+                      <figcaption style="text-align: center;"><b>Fig5: Media V.S. Popularity</b></figcaption>
+                      <p>The boxplot analysis of subreddit posts reveals a trend of generally low engagement scores, regardless of media presence. Posts with media show limited variability, primarily clustering at lower engagement levels. In contrast, posts without media, while also predominantly low in engagement, include a few notable outliers with scores reaching as high as 50,000. These exceptional cases suggest a potential for higher engagement in media-free posts but are anomalies within an overall pattern of minimal interaction.<br><br>
 
-                <section id="v&e" class="main">
-                <div style="display: flex; align-items: center;">
-                  <h2><b>New Variables & External Data</b></h2>
-                  <span class="logo" style="margin-left: 500px;">
-                      <img src="images/v&e.png" alt="" style="border-radius: 50%;width: 300px; height: 300px; object-fit: cover;" />
-                    </a>
-                  </span>
-                </div>
-                <div>
-                <h3><b>3 New varaibles</b></h3>
+                        This observation complements the statistical analysis, which challenges the null hypothesis (H0) of no significant difference in average scores between posts with and without media. The alternative hypothesis (H1) posits a significant disparity. Our t-test, showing a T-statistic of -13.51 and a near-zero P-value, strongly supports rejecting H0, confirming H1 that submissions with media tend to have lower average scores. This result aligns with the boxplot findings and underscores the impact of media presence on user engagement scores in subreddit posts.</p>
+                    </section>
+                    
+                          
+                      <hr />
+
+                      <h3 id = "topic3"><b>3. New & Dummy Variables</b></h3>
+                        
+
+                      <h4><b>3 New variables</b></h4>
                 <p>To prepare for the proposed NLP topics, we have introduced three new variables through the process of exploratory data transformation.</p>
                 <li><b>is_top_100 author: </b>We identified the top 100 authors during the exploratory phase and compiled a list of their names. This new variable was generated by verifying if the creator’s name appeared in the top 100 authors list.</li>
                 <li><b>is_peak_hours:</b>We defined ‘peak hours’ as the time frames with a post volume exceeding 500, specifically from ‘hour’ 16 to 23 and ‘hour’ 0. This variable was created by validating if the posting time fell within these peak hours.</li>
-                <li><b>is_long_text:</b>we categorized ‘long text’ as comments with a ‘body’ length exceeding 100 and submissions with a ‘selftext’ length exceeding 200. This distinction aids in assessing content quality, summarization, and other feature engineering tasks for sentiment analysis.</li>
-              </div>
-              <div>
-                <h3><b>6 Dummy varaibles</b></h3>
+                <li><b>is_long_text:</b>we categorized ‘long text’ as comments with a ‘body’ length exceeding 100 and submissions with a ‘selftext’ length exceeding 200. This distinction aids in assessing content quality, summarization, and other feature engineering tasks for sentiment analysis.</li><br>
+              
+                <h4><b>6 Dummy variables</b></h4>
                 <p>By examining the submissions and comments, and leveraging our expertise as makeup enthusiasts, we have discerned four common topics that demand further exploration. Utilizing regular expression searches for ‘makeup’, ‘skincare’, ‘skincare_product’, ‘skincare_product_brand’,‘makeup_product’,‘makeup_product_brand’,we have created corresponding dummy variables.</p>
+                
                 <table border="1">
                   <tr>
                     <th>Submissions(dummy)</th>
@@ -387,29 +170,50 @@
                   </tr>
                   <tr>
                     <td>is_peak_hours</td>
-                    <td>4814</td>
-                    <td>4920</td>
+                    <td>47071</td>
+                    <td>48861</td>
                   </tr>
                   <tr>
                     <td>is_top_100_creator</td>
-                    <td>336</td>
-                    <td>9398</td>
+                    <td>2750</td>
+                    <td>93182</td>
                   </tr>
                   <tr>
                     <td>is_long_text</td>
-                    <td>574</td>
-                    <td>9160</td>
+                    <td>16998</td>
+                    <td>78934</td>
                   </tr>
                   <tr>
                     <td>skincare</td>
-                    <td>662</td>
-                    <td>9072</td>
+                    <td>6648</td>
+                    <td>89284</td>
                   </tr>
                   <tr>
                     <td>makeup</td>
-                    <td>414</td>
-                    <td>9320</td>
+                    <td>4104</td>
+                    <td>91828</td>
                   </tr>
+                  <tr>
+                    <td>makeup_product</td>
+                    <td>8412</td>
+                    <td>87520</td>
+                  </tr>
+                  <tr>
+                    <td>makeup_product_brand</td>
+                    <td>3747</td>
+                    <td>92185</td>
+                  </tr>
+                  <tr>
+                    <td>skincare_product</td>
+                    <td>1386</td>
+                    <td>94546</td>
+                  </tr>
+                  <tr>
+                    <td>skincare_product_brand</td>
+                    <td>310</td>
+                    <td>95622</td>
+                  </tr>
+                
                 </table>
 
                 <table border="1">
@@ -420,138 +224,65 @@
                   </tr>
                   <tr>
                     <td>is_top_100_creator</td>
-                    <td>2097</td>
-                    <td>103619</td>
+                    <td>29660</td>
+                    <td>1023620</td>
                   </tr>
                   <tr>
                     <td>is_long_text</td>
-                    <td>28912</td>
-                    <td>76804</td>
+                    <td>465135</td>
+                    <td>588145</td>
                   </tr>
                   <tr>
                     <td>skincare</td>
-                    <td>17213</td>
-                    <td>88503</td>
+                    <td>170425</td>
+                    <td>882855</td>
                   </tr>
                   <tr>
                     <td>makeup</td>
-                    <td>15394</td>
-                    <td>90322</td>
+                    <td>153488</td>
+                    <td>899792</td>
                   </tr>
-                </table>
-                <p>The data reveals patterns in both submissions and comments regarding the time of posting, author status, text length, and content focus (skincare or makeup-related).</p>
-                <p>The use of specific brands and products in both submissions and comments is quantitatively analyzed, providing a clear picture of the most discussed brands and products in the forum. </p>
-                <p>In the NLP analysis of beauty brands on the MakeupAddiction forum, dummy variables play a crucial role in categorizing data into “Skincare,” “Makeup,”. These variables enable focused analysis within each category by filtering posts and comments accordingly. Brand names are extracted using NLP techniques from the content, and their occurrences are counted within each category. Simultaneously, sentiment analysis is conducted on comments to determine consumer sentiment towards these brands, categorized as positive, negative, or neutral. The integration of these elements - category-specific data segregation using dummy variables, brand mention analysis, and sentiment evaluation - provides a comprehensive understanding of the top discussed brands in each category and the nature of consumer sentiment, guiding strategic business insights for marketing and product development.</p>
+                  <tr>
+                    <td>makeup_product</td>
+                    <td>138449</td>
+                    <td>914831</td>
+                  </tr>
+                  <tr>
+                    <td>makeup_product_brand</td>
+                    <td>49234</td>
+                    <td>1004046</td>
+                  </tr>
+                  <tr>
+                    <td>skincare_product</td>
+                    <td>16809</td>
+                    <td>1036471</td>
+                  </tr>
+                  <tr>
+                    <td>skincare_product_brand</td>
+                    <td>4274</td>
+                    <td>1049006</td>
+                  </tr>
 
-                <h3><b>2 External resources</b></h3>
-                <h4>New varaible from external resource: posting_karma</h4>
-                <p>“Karma is a reflection of how much a Redditor’s contributions mean to the community. Making posts that communities find valuable is the way to gain Karma.” –Reddit.com                </p>
-                <p>Creators with higher Reddit Karma scores often have a history of posting high-quality content, engaging in meaningful discussions, and contributing positively to the community. Their high Karma scores suggest that their posts and comments are well-received by other Redditors. They are more likely to have a deep understanding of the community’s preferences and interests.</p>
-                <p>By integrating Karma as an external data source, we can enrich our analysis and identify not only the top creators based on their post frequency and popularity but also those who have earned credibility, recognition, and respect within the community. Redditor’s Karma in provided by Reddit API and can be rerieved using the PRAW (Python Reddit API Wrapper) library.</p>
-                <h4>Potential new varaible from external resource: brands_trend</h4>
-                <table border="1">
-                  <!-- Header Row -->
-                  <tr>
-                    <th>Date</th>
-                    <th>Estée Lauder</th>
-                    <th>L'Oréal</th>
-                    <th>Coty Inc.</th>
-                    <th>Ulta Beauty</th>
-                    <th>Revlon</th>
-                    <th>isPartial</th>
-                  </tr>
-                  <!-- Data Rows -->
-                  <tr>
-                    <td>2021-01-03</td>
-                    <td>1</td>
-                    <td>0</td>
-                    <td>0</td>
-                    <td>37</td>
-                    <td>27</td>
-                    <td>False</td>
-                  </tr>
-                  <tr>
-                    <td>2021-01-10</td>
-                    <td>1</td>
-                    <td>0</td>
-                    <td>0</td>
-                    <td>34</td>
-                    <td>26</td>
-                    <td>False</td>
-                  </tr>
-                  <tr>
-                    <td>2021-01-17</td>
-                    <td>1</td>
-                    <td>0</td>
-                    <td>0</td>
-                    <td>32</td>
-                    <td>22</td>
-                    <td>False</td>
-                  </tr>
-                  <tr>
-                    <td>...</td>
-                    <td>...</td>
-                    <td>...</td>
-                    <td>...</td>
-                    <td>...</td>
-                    <td>...</td>
-                    <td>...</td>
-                  </tr>
-                  <tr>
-                    <td>2023-10-01</td>
-                    <td>1</td>
-                    <td>0</td>
-                    <td>0</td>
-                    <td>45</td>
-                    <td>0</td>
-                    <td>False</td>
-                  </tr>
-                  <tr>
-                    <td>2023-10-08</td>
-                    <td>1</td>
-                    <td>0</td>
-                    <td>0</td>
-                    <td>48</td>
-                    <td>0</td>
-                    <td>False</td>
-                  </tr>
-                  <tr>
-                    <td>2023-10-15</td>
-                    <td>1</td>
-                    <td>0</td>
-                    <td>0</td>
-                    <td>46</td>
-                    <td>0</td>
-                    <td>False</td>
-                  </tr>
-                  <tr>
-                    <td>2023-10-22</td>
-                    <td>2</td>
-                    <td>0</td>
-                    <td>0</td>
-                    <td>46</td>
-                    <td>20</td>
-                    <td>False</td>
-                  </tr>
-                  <tr>
-                    <td>2023-10-29</td>
-                    <td>1</td>
-                    <td>1</td>
-                    <td>0</td>
-                    <td>51</td>
-                    <td>22</td>
-                    <td>True</td>
-                  </tr>
+
+
                 </table>
-                
-                <p>Google Trends, based on google serach, shows how often a particular search term is entered relative to the total search volume. It provides insights into the popularity and trends of specific search terms over time. </p>
-                <p>We can look into the popularity trends of brands under the MakeupAddiction topic over the specified timeframe, which can be valuable for market research, content creation, and decision-making in our propsed NLP and Machine learning topics.</p>
-                <p>Google Trends can be rerieved using the TrendReq library.</p>
-              </div>
-</section>
-                </section>
-              </section>
+                <p>The data reveals patterns in both submissions and comments regarding the time of posting, author status, text length, and content focus (skincare or makeup-related). The use of specific brands and products in both submissions and comments is quantitatively analyzed, providing a clear picture of the most discussed brands and products in the forum. </p>
+                <p>The NLP analysis of beauty brands on the MakeupAddiction forum leverages dummy variables to categorize data into “Skincare” and “Makeup,” enabling precise analysis. Brand mentions are extracted and tallied within these categories using NLP techniques. Sentiment analysis of comments discerns consumer attitudes towards brands as positive, negative, or neutral. This integrated approach of data categorization, brand analysis, and sentiment assessment offers a detailed understanding of popular brands and consumer sentiment, informing strategic decisions in marketing and product development.</p>
+                      <h3 id = "topic4"><b>4. External Dataset</b></h3>
+                      <h4><b>New variable from external resource: posting_karma</b></h4>
+                      <p>“Karma is a reflection of how much a Redditor’s contributions mean to the community. Making posts that communities find valuable is the way to gain Karma.” –Reddit.com                </p>
+                      <p>Creators with higher Reddit Karma scores often have a history of posting high-quality content, engaging in meaningful discussions, and contributing positively to the community. Their high Karma scores suggest that their posts and comments are well-received by other Redditors. They are more likely to have a deep understanding of the community’s preferences and interests. By integrating Karma as an external data source, we can enrich our analysis and identify not only the top creators based on their post frequency and popularity but also those who have earned credibility, recognition, and respect within the community. Redditor’s Karma in provided by Reddit API and can be rerieved using the PRAW (Python Reddit API Wrapper) library.</p>
+                      <h4><b>Potential new variable from external resource: brands_trend</b></h4>
+                      <p>We use `pytrends`, an unofficial API for Google Trends, to retrieve search interest data for makeup and skincare brands and products like "Sephora," "Nars," "YSL," and "Ulta Beauty" from 2021 to 2023 in the US. The data can be used in NLP to analyze trends in brand popularity and consumer interest over time.</p>
+                       
+                        
+                       
+                      <h4><b>Google Trends</h4></b>
+                      <p>Google Trends, accessible via the TrendReq library, analyzes the frequency of specific search terms in relation to total search volume, offering insights into their popularity and trends over time. This tool is particularly useful in tracking the popularity trends of brands under the MakeupAddiction topic for a specified timeframe, providing valuable data for market research, content creation, and decision-making in proposed NLP and machine learning projects.</p>
+                    </section>
           </div>
+      </div>  
+                  
 				<!-- Footer -->
 				<footer id="footer">
 					<section>

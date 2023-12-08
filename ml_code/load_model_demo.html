@@ -443,8 +443,7 @@ To adjust logging level use sc.setLogLevel(newLevel). For SparkR, use setLogLeve
 <span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>s3_path <span class="op">=</span> <span class="ss">f"s3a://</span><span class="sc">{</span>bucket<span class="sc">}</span><span class="ss">/</span><span class="sc">{</span>output_prefix_data_submissions<span class="sc">}</span><span class="ss">"</span></span>
 <span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"reading submissions from </span><span class="sc">{</span>s3_path<span class="sc">}</span><span class="ss">"</span>)</span>
 <span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>submissions <span class="op">=</span> spark.read.parquet(s3_path, header<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"shape of the submissions dataframe is </span><span class="sc">{</span>submissions<span class="sc">.</span>count()<span class="sc">:,}</span><span class="ss">x</span><span class="sc">{</span><span class="bu">len</span>(submissions.columns)<span class="sc">}</span><span class="ss">"</span>)</span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>sampled_submissions <span class="op">=</span> submissions.sample(withReplacement<span class="op">=</span><span class="va">False</span>, fraction<span class="op">=</span><span class="fl">0.1</span>, seed<span class="op">=</span><span class="dv">123</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"shape of the submissions dataframe is </span><span class="sc">{</span>submissions<span class="sc">.</span>count()<span class="sc">:,}</span><span class="ss">x</span><span class="sc">{</span><span class="bu">len</span>(submissions.columns)<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>sagemaker.config INFO - Not applying SDK defaults from location: /etc/xdg/sagemaker/config.yaml
 sagemaker.config INFO - Not applying SDK defaults from location: /root/.config/sagemaker/config.yaml
@@ -462,9 +461,9 @@ Wall time: 6min 40s</code></pre>
 </div>
 </div>
 <div class="cell" data-tags="[]" data-execution_count="6">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>sampled_topcreators<span class="op">=</span> pd.read_csv(<span class="st">'../../data/csv/sampled_Top100Creators.csv'</span>)</span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>sampled_topcreators<span class="op">=</span> sampled_topcreators[<span class="st">'author'</span>].tolist()</span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>sampled_topcreators <span class="op">=</span> <span class="bu">list</span>(<span class="bu">set</span>(sampled_topcreators))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>topcreators<span class="op">=</span> pd.read_csv(<span class="st">'../../data/csv/Top100Creators.csv'</span>)</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>topcreators<span class="op">=</span> sampled_topcreators[<span class="st">'author'</span>].tolist()</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>topcreators <span class="op">=</span> <span class="bu">list</span>(<span class="bu">set</span>(topcreators))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell" data-tags="[]" data-execution_count="7">
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pyspark.sql.functions <span class="im">import</span> col, explode, regexp_replace, expr, <span class="bu">sum</span> <span class="im">as</span> sum_</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -484,7 +483,7 @@ Wall time: 6min 40s</code></pre>
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pyspark.sql.functions <span class="im">import</span> length</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell" data-tags="[]" data-execution_count="10">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>sampled_submissions_var<span class="op">=</span> sampled_submissions.withColumn(<span class="st">"created_hour"</span>,F.hour(F.to_timestamp(F.col(<span class="st">"created_utc"</span>).cast(<span class="st">'int'</span>))))<span class="op">\</span></span>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>submissions_var<span class="op">=</span> submissions.withColumn(<span class="st">"created_hour"</span>,F.hour(F.to_timestamp(F.col(<span class="st">"created_utc"</span>).cast(<span class="st">'int'</span>))))<span class="op">\</span></span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>                                            .withColumn(<span class="st">'text_length'</span>,F.length(F.col(<span class="st">'selftext'</span>)))<span class="op">\</span></span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>                                            .withColumn(<span class="st">"title_length"</span>, length(col(<span class="st">"title"</span>)))<span class="op">\</span></span>
 <span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>                                            .withColumn(<span class="st">"is_top_100_creator"</span>, col(<span class="st">"author"</span>).isin(sampled_topcreators))<span class="op">\</span></span>
@@ -494,7 +493,7 @@ Wall time: 6min 40s</code></pre>
 <span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Dummy submissions varaibles</span></span>
-<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>sampled_submissions_var<span class="op">=</span> sampled_submissions_var.withColumn(<span class="st">"skincare"</span>,F.col(<span class="st">"selftext"</span>).rlike(<span class="st">"""(?i)body|(?i)hair|(?i)facial|(?i)nails|(?i)lip|(?i)sunscreen|(?i)SPF|(?i)acne|(?i)pimples|(?i)scar|(?i)aging"""</span>))<span class="op">\</span></span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>submissions_var<span class="op">=</span> submissions_var.withColumn(<span class="st">"skincare"</span>,F.col(<span class="st">"selftext"</span>).rlike(<span class="st">"""(?i)body|(?i)hair|(?i)facial|(?i)nails|(?i)lip|(?i)sunscreen|(?i)SPF|(?i)acne|(?i)pimples|(?i)scar|(?i)aging"""</span>))<span class="op">\</span></span>
 <span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>                                  .withColumn(<span class="st">"skincare_product"</span>,F.col(<span class="st">"selftext"</span>).rlike(<span class="st">"""(?i)moisturizer|(?i)cleanser|(?i)serum|(?i)toner|(?i)lotion"""</span>))<span class="op">\</span></span>
 <span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a>                                  .withColumn(<span class="st">"skincare_product_brand"</span>,F.col(<span class="st">"selftext"</span>).rlike(<span class="st">"""(?i)Clinique|(?i)Neutrogena|(?i)Cetaphil|(?i)Kiehl's|(?i)Olay"""</span>))<span class="op">\</span></span>
 <span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a>                                  .withColumn(<span class="st">"makeup"</span>,F.col(<span class="st">"selftext"</span>).rlike(<span class="st">"""(?i)beauty|(?i)bodypaint|(?i)cosmetics|(?i)style|(?i)artist|(?i)cosplay|(?i)fashion|(?i)celebrity|(?i)party|(?i)wedding|(?i)palette"""</span>))<span class="op">\</span></span>
@@ -512,7 +511,7 @@ Wall time: 6min 40s</code></pre>
 <span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>]</span>
 <span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Selecting the independent variables from the DataFrame</span></span>
-<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a>selected_df <span class="op">=</span> sampled_submissions_var.select(independent_vars)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a>selected_df <span class="op">=</span> submissions_var.select(independent_vars)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell" data-tags="[]" data-execution_count="12">
 <div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pyspark.ml.feature <span class="im">import</span> VectorAssembler</span>
@@ -521,7 +520,7 @@ Wall time: 6min 40s</code></pre>
 </div>
 <section id="number-of-comments-random-forest-model" class="level3">
 <h3 class="anchored" data-anchor-id="number-of-comments-random-forest-model">Number of Comments Random Forest Model</h3>
-<div class="cell" data-execution_count="21">
+<div class="cell" data-execution_count="49">
 <div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pyspark.ml <span class="im">import</span> PipelineModel</span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Path where the model is saved</span></span>
@@ -530,27 +529,26 @@ Wall time: 6min 40s</code></pre>
 <span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Load the saved model</span></span>
 <span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>loaded_rf_model <span class="op">=</span> PipelineModel.load(model_path)</span>
 <span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Assuming 'test_data' is available and in the correct format</span></span>
-<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Make predictions using the loaded model</span></span>
-<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a>loaded_rf_predictions <span class="op">=</span> loaded_rf_model.transform(test_data)</span>
-<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Evaluate the predictions</span></span>
-<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a>rmse_evaluator <span class="op">=</span> RegressionEvaluator(labelCol<span class="op">=</span><span class="st">"num_comments"</span>, predictionCol<span class="op">=</span><span class="st">"prediction"</span>, metricName<span class="op">=</span><span class="st">"rmse"</span>)</span>
-<span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a>r2_evaluator <span class="op">=</span> RegressionEvaluator(labelCol<span class="op">=</span><span class="st">"num_comments"</span>, predictionCol<span class="op">=</span><span class="st">"prediction"</span>, metricName<span class="op">=</span><span class="st">"r2"</span>)</span>
-<span id="cb17-16"><a href="#cb17-16" aria-hidden="true" tabindex="-1"></a>mae_evaluator <span class="op">=</span> RegressionEvaluator(labelCol<span class="op">=</span><span class="st">"num_comments"</span>, predictionCol<span class="op">=</span><span class="st">"prediction"</span>, metricName<span class="op">=</span><span class="st">"mae"</span>)</span>
-<span id="cb17-17"><a href="#cb17-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-18"><a href="#cb17-18" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate evaluation metrics</span></span>
-<span id="cb17-19"><a href="#cb17-19" aria-hidden="true" tabindex="-1"></a>loaded_rf_rmse <span class="op">=</span> rmse_evaluator.evaluate(loaded_rf_predictions)</span>
-<span id="cb17-20"><a href="#cb17-20" aria-hidden="true" tabindex="-1"></a>loaded_rf_r2 <span class="op">=</span> r2_evaluator.evaluate(loaded_rf_predictions)</span>
-<span id="cb17-21"><a href="#cb17-21" aria-hidden="true" tabindex="-1"></a>loaded_rf_mae <span class="op">=</span> mae_evaluator.evaluate(loaded_rf_predictions)</span>
-<span id="cb17-22"><a href="#cb17-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-23"><a href="#cb17-23" aria-hidden="true" tabindex="-1"></a><span class="co"># Print the evaluation metrics</span></span>
-<span id="cb17-24"><a href="#cb17-24" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Loaded Random Forest Model - RMSE: </span><span class="sc">{</span>loaded_rf_rmse<span class="sc">}</span><span class="ss">, R2: </span><span class="sc">{</span>loaded_rf_r2<span class="sc">}</span><span class="ss">, MAE: </span><span class="sc">{</span>loaded_rf_mae<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Make predictions using the loaded model</span></span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a>loaded_rf_predictions <span class="op">=</span> loaded_rf_model.transform(test_data)</span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Evaluate the predictions</span></span>
+<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a>rmse_evaluator <span class="op">=</span> RegressionEvaluator(labelCol<span class="op">=</span><span class="st">"num_comments"</span>, predictionCol<span class="op">=</span><span class="st">"prediction"</span>, metricName<span class="op">=</span><span class="st">"rmse"</span>)</span>
+<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a>r2_evaluator <span class="op">=</span> RegressionEvaluator(labelCol<span class="op">=</span><span class="st">"num_comments"</span>, predictionCol<span class="op">=</span><span class="st">"prediction"</span>, metricName<span class="op">=</span><span class="st">"r2"</span>)</span>
+<span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a>mae_evaluator <span class="op">=</span> RegressionEvaluator(labelCol<span class="op">=</span><span class="st">"num_comments"</span>, predictionCol<span class="op">=</span><span class="st">"prediction"</span>, metricName<span class="op">=</span><span class="st">"mae"</span>)</span>
+<span id="cb17-16"><a href="#cb17-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-17"><a href="#cb17-17" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate evaluation metrics</span></span>
+<span id="cb17-18"><a href="#cb17-18" aria-hidden="true" tabindex="-1"></a>loaded_rf_rmse <span class="op">=</span> rmse_evaluator.evaluate(loaded_rf_predictions)</span>
+<span id="cb17-19"><a href="#cb17-19" aria-hidden="true" tabindex="-1"></a>loaded_rf_r2 <span class="op">=</span> r2_evaluator.evaluate(loaded_rf_predictions)</span>
+<span id="cb17-20"><a href="#cb17-20" aria-hidden="true" tabindex="-1"></a>loaded_rf_mae <span class="op">=</span> mae_evaluator.evaluate(loaded_rf_predictions)</span>
+<span id="cb17-21"><a href="#cb17-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-22"><a href="#cb17-22" aria-hidden="true" tabindex="-1"></a><span class="co"># Print the evaluation metrics</span></span>
+<span id="cb17-23"><a href="#cb17-23" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Loaded Random Forest Model - RMSE: </span><span class="sc">{</span>loaded_rf_rmse<span class="sc">}</span><span class="ss">, R2: </span><span class="sc">{</span>loaded_rf_r2<span class="sc">}</span><span class="ss">, MAE: </span><span class="sc">{</span>loaded_rf_mae<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
-<pre><code>[Stage 50:=======================================================&gt;(96 + 1) / 97]                                                                                </code></pre>
+<pre><code>[Stage 390:======================================================&gt;(96 + 1) / 97]                                                                                </code></pre>
 </div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Loaded Random Forest Model - RMSE: 26.117770992416975, R2: 0.43910121941479197, MAE: 7.184367214626658</code></pre>
+<pre><code>Loaded Random Forest Model - RMSE: 39.37996771881387, R2: 0.3972837164739184, MAE: 7.12384739487361</code></pre>
 </div>
 </div>
 </section>
@@ -563,108 +561,127 @@ Wall time: 6min 40s</code></pre>
 <span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>best_svm_model <span class="op">=</span> joblib.load(<span class="st">'/root/fall-2023-reddit-project-team-33/code/ML/best_svm_model.joblib'</span>)</span>
 <span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell" data-tags="[]" data-execution_count="93">
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> GridSearchCV</span>
-<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.svm <span class="im">import</span> SVC</span>
+<div class="cell" data-tags="[]" data-execution_count="70">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Import necessary libraries</span></span>
 <span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.feature_extraction.text <span class="im">import</span> TfidfVectorizer</span>
-<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.pipeline <span class="im">import</span> Pipeline</span>
-<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> accuracy_score, classification_report</span>
-<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Evaluate model performance</span></span>
-<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>best_predictions_svm <span class="op">=</span> best_svm_model.predict(test_data[<span class="st">'clean_body'</span>])</span>
-<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a>best_accuracy_svm <span class="op">=</span> accuracy_score(test_data[<span class="st">'controversiality'</span>], best_predictions_svm)</span>
-<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Best SVM Model Accuracy: </span><span class="sc">{</span>best_accuracy_svm<span class="sc">:.2f}</span><span class="ss">"</span>)</span>
-<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Print a classification report</span></span>
-<span id="cb21-13"><a href="#cb21-13" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Classification Report for Best SVM Model:"</span>)</span>
-<span id="cb21-14"><a href="#cb21-14" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(classification_report(test_data[<span class="st">'controversiality'</span>], best_predictions_svm))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.naive_bayes <span class="im">import</span> MultinomialNB</span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.pipeline <span class="im">import</span> Pipeline</span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> classification_report, accuracy_score, confusion_matrix</span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>predictions_svm <span class="op">=</span> best_svm_model.predict(test_data[<span class="st">'clean_body'</span>])</span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a>accuracy_svm <span class="op">=</span> accuracy_score(test_data[<span class="st">'controversiality'</span>], predictions_svm)</span>
+<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"SVM Accuracy: </span><span class="sc">{</span>accuracy_svm<span class="sc">:.2f}</span><span class="ss">"</span>)</span>
+<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(classification_report(test_data[<span class="st">'controversiality'</span>], predictions_svm))</span>
+<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-13"><a href="#cb21-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-14"><a href="#cb21-14" aria-hidden="true" tabindex="-1"></a><span class="co">#  'controversiality' is a binary column in the test_data DataFrame</span></span>
+<span id="cb21-15"><a href="#cb21-15" aria-hidden="true" tabindex="-1"></a>confusion_mat_svm <span class="op">=</span> confusion_matrix(test_data[<span class="st">'controversiality'</span>], predictions_svm)</span>
+<span id="cb21-16"><a href="#cb21-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-17"><a href="#cb21-17" aria-hidden="true" tabindex="-1"></a><span class="co"># Convert the confusion matrix to a DataFrame</span></span>
+<span id="cb21-18"><a href="#cb21-18" aria-hidden="true" tabindex="-1"></a>cm_df_svm <span class="op">=</span> pd.DataFrame(confusion_mat_svm, columns<span class="op">=</span>[<span class="st">'Predicted 0'</span>, <span class="st">'Predicted 1'</span>], index<span class="op">=</span>[<span class="st">'Actual 0'</span>, <span class="st">'Actual 1'</span>])</span>
+<span id="cb21-19"><a href="#cb21-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-20"><a href="#cb21-20" aria-hidden="true" tabindex="-1"></a><span class="co"># Print the confusion matrix DataFrame</span></span>
+<span id="cb21-21"><a href="#cb21-21" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Confusion Matrix:"</span>)</span>
+<span id="cb21-22"><a href="#cb21-22" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(cm_df_svm)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Best SVM Model Accuracy: 0.67
-Classification Report for Best SVM Model:
+<pre><code>SVM Accuracy: 0.68
               precision    recall  f1-score   support
 
-           0       0.72      0.59      0.65      1014
-           1       0.64      0.76      0.70       965
+           0       0.71      0.55      0.62      2955
+           1       0.66      0.79      0.72      3178
 
-    accuracy                           0.67      1979
-   macro avg       0.68      0.68      0.67      1979
-weighted avg       0.68      0.67      0.67      1979
-</code></pre>
+    accuracy                           0.68      6133
+   macro avg       0.68      0.67      0.67      6133
+weighted avg       0.68      0.68      0.67      6133
+
+Confusion Matrix:
+          Predicted 0  Predicted 1
+Actual 0         1638         1317
+Actual 1          675         2503</code></pre>
 </div>
 </div>
 </section>
 <section id="title-classification-logistic-regression-model" class="level3">
 <h3 class="anchored" data-anchor-id="title-classification-logistic-regression-model">Title Classification Logistic Regression Model</h3>
-<div class="cell" data-tags="[]" data-execution_count="36">
+<div class="cell" data-tags="[]" data-execution_count="7">
 <div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pyspark.ml.classification <span class="im">import</span> LogisticRegressionModel</span>
 <span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Evaluate best model</span></span>
 <span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Load a pre-trained model</span></span>
-<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>lrModel <span class="op">=</span> LogisticRegressionModel.load(<span class="st">"../../data/models/best_logistic_regression_model"</span>)</span>
-<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Make predictions on the new data</span></span>
-<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a>predictions <span class="op">=</span> lrModel.transform(final_prepared_df)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div class="cell" data-tags="[]" data-execution_count="37">
-<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pyspark.ml.evaluation <span class="im">import</span> MulticlassClassificationEvaluator</span>
-<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Initialize the evaluator</span></span>
-<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>evaluator <span class="op">=</span> MulticlassClassificationEvaluator(labelCol<span class="op">=</span><span class="st">"label"</span>, predictionCol<span class="op">=</span><span class="st">"prediction"</span>)</span>
-<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Evaluate accuracy, precision, recall, and F1 score</span></span>
-<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>lrAccuracy <span class="op">=</span> evaluator.setMetricName(<span class="st">"accuracy"</span>).evaluate(predictions)</span>
-<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a>lrPrecision <span class="op">=</span> evaluator.setMetricName(<span class="st">"precisionByLabel"</span>).evaluate(predictions)</span>
-<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a>lrRecall <span class="op">=</span> evaluator.setMetricName(<span class="st">"recallByLabel"</span>).evaluate(predictions)</span>
-<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a>lrF1 <span class="op">=</span> evaluator.setMetricName(<span class="st">"f1"</span>).evaluate(predictions)</span>
-<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-12"><a href="#cb24-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Logistic Regression Model Accuracy: </span><span class="sc">{</span>lrAccuracy<span class="sc">}</span><span class="ss">"</span>)</span>
-<span id="cb24-13"><a href="#cb24-13" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Logistic Regression Model Precision: </span><span class="sc">{</span>lrPrecision<span class="sc">}</span><span class="ss">"</span>)</span>
-<span id="cb24-14"><a href="#cb24-14" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Logistic Regression Model Recall: </span><span class="sc">{</span>lrRecall<span class="sc">}</span><span class="ss">"</span>)</span>
-<span id="cb24-15"><a href="#cb24-15" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Logistic Regression Model F1 Score: </span><span class="sc">{</span>lrF1<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>lrModel <span class="op">=</span> LogisticRegressionModel.load(<span class="st">"../../data/models/best_logistic_regression_model"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
-<pre><code>23/11/27 21:32:49 WARN DAGScheduler: Broadcasting large task binary with size 2.7 MiB
-23/11/27 21:35:54 WARN DAGScheduler: Broadcasting large task binary with size 2.7 MiB
-23/11/27 21:38:27 WARN DAGScheduler: Broadcasting large task binary with size 2.7 MiB
-23/11/27 21:40:46 WARN DAGScheduler: Broadcasting large task binary with size 2.7 MiB
-[Stage 262:=====================================================&gt; (95 + 2) / 97]                                                                                </code></pre>
+<pre><code>                                                                                </code></pre>
+</div>
+</div>
+<div class="cell" data-tags="[]" data-execution_count="8">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Make predictions on the new data</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>predictions <span class="op">=</span> lrModel.transform(testing_data)</span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>predictions.select(<span class="st">"label"</span>,<span class="st">"prediction"</span>, <span class="st">"probability"</span>).show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>23/12/07 09:15:15 WARN DAGScheduler: Broadcasting large task binary with size 41.2 MiB
+[Stage 20:&gt;                                                         (0 + 1) / 1]23/12/07 09:15:26 WARN InstanceBuilder: Failed to load implementation from:dev.ludovic.netlib.blas.JNIBLAS
+                                                                                </code></pre>
 </div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Logistic Regression Model Accuracy: 0.9972601789553999
-Logistic Regression Model Precision: 0.9978299719172836
-Logistic Regression Model Recall: 1.0
-Logistic Regression Model F1 Score: 0.9958934024317803</code></pre>
+<pre><code>+-----+----------+--------------------+
+|label|prediction|         probability|
++-----+----------+--------------------+
+|  0.0|       0.0|[1.0,2.2574461237...|
+|  0.0|       0.0|[0.99999429112962...|
+|  1.0|       1.0|[1.56182057744478...|
+|  0.0|       0.0|[1.0,3.2186355964...|
+|  1.0|       1.0|[2.81837635406791...|
+|  4.0|       4.0|[9.27858568667229...|
+|  0.0|       0.0|[1.0,3.9805376240...|
+|  1.0|       1.0|[2.35222368714639...|
+|  0.0|       0.0|[1.0,1.2301904949...|
+|  0.0|       0.0|[1.0,1.0298742724...|
+|  1.0|       0.0|[1.0,1.7401249905...|
+|  1.0|       1.0|[1.53576186600649...|
+|  2.0|       2.0|[4.55599402455953...|
+|  1.0|       1.0|[7.96642016175923...|
+|  0.0|       0.0|[1.0,8.2526283755...|
+|  1.0|       1.0|[2.29613276177369...|
+|  1.0|       1.0|[1.96106700064173...|
+|  0.0|       0.0|[1.0,5.8391558668...|
+|  7.0|       7.0|[3.81266501720795...|
+|  0.0|       0.0|[1.0,1.5822241615...|
++-----+----------+--------------------+
+only showing top 20 rows
+</code></pre>
 </div>
 </div>
 </section>
 <section id="score-model" class="level3">
 <h3 class="anchored" data-anchor-id="score-model">Score Model</h3>
-<div class="cell" data-tags="[]" data-execution_count="13">
-<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="co"># label and feature columns setup</span></span>
-<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>label_col <span class="op">=</span> <span class="st">"score"</span></span>
-<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>feature_cols <span class="op">=</span> [col <span class="cf">for</span> col <span class="kw">in</span> selected_df.columns <span class="cf">if</span> col <span class="kw">not</span> <span class="kw">in</span> [<span class="st">'score'</span>]]</span>
-<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Split Data</span></span>
-<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a>(train_data, test_data) <span class="op">=</span> selected_df.randomSplit([<span class="fl">0.8</span>, <span class="fl">0.2</span>], seed<span class="op">=</span><span class="dv">42</span>)</span>
-<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Load the saved model</span></span>
-<span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a>model_path <span class="op">=</span> <span class="st">"score_pred_model_rf"</span> </span>
-<span id="cb27-10"><a href="#cb27-10" aria-hidden="true" tabindex="-1"></a>loaded_model <span class="op">=</span> PipelineModel.load(model_path)</span>
-<span id="cb27-11"><a href="#cb27-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb27-12"><a href="#cb27-12" aria-hidden="true" tabindex="-1"></a>loaded_predictions <span class="op">=</span> loaded_model.transform(test_data)</span>
-<span id="cb27-13"><a href="#cb27-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb27-14"><a href="#cb27-14" aria-hidden="true" tabindex="-1"></a>evaluator <span class="op">=</span> RegressionEvaluator(labelCol<span class="op">=</span>label_col, predictionCol<span class="op">=</span><span class="st">"prediction"</span>, metricName<span class="op">=</span><span class="st">"mae"</span>)</span>
-<span id="cb27-15"><a href="#cb27-15" aria-hidden="true" tabindex="-1"></a>loaded_mae <span class="op">=</span> evaluator.evaluate(loaded_predictions)</span>
-<span id="cb27-16"><a href="#cb27-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb27-17"><a href="#cb27-17" aria-hidden="true" tabindex="-1"></a>evaluator <span class="op">=</span> RegressionEvaluator(labelCol<span class="op">=</span>label_col, predictionCol<span class="op">=</span><span class="st">"prediction"</span>, metricName<span class="op">=</span><span class="st">"rmse"</span>)</span>
-<span id="cb27-18"><a href="#cb27-18" aria-hidden="true" tabindex="-1"></a>loaded_rmse <span class="op">=</span> evaluator.evaluate(loaded_predictions)</span>
-<span id="cb27-19"><a href="#cb27-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb27-20"><a href="#cb27-20" aria-hidden="true" tabindex="-1"></a>evaluator <span class="op">=</span> RegressionEvaluator(labelCol<span class="op">=</span>label_col, predictionCol<span class="op">=</span><span class="st">"prediction"</span>, metricName<span class="op">=</span><span class="st">"r2"</span>)</span>
-<span id="cb27-21"><a href="#cb27-21" aria-hidden="true" tabindex="-1"></a>loaded_r2 <span class="op">=</span> evaluator.evaluate(loaded_predictions)</span>
-<span id="cb27-22"><a href="#cb27-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb27-23"><a href="#cb27-23" aria-hidden="true" tabindex="-1"></a><span class="co"># Print the evaluation metrics</span></span>
-<span id="cb27-24"><a href="#cb27-24" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Loaded Random Forest Model - RMSE: </span><span class="sc">{</span>loaded_rmse<span class="sc">}</span><span class="ss">, R2: </span><span class="sc">{</span>loaded_r2<span class="sc">}</span><span class="ss">, MAE: </span><span class="sc">{</span>loaded_mae<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-tags="[]" data-execution_count="17">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="co"># label and feature columns setup</span></span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>label_col <span class="op">=</span> <span class="st">"score"</span></span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>feature_cols <span class="op">=</span> [col <span class="cf">for</span> col <span class="kw">in</span> selected_df.columns <span class="cf">if</span> col <span class="kw">not</span> <span class="kw">in</span> [<span class="st">'score'</span>]]</span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Split Data</span></span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a>(train_data, test_data) <span class="op">=</span> selected_df.randomSplit([<span class="fl">0.8</span>, <span class="fl">0.2</span>], seed<span class="op">=</span><span class="dv">42</span>)</span>
+<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Load the saved model</span></span>
+<span id="cb28-9"><a href="#cb28-9" aria-hidden="true" tabindex="-1"></a>model_path <span class="op">=</span> <span class="st">"../../data/models/score_pred_model_rf"</span> </span>
+<span id="cb28-10"><a href="#cb28-10" aria-hidden="true" tabindex="-1"></a>loaded_model <span class="op">=</span> PipelineModel.load(model_path)</span>
+<span id="cb28-11"><a href="#cb28-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-12"><a href="#cb28-12" aria-hidden="true" tabindex="-1"></a>loaded_predictions <span class="op">=</span> loaded_model.transform(test_data)</span>
+<span id="cb28-13"><a href="#cb28-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-14"><a href="#cb28-14" aria-hidden="true" tabindex="-1"></a>evaluator <span class="op">=</span> RegressionEvaluator(labelCol<span class="op">=</span>label_col, predictionCol<span class="op">=</span><span class="st">"prediction"</span>, metricName<span class="op">=</span><span class="st">"mae"</span>)</span>
+<span id="cb28-15"><a href="#cb28-15" aria-hidden="true" tabindex="-1"></a>loaded_mae <span class="op">=</span> <span class="bu">round</span>(evaluator.evaluate(loaded_predictions),<span class="dv">3</span>)</span>
+<span id="cb28-16"><a href="#cb28-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-17"><a href="#cb28-17" aria-hidden="true" tabindex="-1"></a>evaluator <span class="op">=</span> RegressionEvaluator(labelCol<span class="op">=</span>label_col, predictionCol<span class="op">=</span><span class="st">"prediction"</span>, metricName<span class="op">=</span><span class="st">"rmse"</span>)</span>
+<span id="cb28-18"><a href="#cb28-18" aria-hidden="true" tabindex="-1"></a>loaded_rmse <span class="op">=</span> <span class="bu">round</span>(evaluator.evaluate(loaded_predictions),<span class="dv">3</span>)</span>
+<span id="cb28-19"><a href="#cb28-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-20"><a href="#cb28-20" aria-hidden="true" tabindex="-1"></a>evaluator <span class="op">=</span> RegressionEvaluator(labelCol<span class="op">=</span>label_col, predictionCol<span class="op">=</span><span class="st">"prediction"</span>, metricName<span class="op">=</span><span class="st">"r2"</span>)</span>
+<span id="cb28-21"><a href="#cb28-21" aria-hidden="true" tabindex="-1"></a>loaded_r2 <span class="op">=</span> <span class="bu">round</span>(evaluator.evaluate(loaded_predictions),<span class="dv">3</span>)</span>
+<span id="cb28-22"><a href="#cb28-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-23"><a href="#cb28-23" aria-hidden="true" tabindex="-1"></a><span class="co"># Print the evaluation metrics</span></span>
+<span id="cb28-24"><a href="#cb28-24" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Loaded Random Forest Model - RMSE: </span><span class="sc">{</span>loaded_rmse<span class="sc">}</span><span class="ss">, R2: </span><span class="sc">{</span>loaded_r2<span class="sc">}</span><span class="ss">, MAE: </span><span class="sc">{</span>loaded_mae<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
-<pre><code>WARNING: An illegal reflective access operation has occurred                    
+<pre><code>WARNING: An illegal reflective access operation has occurred        (0 + 1) / 1]
 WARNING: Illegal reflective access by org.apache.spark.util.SizeEstimator$ (file:/opt/conda/lib/python3.10/site-packages/pyspark/jars/spark-core_2.12-3.4.0.jar) to field java.math.BigInteger.mag
 WARNING: Please consider reporting this to the maintainers of org.apache.spark.util.SizeEstimator$
 WARNING: Use --illegal-access=warn to enable warnings of further illegal reflective access operations
@@ -672,7 +689,7 @@ WARNING: All illegal access operations will be denied in a future release
 [Stage 21:=======================================================&gt;(96 + 1) / 97]                                                                                </code></pre>
 </div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Loaded Random Forest Model - RMSE: 231.18777300014239, R2: 0.7265410321571694, MAE: 64.29881695303378</code></pre>
+<pre><code>Loaded Random Forest Model - RMSE: 359.219, R2: 0.464, MAE: 78.528</code></pre>
 </div>
 </div>
 </section>

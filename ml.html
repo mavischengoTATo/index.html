@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html>
 	<head>
-		<title>Machine Leanring</title>
+		<title>Machine Learning</title>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 		<link rel="stylesheet" href="assets/css/main.css" />
@@ -50,6 +50,7 @@
                       <li><b>Engaging with Beauty Enthusiasts</b>: For the "MakeupAddiction" subreddit, a popular online beauty community, we developed a way to predict which posts would get the most comments. This is like having a crystal ball that tells bloggers and community managers which topics will be the hottest, helping them to create content that keeps the conversation buzzing.</li>
                       <li><b>Predicting Popular Posts</b>: We also worked on predicting how popular a post would be based on its content and the person posting it. This is particularly useful for influencers and brands in the beauty community, as it helps them understand what resonates with their audience and tailor their posts for maximum impact.</li>
                       <li><b>Improving Content Discovery</b>: Lastly, we revolutionized how users find interesting content on the "MakeupAddiction" subreddit. We made it easier for users to find posts that match their interests, much like a personalized magazine that knows exactly what you like to read.</li>
+                      <br>
                       <p>Throughout these projects, our team has showcased a knack for turning complex data into actionable insights, without getting lost in technical jargon. Our goal has always been to make technology work for people, helping businesses understand their audience better and making online spaces more engaging and relevant. These projects aren't just about numbers and algorithms; they're about connecting with people, understanding trends, and making online experiences more enjoyable and meaningful.</p>
                     </section>
 									
@@ -86,59 +87,32 @@
                         <li><a href="./ml_code/controversiality.html" class="button">Click to get the code!</a></li>
                     </ul>
                       
-                      <p>In this part, a machine learning model for predicting controversiality was developed through a systematic process. Initially, the dataset was divided into training and testing sets to evaluate models like decision trees, random forests, and SVMs. The selected model underwent training and performance evaluation, focusing on accuracy and precision, and was further refined through hyperparameter tuning. An improvement stage involved dataset balancing and a comparative analysis of models, emphasizing accuracy and class disparity reduction. The process concluded with continuous refinement, integrating new features and analyzing feature significance, ensuring the model's robustness and adaptability in predicting controversiality.</p>
-                      <h4><b>One Stage of Model Training</b></h4>
-                      <ul>
-                        <p><b>Ease with the Ordinary (Non-controversial): </b>
-                          The model shines in familiar territory, effortlessly nailing 99% of non-controversial questions.</p>
-                      <p><b>Stumbling Over the Complex (Controversial): </b>
-                        In contrast, the model falters with controversial subjects, missing the mark entirely.</p>
-                      <p><b>Overall Grade: </b>
-                        While the model's overall score seems impressive (A+), this is skewed by its struggle with the controversial questions.</p>
-                      </ul>
+                      <p>In this part, a machine learning model for predicting controversiality was developed through a systematic process. Initially, the dataset was divided into training and testing sets to evaluate models like Naive Bayes and SVMs. The selected model underwent training and performance evaluation, focusing on accuracy and precision, and was further refined through hyperparameter tuning. An improvement stage involved dataset balancing and a comparative analysis of models, emphasizing accuracy and class disparity reduction. The process concluded with continuous refinement, integrating new features and analyzing feature significance, ensuring the model's robustness and adaptability in predicting controversiality.</p>
                         <h4><b>One Stage Summary </b></h4>
-                        <p>Initially, three models entered the arena, each boasting an impressive 0.99 accuracy, seemingly champions in predictive analytics. This high accuracy, however, masked a deeper complexity that was later uncovered through detailed analysis using tools like the confusion matrix and the ROC curve.</p>
-                        <p>These models excelled at predicting non-controversial instances (class 0), the majority class, earning them widespread acclaim. However, a deeper dive revealed a critical shortfall: their performance drastically plummeted when it came to the controversial class (class 1). In this arena, they stumbled, with a glaring absence of true positives and disappointingly low precision, recall, and F1-score for class 1.</p>
-                        <p>The plot thickened as the confusion matrix and ROC curve took center stage, revealing the models' inability to effectively distinguish between the controversial and the non-controversial. The ROC curve depicted a stark reality with a melancholic diagonal line, signifying an AUC of only 0.5 – a clear indicator of their struggle.
-                        </p>
-                        <p>When analyzing in depth, it became evident that the high accuracy was a facade. Beneath this veneer lay a significant challenge: the models' ineptitude in addressing the minority class. This would involve employing class rebalancing techniques, considering alternative modeling approaches, or fine-tuning existing parameters. Without these critical adjustments, the models, despite their theoretical prowess, risked failing in real-world scenarios where equitable treatment of both classes is paramount.</p>
+                        <p>Two predictive analytics models initially hailed for their 0.90, even 0.99 accuracy were later found to be inadequate in dealing with controversial instances (class 1), despite excelling with the non-controversial majority (class 0). Detailed analysis using tools like the confusion matrix and ROC curve revealed a significant disparity: they had high false negatives and low precision, recall, and F1-score for class 1, with an ROC curve indicating a mere 0.5 AUC. This uncovered the necessity for class rebalancing, alternative modeling approaches, or parameter fine-tuning to address the minority class effectively, highlighting that high accuracy alone can be misleading in real-world applications.
                       </p>
                       
                       <h4><b>Improvement</b></h4>
-                      <p>Three machine learning models — SVM, Naive Bayes, and Random Forest — were retrained on a balanced dataset to improve predictions of controversiality. Hyperparameter tuning was applied to each model, enhancing their ability to discern nuanced patterns and boosting overall predictive performance.</p>
+                      <p>Two machine learning models — SVM and Naive Bayes — were retrained on a balanced dataset to improve predictions of controversiality. Hyperparameter tuning was applied to each model, enhancing their ability to discern nuanced patterns and boosting overall predictive performance.</p>
                       
                       <p><b>Get Balanced Dataset From Original Comments Dataset: </b>
-                        The original dataset was rebalanced to address the skewed accuracy favoring non-controversial comments ('controversiality=False'). This involved sampling from 834,339 non-controversial and 8,563 controversial records, followed by text content cleaning. Logistic regression, Naive Bayes, and SVM were then utilized for refined predictions.
+                        To address class imbalance, our revised dataset retained all 10,652 controversial comments and randomly selected 10,652 from 1,046,629 non-controversial comments, creating a more balanced dataset for improved predictive modeling.
 </p>
-
-                        <p><b>Naive Bayes Tuing Model: </b>
-                          Achieved 66% accuracy, with a focus on recall for class 1 (controversial). Class 0 (non-controversial) showed 75% precision and 50% recall, whereas class 1 had 61% precision and 83% recall.
-                        </p>
-                          <p><b>Random Forest Tuing Model: </b>
-                            Optimized with specific hyperparameters, yielding 66% accuracy. Class 0 had 77% precision, 49% recall, and class 1 showed 61% precision, 84% recall.</p>
-                      <p><b>SVM Tuing Model: </b>
-                        Best model achieved 67% accuracy. Precision for class 0 and 1 was 72% and 64%, respectively, with recall rates of 59% for class 0 and 76% for class 1.</p>
-                    
-                      <p>Overall, each model demonstrated a more balanced performance across classes after tuning, with room for further enhancement in specific areas like recall for class 0, while SVM Model outstands among three models.</p>
-                    
+                        
                       <h4><b>Model Comparasion</b></h4>
-                      <iframe src="ML/model_comparison .html" style="transform: scale(1.2); transform-origin: top left;" width="100%" height="200px"></iframe>
-<p>
-<p>
-<p>
+                      <iframe src="ML/Model_Compare.html" style="transform: scale(1.0); transform-origin: top left;" width="100%" height="280px"></iframe>
 
                       <figcaption style="text-align: center;"><b>Table 1: Model Comparison of Controversiality Prediction</b></figcaption>
-                      <p>
-                      <p>The comparative Table 1 reveals that the Support Vector Machine (SVM) stands out as the most effective model for our project, with an overall accuracy of 0.67. This high accuracy indicates its capability in making correct predictions across the dataset. Specifically, SVM shows a strong performance in identifying controversial content (Class 1) with competitive precision, recall, and F1-scores, aligning well with the project's focus. It also performs well with non-controversial content (Class 0), demonstrating its versatility.</p>
+                      <p>The comparative Table 1 reveals that the Support Vector Machine (SVM) stands out as the most effective model for our project, with an overall accuracy of 0.68. This high accuracy indicates its capability in making correct predictions across the dataset. Specifically, SVM shows a strong performance in identifying controversial content (Class 1) with competitive precision, recall, and F1-scores, aligning well with the project's focus. It also performs well with non-controversial content (Class 0), demonstrating its versatility.</p>
                       <p>The choice of SVM is based on a thorough evaluation of key metrics like precision, recall, and F1-score, ensuring a balanced approach in handling false positives and negatives. This aligns with the project's objectives and the specific needs of the dataset. Furthermore, SVM's reliability is confirmed through cross-validation, indicating its effectiveness across various datasets and enhancing its suitability for real-world applications.</p>
                       <h4><b>Best SVM Model</b></h4>
 
 
-                      <iframe src="ML/BestSVM_ConfusionMatrix .html"width="100%" height="400px" ></iframe>
+                      <iframe src="ML/BestSVM_ConfusionMatrix.html"width="100%" height="400px" ></iframe>
                       <figcaption style="text-align: center;"><b>Fig 1: Confusion Matrix of Best SVM Model</b></figcaption>
                       <p>
-                      <p> As shown in Fig 1, The confusion matrix for our Best SVM Model reveals its strengths and areas for improvement in classifying content. It accurately identified 599 non-controversial (Class 0) and 730 controversial instances (Class 1), demonstrating its effectiveness in aligning with our classification goals. However, the matrix also shows 415 false positives (non-controversial content misclassified as controversial) and 235 false negatives (missed controversial content), highlighting the need for further refinement in balancing false positives and negatives.</p>
-                       <iframe src="ML/BestSVM_ROC .html"width="100%" height="400px"></iframe>
+                      <p>As depicted in Fig 1, the confusion matrix of our Best SVM Model illustrates its performance on the test dataset, showing a prowess in distinguishing non-controversial instances with 2503 correct classifications and identifying 1638 controversial cases. However, the presence of 1317 false negatives and 675 false positives indicates room for improvement, particularly in reducing the misclassification of controversial content and minimizing the oversight of actual controversial instances. This suggests a need to enhance the model's discriminative ability to better balance false positives and negatives in future iterations.</p>
+                        <iframe src="ML/BestSVM_ROC.html"width="100%" height="400px"></iframe>
                        <figcaption style="text-align: center;"><b>Fig 2: ROC Curve of Best SVM Model</b></figcaption>
 
                       <p>
@@ -146,10 +120,8 @@
                       </ul>
 
                       <h4><b>Conclusion</b></h4>
-                      
-                        <p>The selected model demonstrated a 67% accuracy, indicating its effectiveness in comment analysis. Its accuracy varied by comment type, achieving 72% for standard comments but with a 59% miss rate, and 64% accuracy for intricate comments, capturing 76% effectively. This performance aligns with our objective to identify comments that stimulate discussions, particularly excelling in detecting complex comments, thereby aiding in boosting user engagement and enhancing discussion quality.</p>
-                        <p>From business perspective, utilizing our automated comment screening tool enhances user interactions on our platform by promptly identifying and managing problematic comments, ensuring a positive and engaging conversational environment. The tool's analysis of complex comments provides valuable insights for content curation, tailoring it to user interests and enhancing relevance. Additionally, early detection of intricate comments helps prevent potential issues, contributing to the platform's stability and maintaining a high-quality user experience.</p>
-                      
+                      <p>Based on the comparison of model metrics, the SVM model exhibits a solid accuracy of 68%, reflecting its capability in analyzing comments. It shows a slightly better precision for class 1 (intricate comments) at 66% compared to the Naive Bayes model and maintains a competitive recall rate of 79%. The F1-scores for the SVM model are 0.62 for class 0 (standard comments) and 0.72 for class 1, indicating a balanced performance between precision and recall, particularly for complex comments.</p>
+<p>From a business standpoint, the deployment of our SVM-based comment classification tool can enhance user engagement by efficiently moderating discussions and preserving a constructive conversation atmosphere. The tool's nuanced handling of complex comments provides critical input for content curation and user engagement strategies, fostering relevancy and user interest. Proactive monitoring and management of intricate discussions also mitigate potential conflicts, ensuring platform integrity and a superior user experience.</p>                      
                     <p>Commitment to continuous improvement is paramount. Regular assessments of the tool's performance, coupled with iterative refinements, will ensure its adaptability to evolving language trends and user behaviors. Similar to mobile apps receiving updates, our tool will evolve intelligently to stay attuned to the dynamics of user interactions.</p>
                   
                     
@@ -172,17 +144,17 @@
                         <section>
                           <p><b>Model Selection and Evaluation</b></p>
                           <p>Selecting the right model is a critical decision in any predictive modeling exercise. In this case, the choice was made by comparing several models and evaluating their performance based on the RMSE, R2, and MAE metrics. The Random Forest model stood out, indicating its robustness in predicting the number of comments—a surrogate for user engagement on the platform. This model benefits from the ensemble method, which combines multiple decision trees to produce a more generalized and resilient prediction. The analysis of these metrics guides the project towards using a model that not only fits the current data well but also holds the potential to generalize to new, unseen subreddit submissions.</p>
-                          <iframe src="ML/num_comments_model_metrics.html" width="100%" height="330px"></iframe>
+                          <iframe src="ml/num_comments_model_metrics.html" width="100%" height="330px"></iframe>
                           <p></p>
                           <figcaption style="text-align: center;"><b>Table 2: Model Metrics of Predicting Number of Comments in Submissions </b></figcaption>
-                          <p>
-                          <p>In Table 2, we can clearly know that the model evaluation metrics  provides a comprehensive view of the performance of various regression models used to predict the number of comments on submissions in the "MakeupAddiction" subreddit. The Random Forest model demonstrates superior performance with the lowest RMSE (Root Mean Square Error) of approximately 26.12, indicating it has the smallest average error in the number of comments predicted. Its R2 (R-squared) value of approximately 0.439 suggests that around 43.9% of the variability in the number of comments can be explained by the model, which is relatively higher than the other models. Moreover, the Random Forest model achieves the lowest MAE (Mean Absolute Error) at approximately 7.18, indicating its predictions are closest to the actual values on average. On the other hand, the Gradient Boosted Tree Regressor, while a commonly robust model, shows the highest RMSE and the lowest R2, indicating it may not be capturing the subreddit dynamics as effectively as the Random Forest. The Generalized Linear Regression and Linear Regression models have identical RMSE and R2 values, which may suggest that the linear assumption is consistent across these models. However, they both show lower predictive power compared to the Random Forest. Elastic Net, a regularization method combining L1 and L2, shows marginally better R2 than the linear models, potentially indicating some benefit from the regularization, but it still falls short of the Random Forest model's performance.</p>
-                          <p>From a business standpoint, the table highlights the Random Forest model as the most reliable for predicting engagement on the "MakeupAddiction" subreddit, as evidenced by its lower errors and higher explanatory power. For subreddit moderators and content creators, this model can serve as a valuable tool for understanding and forecasting community engagement. Lower prediction errors mean that moderators can better prepare for and manage threads with high activity, and content creators can fine-tune their posting strategies to maximize visibility and interaction. The Random Forest model’s ability to effectively capture the relationship between various features and the number of comments can also inform targeted strategies for community growth and engagement. On the flip side, the less satisfactory performance of the Gradient Boosted Tree Regressor suggests that this subreddit's data might have nuances or non-linear relationships that the model is overfitting or not capturing effectively. For stakeholders aiming to drive strategic decisions, the insights from the Random Forest model can lead to the development of nuanced content schedules, promotional strategies, and community engagement practices that align with user activity patterns, ultimately fostering a more vibrant and interactive subreddit community.</p>
+                          <p>From a technical standpoint, the Random Forest model exhibits outstanding performance in our model evaluation, achieving the lowest RMSE of approximately 36.38, the highest R2 value of roughly 0.397, and a low MAE near 7.12. This model demonstrates a strong capacity to capture the underlying variability within the data, suggesting a robust fit capable of delineating the complex, non-linear patterns often present in social media user interactions. In comparison, the Gradient Boosted Tree Regressor, while also effective, does not quite match the Random Forest in terms of the R2 metric. The Generalized Linear and Linear Regression models post identical RMSE and R2 values, indicating a potentially oversimplified approach to modeling the intricate data landscape. Elastic Net Regression, with a slight improvement in R2, still falls short of the tree-based methodologies.</p>
+                          <p>From a business perspective, the superior results of the Random Forest model highlight its reliability for predicting user engagement within the "MakeupAddiction" subreddit. Its high degree of accuracy offers moderators and marketers actionable insights for anticipating engagement patterns, gearing up for trending discussions, and developing resonant content. Although the Gradient Boosted Tree also shows promise, the Random Forest's nuanced modeling makes it particularly valuable for informing strategic decisions. Conversely, the limited performance of the linear models may not adequately cater to the nuanced and dynamic nature of online social interactions, which could lead to less effective engagement strategies. Harnessing the Random Forest insights could lead to more compelling content creation, strategic planning for user interaction, and overall heightened community activity.</p>
+                          
                         </section>
                       
                         <section>
                           <p><b>Top 15 Feature Importance in Random Forest Model</b></p>
-                          <iframe src="ML/num_comments_top15_feature_importance.html"  width="100%" height="600px"></iframe>
+                          <iframe src="ml/num_comments_top15_feature_importance.html"  width="100%" height="600px"></iframe>
                           <figcaption style="text-align: center;"><b>Fig 3: Top 15 Most Important Features in Predicting Number of Comments </b></figcaption>
                           <p>
 
@@ -218,137 +190,71 @@
                           <p><b>Project Overview</b></p>
                           <p>Enhance the reach and impact of content shared on "MakeupAddiction" by predicting the popularity of posts, thus enabling creators and brands to engage more effectively with their audience.In this section, our primary focus will be on predicting the score of a submission. By analyzing the contributing factors to the model, we aim to impart insights into what is crucial when posting high-score in the MakeupAddiction subreddit. </p>
                           <p><b>Feature Engineering</b></p>
-                          <p>We will extract and engineer several features from our dataset: Post Length:`text_length`, and `title_length`. Content Theme: `skincare` and `makeup`. Posting Hour: `is_peak_hour`. Categorical Features: `has_media` and `gilded` and Creator Popularity: `is_top_100_creator`. </p>
+                          <p>We will extract and engineer several features from our dataset: Post Length:`text_length`, and `title_length`. Content Theme: `skincare` and `makeup`. Posting Hour: `is_peak_hour`. Categorical Features: `has_media` and `gilded` and Creator Popularity: `is_top_100_creator`. The feature engineering is the same as the topic of predicting the number of comments of posts. </p>
                         </section>
                     
                         <section>
                           <p><b>Model Selection and Evaluation</b></p>
-                          <p>A Gradient Boosted Regressor and Random Forest Regressor will be employed as the supervised regression model, trained on these features to predict a post's score, which serves as our popularity metric. We will partition the data into training and validation sets to evaluate the model’s generalizability. Performance will be assessed using the root-mean-square error (RMSE) and R Square metrics. Lower RMSE scores will be indicative of more accurate predictions of post popularity. A higher R square means a larger proportion of the variability in the target variable is accounted for by the model. This strategy aims to optimize engagement by aligning content creation with data-driven predictions.</p>
-                          <iframe src="ML/score_pred_model_compare.html" style="transform: scale(1.2); transform-origin: top left;" width="100%" height="220px"></iframe>
-                         <p> </p>
-                         <p>  </p>
-                         <p> </p>
-
+                          <p>Various models will be employed as the supervised regression model, trained on these features to predict a post's score, which serves as our popularity metric. We will partition the data into training and validation sets to evaluate the model’s generalizability. Performance will be assessed using the root-mean-square error (RMSE) and R Square metrics. Lower RMSE scores will be indicative of more accurate predictions of post popularity. A higher R square means a larger proportion of the variability in the target variable is accounted for by the model. This strategy aims to optimize engagement by aligning content creation with data-driven predictions.</p>
+                          <iframe src="ml/score_pred_model_compare.html" style="transform: scale(1.3); transform-origin: top left;" width="100%" height="500px"></iframe>
+                         <p></p>
+                         <p></p>
+                         <p></p>
                       
                     
                           <figcaption style="text-align: center;"><b>Table 3: Model Metrics of Predicting Score in Submissions </b></figcaption>
-                          <p>
+                         <p>In Table 3, we find that the Random Forest model outperforms with the highest R-squared value of 0.517, explaining a greater proportion of variance in the target variable. While its Mean Absolute Error (MAE) of 83.724 is slightly higher than the GBT model's lowest MAE of 73.445, both models' predictions are relatively close to actual values. Analyzing the Random Forest model's feature importance reveals key factors for high scores in submissions, such as active engagement and comment counts. This insight, along with considering elements like comment numbers and word count, enhances the model's predictive accuracy, aligning predictions more closely with real outcomes.</p>
 
 
-                          <p>In Table 3, we find that the Random Forest model has a slightly higher R-squared value (0.727) compared to the GBT model (0.691), indicating that a higher proportion of the variance in the target variable is explained by the Random Forest model.</p>
-                          <p>However, the GBT model has a lower MAE (59.72) compared to the Random Forest model (64.30), suggesting that, on average, the predictions from the GBT model are closer to the actual values.</p>
-                          <p>If our primary goal is to minimize prediction errors, especially in terms of Mean Absolute Error (MAE), the GBT model stands out as the preferred choice. The model's accuracy is held in high regard, making it a reliable option. Furthermore, by considering additional factors such as the number of comments, whether the author is among the top creators, and the word count of the submission, we can enhance our ability to predict the submission score with greater precision, bringing our predictions closer to the actual figures.</p>
-                          <p>If our emphasis is on elucidating a greater proportion of variance in the target variable, particularly with regard to R-squared, the Random Forest model emerges as the model of choice. Examining the feature importance of the model enables us to delve into its distribution, offering insights into what factors are crucial for achieving a high score when posting. For instance, becoming a top creator may involve writing more extensive titles and selftext, posting during peak hours, actively engaging with other submissions, and striving to attract a higher number of comments, if feasible.</p>
-                          <p>Consider the trade-offs between different metrics, we will choose Random Forest model, which better fits into our business goal.</p>
-                        </section>
+                           </section>
                       
                         <section>
                           <p><b>Top Feature Importance in Random Forest Model</b></p>
-                          <iframe src="ML/score_pred_feature_importance.html"  width="100%" height="600px"></iframe>
-                          <figcaption style="text-align: center;"><b>Fig 4: Top 15 Most Important Features in Predicting Score </b></figcaption>
-                          <p>
-                          <p>
-                          <p><b>Highly Important Features:</b></p>
+                          <iframe src="ml/score_pred_feature_importance.html"  width="100%" height="600px"></iframe>
+                          <figcaption style="text-align: center;"><b>Fig 4: Top 20 Most Important Features in Predicting Score </b></figcaption>
+                          <p>Fig 4 delineates the feature importances from a Random Forest model, offering a quantitative assessment of each feature's predictive power. Dominating the chart, 'num_comments' stands out with an importance score well above 0.6, suggesting that the model heavily relies on the volume of user engagement when estimating post scores. In stark contrast, 'num_crossposts' and 'gilded', while still among the top three features, command much less influence, with importance scores just above 0.1. This considerable drop-off implies that while these features are valuable, they are secondary to the sheer weight of the number of comments.
 
-                  
-                          <p><ul>
-                              <li><strong>num_comments:</strong> This feature has the highest importance (0.478), indicating that the number of comments on a submission is a crucial factor in predicting the score.</li>
-                              <li><strong>is_top_100_creator:</strong> This feature also has significant importance (0.203), suggesting that whether the creator is in the top 100 contributors is influential.</li>
-                              <li><strong>gilded:</strong> The feature indicating whether the submission received gold awards (gilded) is also important (0.093), implying that highly recognized or appreciated posts tend to have higher scores.</li>
-                              <li><strong>num_crossposts:</strong> The number of crossposts (num_crossposts) also plays a notable role (0.088) in predicting the score.</li>
-                          </ul>
-                          <p><b>Moderate Importance Features:</b></p>
-                          <ul>
-                              <li><strong>title_length:</strong> The length of the submission title contributes moderately (0.069).</li>
-                              <li><strong>is_crosspostable, is_reddit_media_domain:</strong> These features related to crossposting and being from Reddit's media domain contribute moderately.</li>
-                          </ul>
+                            <br><br>Continuing down the importance scale, 'text_length', 'is_crosspostable', and 'is_reddit_media_domain' present as features with moderate importance, hovering around the 0.1 mark. These metrics might reflect content richness and platform-specific characteristics that the model takes into account, albeit with less conviction than the leading factors. The lower end of the scale is populated with a mix of content-related features ('title_length', 'makeup_product', 'skincare_product') and posting attributes ('is_video', 'spoiler', 'stickied'). Each of these features contributes a small piece to the predictive puzzle, suggesting a nuanced but marginal effect on the overall score a post might receive.</p>
+                            <p><b>Business Insights and Recommendations</b></p>
+                            <p>From a Business Intuition Perspective, the substantial importance assigned to 'num_comments' in the feature importance chart provides a clear directive for businesses and content creators: engagement is paramount. A high volume of comments is typically an indicator of a post's capacity to engage and spark conversations among the audience, which is a key characteristic of successful content. To capitalize on this, creators are encouraged to produce content that not only grabs attention but also encourages interaction. Incorporating elements such as open-ended questions, calls to action, or topics that are currently trending can create an environment ripe for discussion and community engagement.</p>
+                            <p>As a KOL, understanding the impact of 'num_comments' is crucial. It implies that influence within the community is gauged by the ability to generate conversations. The skill lies in crafting messages that resonate on a personal level with the audience, prompting them to share their thoughts and opinions. This might involve sharing personal stories, expert insights, or controversial opinions that challenge the status quo, thereby heightening engagement.</p>
+                            <p>Similarly, the relevance of 'num_crossposts' and 'gilded' from a KOL standpoint stresses the importance of visibility and reputation within the community. Crossposting extends the reach of content, engaging diverse audience segments, while gilded posts act as a marker of quality and endorsement from the community. This dual focus on reach and reputation aligns with a KOL's objective to not only be heard but also valued across various platforms. While other features like 'is_video' or 'title_length' may influence engagement to some degree, a KOL's strategy should prioritize encouraging dialogue and maximizing visibility to truly resonate with and impact the community on Reddit.</p>
+                            </section>
 
-                          <p><b>Low Importance Features:</b></p>
-                          <ul>
-                              <li>Several features, such as <strong>text_length, is_peak_hour, is_self, is_long_text,</strong> and others, have lower importances but still contribute to the model.</li>
-                          </ul>
-                          <p><b>Interpretation:</b></p>
-                          <ul>
-                              <li>The model emphasizes the engagement metrics (<strong>num_comments, num_crossposts, gilded</strong>) and characteristics of the submission creator (<strong>is_top_100_creator</strong>) as highly influential in predicting the score.</li>
-                              <li>Features related to the content of the submission, such as <strong>title_length,</strong> also play a significant role.</li>
-                          </ul></p>
-                          <p>In summary, the analysis of feature importance for predicting submission scores reveals key insights with actionable implications for businesses. The number of comments emerges as the most critical factor, emphasizing the importance of fostering community engagement. Recognizing as top contributors, promoting award-worthy content, strategically crossposting, optimizing title length, and diversifying content with rich media are identified as strategic approaches to positively influence scores. Continuous monitoring and adaptation to evolving user behavior and platform dynamics are essential to optimize their performance on Reddit and achieve higher submission scores.</p>
-                        </section>
                       <hr />
 
                       <h3 id = "topic4"><b>4. Enhanced Post Classification for Personalized Content Discovery</b></h3>
-                      <ul>
                       <ul class = "actions">
                         <li><a href="./ml_code/Title_Categorization.html" class="button">Click to get the code!</a></li>
                       </ul>
                       <ul class = "actions">
                         <li><a href="./ml_code/Title_Classification_model_train.html" class="button">Model Train is Here!</a></li>
                       </ul>
-                        <h4><b>Overview</b><h4>
-                        <p>To enhance user engagement on the "MakeupAddiction" subreddit, our goal is to develop a system that classifies posts based on content, user interaction, and metadata, thereby facilitating easier content discovery and personalization. Our technical strategy involves comparing four machine learning models - Naive Bayes, Logistic Regression, BERT, and Random Forest - to find the most effective classifier. This model will be trained using advanced natural language processing techniques and assessed with standard classification metrics. The chosen model, ideally balancing accuracy and computational efficiency, will then be integrated into the subreddit's infrastructure, evolving continually through user feedback to maintain relevance and efficacy in content categorization.</p>
-                        <h4><b>Tag Model Comparison</b><h4>
+                        <h4><b>Overview</b></h4>
+                        <p>To enhance user engagement on the "MakeupAddiction" subreddit, our goal is to develop a system that classifies posts based on content, user interaction, and metadata, thereby facilitating easier content discovery and personalization. Our technical strategy involves comparing four machine learning models - Naive Bayes, Logistic Regression, and Random Forest - to find the most effective classifier. This model will be trained using advanced natural language processing techniques and assessed with standard classification metrics. The chosen model, ideally balancing accuracy and computational efficiency, will then be integrated into the subreddit's infrastructure, evolving continually through user feedback to maintain relevance and efficacy in content categorization.</p>
+                        <h4><b>Tags Model Comparison</b></h4>
                         <p>
-                          <iframe src="ML/title_classification_model_compare_table.html"  style="transform: scale(0.9); transform-origin: top left;" width="150%" height="200px"></iframe>
+                          <iframe src="ML/title_classification_model_compare_table.html"  style="transform: scale(0.9); transform-origin: top left;" width="150%" height="250px"></iframe>
                           <figcaption style="text-align: center;"><b>Table 4: Model Comparasion of Title Classification </b></figcaption>
-                          <p>
-                          <p>In the "MakeupAddiction" subreddit's tag prediction task, we compared four machine learning models(show in Table 4) based on their effectiveness:</p>
-                          <ul>
-                            <li>
-                                <b>Random Forest:</b> Showed moderate performance with <b>52.23% accuracy</b> and an <b>F1 score of 46.64%</b>. It's effective in handling non-linear data and outliers, suitable for complex datasets.
-                            </li>
-                            <li>
-                                <b>Logistic Regression:</b> Highly effective, boasting an impressive <b>92.03% accuracy</b> and a <b>F1 score of 92.29%</b>. This model is excellent at identifying relevant features and accurately classifying posts.
-                            </li>
-                            <li>
-                                <b>Naive Bayes:</b> Lower performance with <b>43.41% accuracy</b> and an <b>F1 score of 34.76%</b>. Its effectiveness is limited, possibly due to feature dependence in the data.
-                            </li>
-                            <li>
-                                <b>BERT:</b> Despite its advanced textual data processing, it underperformed with <b>40.35% accuracy</b> and an <b>F1 score of 23.20%</b>, likely due to insufficient training data or overfitting.
-                            </li>
-                        </ul>
-                        <p>
-                          <b>Conclusion:</b> <i>Logistic Regression</i> stands out as the top choice for this task, balancing accuracy and efficiency, and demonstrating robustness in text classification. When deploying these models, factors like training time, interpretability, scalability, and continuous updates with new data are crucial for sustained effectiveness.
-                      </p>
+                          <p>The table provided presents a detailed comparison of three distinct machine learning models - Random Forest, Logistic Regression, and Naive Bayes - in the context of a project aimed at enhancing user experience on the "MakeupAddiction" subreddit. Each model is assessed based on four pivotal performance metrics: Accuracy, Precision, Recall, and F1 Score. The Random Forest model shows a notably high recall rate of nearly 100%, indicating its proficiency in identifying relevant posts, but it lags significantly in precision and accuracy, with values around 44%. This imbalance suggests that while it is excellent at identifying relevant content, it also misclassifies a substantial amount of irrelevant content as relevant. Its F1 Score, a harmonic mean of precision and recall, is considerably low at 28.66%, reflecting this imbalance. <br><br>
 
-                          <iframe src="ML/title_classification_model_compare_bar.html"  width="100%" height="500px"></iframe>
-                          <figcaption style="text-align: center;"><b>Fig 5: The Barplot of Model Comparasion in Predicting Titles </b></figcaption>
-                        </p>
-                        <h4><b>Model Optimization and Evaluation Summary</b></h4>
-                          <p>Building upon our initial overview and model comparison in the "MakeupAddiction" subreddit's tag prediction task, we embarked on a journey to optimize our models, focusing on Logistic Regression due to its promising performance. Utilizing PySpark's MLlib, we implemented a rigorous approach to fine-tune the Logistic Regression model. This involved a ParamGridBuilder for hyperparameter tuning and CrossValidator for robust evaluation, aiming to enhance the model's accuracy.</p>
-                          <p>Our optimization efforts bore fruit with an outstanding final accuracy of 99.6992%, as show in Fig 5. This exceptional level of precision was further confirmed by the generation of a confusion matrix, which revealed zero instances of false negatives or false positives, indicating a perfect classifier on our dataset. Such a high accuracy rate, while commendable, prompted considerations of potential overfitting and the model's ability to generalize to new, unseen data.</p>
-                          <p>The Logistic Regression model's success in accurately classifying the dataset was undeniably impressive. However, in the realm of machine learning, achieving near-perfect accuracy often warrants a cautious approach. We considered the risk of overfitting, the nuances of our dataset, and the model's generalizability to ensure its reliability in real-world scenarios. Complementing accuracy with other evaluation metrics like precision, recall, and the F1 score, we aimed to provide a comprehensive assessment of the model's performance, especially in the context of potential class imbalances.</p>
-                          <ul>
-                          <p><b>Confusion Matrix Analysis</b></p>
+                            In stark contrast, the Logistic Regression model excels across the board, with an impressive accuracy of 96.26% and an outstanding precision of nearly 99%. Its recall rate, at 94.42%, is also commendably high, suggesting it effectively identifies relevant posts with minimal misclassification. The F1 Score for this model is 96.48%, indicating a well-balanced performance between precision and recall. The Naive Bayes model holds a middle ground, with decent scores in accuracy (75.42%), precision (90.16%), and recall (74.95%). However, its F1 Score is relatively lower at 74.03%, indicating a slight imbalance between precision and recall. These metrics collectively provide a comprehensive view of each model’s strengths and weaknesses, crucial for the project's goal to optimize post classification for a more structured and personalized content experience on the subreddit. The superior performance of Logistic Regression particularly aligns with the technical proposal of employing sophisticated NLP techniques and continual model enhancement through user feedback, promising significant strides in user engagement and contentment.</p>
 
-                          <ul>
+                          <h4><b>Confusion Matrix Analysis</b></h4>
                           <p><iframe src="ML/title_classification_confusion_matrix(refined).html"  width="100%" height="500px"></iframe>
-                            <figcaption style="text-align: center;"><b>Fig 6: The Confusion Matrix of Title Classifiaction (Best Model) </b></figcaption>
+                            <figcaption style="text-align: center;"><b>Fig 5: The Confusion Matrix of Title Classifiaction (Best Model) </b></figcaption>
                         </p>
-                            In Fig 6, The cell for "Actual 0" and "Predicted 0" (bottom left) is yellow with a count of 515, indicating the number of true negatives where the model correctly predicted class 0. The cell for "Actual 1" and "Predicted 1" (top right) is green with a count of 422, signifying the true positives. The top left and bottom right cells are purple with a count of 0, showing no false negatives or false positives, respectively. This matrix suggests a perfect classifier for the given dataset but raises questions about overfitting or non-representativeness.</p>
-                          
-                          <p>In summary, this confusion matrix indicates a perfect classifier on the given dataset, as there are no instances where the model made an incorrect prediction. However, this is highly unusual in practice and may suggest overfitting, an issue with the data, or that the results are being presented for a non-representative subset of the data. It's also possible that this could occur with a very simple or deterministic dataset.</p>
-                        </ul>
-                      </ul>
-                          <p>Our optimized Logistic Regression model demonstrated exceptional proficiency in classifying the subreddit's data, aligning seamlessly with our initial goal of enhancing user experience through efficient content categorization. Nevertheless, we remain vigilant about the broader implications of our model's performance, ensuring it remains robust and applicable across diverse datasets.</p>
+                           <p>The confusion matrix for the tuned Logistic Regression model provides an in-depth look into its classification accuracy and its relevance to the project goal of enhancing the user experience on the "MakeupAddiction" subreddit. The high number of True Positives, standing at 8,246, is a critical indicator of the model's effectiveness. This figure represents the instances where the model correctly identified relevant posts, a vital aspect for ensuring that users are exposed to content that aligns with their interests. The ability of the model to accurately flag these posts plays a significant role in enhancing user engagement and satisfaction, as it directly contributes to a more personalized and relevant content discovery experience.<br><br>
 
-                        <h4><b>Best Model Training and Evaluation</b><h4>
-                          <p>We embarked on training the best-performing Logistic Regression model using PySpark's MLlib. Our process involved setting up a Spark session with necessary configurations and loading data from AWS S3 using Hadoop. We applied a combination of Spark NLP's document assembler, tokenizer, and normalizer to preprocess the data for model training.</p>
-
-                          <p>The Logistic Regression model was then trained using a pipeline that incorporated text processing for titles and body content, as well as feature extraction through CountVectorizer. A StringIndexer was used to prepare the label column, and a VectorAssembler combined all features into a single vector.</p>
-                      
-                          <p>After training, we loaded a pre-trained Logistic Regression model and made predictions on a new dataset. The model's performance was evaluated using accuracy, precision, recall, and F1 score metrics. The results showed high accuracy and precision, indicating the model's effective classification ability.</p>
-                      
-                          <p>To make the prediction results more understandable, we mapped numeric labels to their corresponding tags. A bar chart visualization was created to compare actual and predicted counts for each label, providing insights into the model's performance across different categories.</p>
+                            Equally important is the model's performance in identifying True Negatives, which are impressively high at 9,684. This metric shows the model's strength in correctly recognizing posts that are not relevant to the users' interests. The low number of False Positives, only 18 in this case, is crucial in a user-centric environment. It means that the model rarely makes the mistake of presenting users with content that does not align with their interests, thereby reducing the clutter and enhancing the overall quality of the content feed. The relatively low count of 62 False Negatives, where relevant posts are incorrectly tagged as non-relevant, further underscores the model's robustness. While some relevant content might be missed, the low number suggests that this happens infrequently, maintaining a high overall content quality. <br><br>
+                            
+                            The optimization achieved through parameter tuning has clearly been effective in sharpening the model's ability to discriminate between relevant and non-relevant content. This fine-tuning process is essential in achieving the balance required for a positive user experience – maximizing the exposure to pertinent content while minimizing the intrusion of irrelevant posts. Such precision in classification is fundamental in creating a more structured and engaging environment on the subreddit, which is likely to result in increased user satisfaction, longer engagement times, and potentially higher user retention rates.</p>
                           <iframe src="ML/title_classification_interactive_bar_chart.html"  width="100%" height="600px"></iframe>
-                          <figcaption style="text-align: center;"><b>Fig 7: Interative Bar chart of All kinds of Title </b></figcaption>
+                          <figcaption style="text-align: center;"><b>Fig 6: Interative Bar chart of All kinds of Title </b></figcaption>
                         </p>
-                          <p>From the interative Fig 7, the evaluation revealed the model's high accuracy for most labels, with minimal discrepancies between actual and predicted counts. For example, posts tagged as "Swatches" showed an almost perfect match between actual (164) and predicted (165) counts. The model performed well on both high volume labels like "Unknown", "FOTD", and "Question" and low volume labels such as "Rule 6 Removal: Gore NSFW" and "Removal: Off-topic". However, the largest discrepancy was observed in the "Unknown" category, indicating potential areas for improvement.</p>
-                      
-                          <p>The model demonstrated consistency across many categories, with exact matches between actual and predicted counts in labels like "Meta", "Organization", and "AMA". However, for categories with larger discrepancies, further investigation into the features influencing these predictions is warranted. This could include analyzing keywords and contextual factors to reduce overfitting and improve the model's discriminative power, especially for categories like "Unknown" that show higher prediction uncertainty.</p>
-                      
-                          <p>In conclusion, our model training and evaluation process demonstrated the Logistic Regression model's robustness in accurately classifying the subreddit's content. While the results were promising, we also identified opportunities for refining the model's performance in certain categories.</p>
+                         <p>The bar charts visualizing the classification results of the Logistic Regression model offer a compelling representation of its capacity to accurately predict a wide array of categories within the "MakeupAddiction" subreddit. The alignment of actual and predicted values in nuanced classifications, such as "Face of the Day" (FOTD) and thematic labels like "Halloween," is particularly noteworthy. This level of alignment in specialized categories demonstrates the model's nuanced understanding and precise classification abilities. It suggests that the model is not just capturing general trends but is also sensitive to the finer details and unique characteristics that define these specific categories. Such precision is vital in a context like the "MakeupAddiction" subreddit, where the variety and specificity of content are key to user engagement and satisfaction.<br><br>
 
-                        
+                          The uniformity in prediction across several labels signifies that the model has developed a sophisticated grasp of domain-specific features. This aspect is crucial, especially in scenarios where high precision is necessary to enhance user experience through personalized content delivery. The ability of the model to discern and appropriately classify posts according to a diverse range of categories, including more thematic and time-sensitive ones like "Halloween," indicates a high level of adaptability and contextual awareness. Furthermore, the clarity with which these results are presented in the bar charts not only reflects the model's current performance but also tells a story of its potential applicability in real-world scenarios. Such visualizations make the model's capabilities and achievements accessible and understandable, serving as powerful tools for communicating its effectiveness. This enhances the model's value as a decision-making aid, providing clear and actionable insights that can guide strategies for content curation, user engagement, and community building on the subreddit.</p>
                       </ul>
                     </section>
 									
